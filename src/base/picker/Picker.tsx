@@ -1,34 +1,23 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react';
-import {Animated, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
-import PickerItem from '../item/PickerItem';
+import type {FlatList} from 'react-native';
+import {Animated, StyleProp, View, ViewStyle} from 'react-native';
+import PickerItemComponent from '../item/PickerItem';
 import {ScrollContentOffsetContext} from '../contexts/ScrollContentOffsetContext';
 import {createCellRendererComponent} from '../item/CellRendererComponent';
 import {PickerItemHeightContext} from '../contexts/PickerItemHeightContext';
 import SelectionOverlay from '../overlay/SelectionOverlay';
 import useValueEventsEffect from './hooks/useValueEventsEffect';
-import type {FlatList} from 'react-native';
 import useSyncScrollEffect from './hooks/useSyncScrollEffect';
-
-export type PickerItem<T> = {
-  value: T;
-  label?: string;
-};
-
-export type KeyExtractor<ItemT extends PickerItem<any>> = (
-  item: ItemT,
-  index: number,
-) => string;
-export type RenderItem<ItemT> = (info: {
-  item: ItemT;
-  index: number;
-}) => React.ReactElement | null;
-export type RenderSelectionOverlay = (info: {
-  itemHeight: number;
-  pickerWidth: number | string;
-}) => React.ReactElement | null;
-
-export type ValueChangingEvent<ItemT> = {item: ItemT; index: number};
-export type ValueChangedEvent<ItemT> = {item: ItemT; index: number};
+import type {
+  KeyExtractor,
+  PickerItem,
+  RenderItem,
+  RenderOverlayContainer,
+  RenderSelectionOverlay,
+  ValueChangedEvent,
+  ValueChangingEvent,
+} from '../types';
+import OverlayContainer from '../overlay/OverlayContainer';
 
 export type PickerProps<ItemT extends PickerItem<any>> = {
   data: ReadonlyArray<ItemT>;
@@ -40,6 +29,7 @@ export type PickerProps<ItemT extends PickerItem<any>> = {
   keyExtractor?: KeyExtractor<ItemT>;
   renderItem?: RenderItem<ItemT>;
   renderSelectionOverlay?: RenderSelectionOverlay | null;
+  renderOverlayContainer?: RenderOverlayContainer | null;
   style?: StyleProp<ViewStyle>;
   disableVirtualization?: boolean;
   initialNumToRender?: number;
@@ -52,11 +42,14 @@ export type PickerProps<ItemT extends PickerItem<any>> = {
 const defaultKeyExtractor: KeyExtractor<any> = (_, index) => index.toString();
 const defaultRenderItem: RenderItem<PickerItem<any>> = ({
   item: {value, label},
-}) => <PickerItem value={value} label={label} />;
+}) => <PickerItemComponent value={value} label={label} />;
 const defaultRenderSelectionOverlay: RenderSelectionOverlay = ({
   itemHeight,
   pickerWidth,
 }) => <SelectionOverlay height={itemHeight} width={pickerWidth} />;
+const defaultRenderOverlayContainer: RenderOverlayContainer = (props) => (
+  <OverlayContainer {...props} />
+);
 
 const useValueIndex = (data: ReadonlyArray<PickerItem<any>>, value: any) => {
   return useMemo(() => {
@@ -73,8 +66,9 @@ const Picker = <ItemT extends PickerItem<any>>({
   keyExtractor = defaultKeyExtractor,
   renderItem = defaultRenderItem,
   renderSelectionOverlay = defaultRenderSelectionOverlay,
-  onValueChanging,
+  renderOverlayContainer = defaultRenderOverlayContainer,
   onValueChanged,
+  onValueChanging,
   style,
   initialNumToRender = 3,
   maxToRenderPerBatch = 3,
@@ -95,6 +89,7 @@ const Picker = <ItemT extends PickerItem<any>>({
   );
   useSyncScrollEffect({listRef, valueIndex, touching});
 
+  const height = itemHeight * 5;
   const snapToOffsets = useMemo(
     () => data.map((_, i) => i * itemHeight),
     [data, itemHeight],
@@ -115,12 +110,14 @@ const Picker = <ItemT extends PickerItem<any>>({
   return (
     <ScrollContentOffsetContext.Provider value={offsetYAv}>
       <PickerItemHeightContext.Provider value={itemHeight}>
-        <View style={[{height: itemHeight * 5, width}, style]}>
-          {renderSelectionOverlay !== null && (
-            <View style={styles.overlayContainer} pointerEvents={'none'}>
-              {renderSelectionOverlay({pickerWidth: width, itemHeight})}
-            </View>
-          )}
+        <View style={[{height, width}, style]}>
+          {renderOverlayContainer !== null &&
+            renderOverlayContainer({
+              itemHeight,
+              renderSelectionOverlay,
+              pickerWidth: width,
+              pickerHeight: height,
+            })}
           <Animated.FlatList
             ref={listRef}
             data={data as Animated.WithAnimatedObject<typeof data>}
@@ -158,12 +155,5 @@ const Picker = <ItemT extends PickerItem<any>>({
     </ScrollContentOffsetContext.Provider>
   );
 };
-
-const styles = StyleSheet.create({
-  overlayContainer: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-  },
-});
 
 export default Picker;
