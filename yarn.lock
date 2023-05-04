@@ -2480,9 +2480,10 @@ __metadata:
     "@evilmartians/lefthook": ^1.2.2
     "@react-native-community/eslint-config": ^3.0.2
     "@release-it/conventional-changelog": ^5.0.0
+    "@rozhkov/react-useful-hooks": ^1.0.8
     "@types/jest": ^28.1.2
     "@types/react": ^18.2.0
-    "@types/react-native": 0.70.0
+    "@types/react-native": 0.71.6
     commitlint: ^17.0.2
     del-cli: ^5.0.0
     eslint: ^8.4.1
@@ -2753,6 +2754,17 @@ __metadata:
   peerDependencies:
     release-it: ^15.4.1
   checksum: 15ade4ab88dabea7664b28494db035707eb84acc897b51472142abcac6c6acae0e90f9db7d8c93bb1de697678e7321d31192362565c538d4f62a4e7600bc30b2
+  languageName: node
+  linkType: hard
+
+"@rozhkov/react-useful-hooks@npm:^1.0.8":
+  version: 1.0.8
+  resolution: "@rozhkov/react-useful-hooks@npm:1.0.8"
+  dependencies:
+    default-values: ^1.0.1
+  peerDependencies:
+    react: ^16.8 || ^17 || ^18
+  checksum: e2b16a0e5fd2f7571ce7bd601ce46cf2a4be6a031b5a481e5f0153231cec63710d7a2751a65f8468e2dc5d447e4b726d9be68fdb924dd243a175e40baa8c2ab1
   languageName: node
   linkType: hard
 
@@ -3028,12 +3040,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-native@npm:0.70.0":
-  version: 0.70.0
-  resolution: "@types/react-native@npm:0.70.0"
+"@types/react-native@npm:0.71.6":
+  version: 0.71.6
+  resolution: "@types/react-native@npm:0.71.6"
   dependencies:
     "@types/react": "*"
-  checksum: 0150a5520925ae009e49eb81e4ca528548ec118b95c363516362bba39ffc068f0df97c43e4543c10ac8f514a42e48cad312c9da49e37257c62180b36f921fa84
+  checksum: 067325c549e7181c73cdf8da1cb7bdef226124d91c3f72fcc2fb8b3c98a2d184f74a16ba627e3192253103bd651e8238d0e722b93f762b3f1a3f5b96773ec7a5
   languageName: node
   linkType: hard
 
@@ -5132,6 +5144,13 @@ __metadata:
     execa: ^7.1.1
     titleize: ^3.0.0
   checksum: 40c5af984799042b140300be5639c9742599bda76dc9eba5ac9ad5943c83dd36cebc4471eafcfddf8e0ec817166d5ba89d56f08e66a126c7c7908a179cead1a7
+  languageName: node
+  linkType: hard
+
+"default-values@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "default-values@npm:1.0.1"
+  checksum: 6a8c16fc63ca715239371a2cdd2e5e6462c9ca01e47008cbb2270dc2b98bab0e69e363620f9e5bf61e715535970dc258fa7a4939902adc12b77451094f991add
   languageName: node
   linkType: hard
 

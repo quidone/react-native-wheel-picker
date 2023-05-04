@@ -59,6 +59,9 @@
     "react": "^16.8 || ^17 || ^18",
     "react-native": ">=64"
   },
+  "dependencies": {
+    "@rozhkov/react-useful-hooks": "^1.0.8"
+  },
   "devDependencies": {
     "@commitlint/config-conventional": "^17.0.2",
     "@evilmartians/lefthook": "^1.2.2",
@@ -66,7 +69,7 @@
     "@release-it/conventional-changelog": "^5.0.0",
     "@types/jest": "^28.1.2",
     "@types/react": "^18.2.0",
-    "@types/react-native": "0.70.0",
+    "@types/react-native": "0.71.6",
     "commitlint": "^17.0.2",
     "del-cli": "^5.0.0",
     "eslint": "^8.4.1",
