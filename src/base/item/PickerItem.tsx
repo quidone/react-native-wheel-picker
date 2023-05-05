@@ -19,9 +19,6 @@ const styles = StyleSheet.create({
   root: {
     textAlign: 'center',
     fontSize: 20,
-    // textAlignVertical: 'center',
-    // borderColor: 'blue',
-    // borderWidth: 1,
   },
 });
 

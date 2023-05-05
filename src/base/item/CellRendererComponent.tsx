@@ -110,12 +110,12 @@ export const createCellRendererComponent = (itemHeight: number) => {
         rotateX: offset.interpolate({
           inputRange: inputRange,
           outputRange: faces.map((x) => `${x.deg}deg`),
-          extrapolate: 'clamp',
+          extrapolate: 'extend',
         }),
         translateY: offset.interpolate({
           inputRange: inputRange,
           outputRange: faces.map((x) => x.translateY),
-          extrapolate: 'clamp',
+          extrapolate: 'extend',
         }),
       }),
       [inputRange, offset],
