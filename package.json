@@ -30,9 +30,10 @@
     "test": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
-    "build:run": "cp -r ./src ./copied-src && yarn run build:resolve && bob build; rm -r ./src && cp -r ./copied-src ./src && rm -r ./copied-src",
+    "lint:fix": "eslint --fix \"**/*.{js,ts,tsx}\"",
     "build:resolve": "babel --config-file ./babel.local-namespace-config.js ./src --out-dir ./src --extensions .ts,.js,.tsx,.json --keep-file-extension",
-    "prepack": "yarn run build:run",
+    "prepack": "cp -r ./src ./copied-src && yarn run build:resolve && yarn run lint:fix && bob build",
+    "postpublish": "rm -r ./src && cp -r ./copied-src ./src && rm -r ./copied-src",
     "release": "release-it",
     "example": "yarn --cwd example",
     "bootstrap": "yarn example && yarn install"
