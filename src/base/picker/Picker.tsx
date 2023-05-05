@@ -1,5 +1,5 @@
 import React, {useCallback, useMemo, useRef} from 'react';
-import type {FlatList, ListRenderItemInfo} from 'react-native';
+import type {FlatList, ListRenderItemInfo, TextStyle} from 'react-native';
 import {Animated, StyleProp, View, ViewStyle} from 'react-native';
 import PickerItemComponent from '../item/PickerItem';
 import {ScrollContentOffsetContext} from '../contexts/ScrollContentOffsetContext';
@@ -25,22 +25,28 @@ import {useBoolean} from '@utils/react';
 export type PickerProps<ItemT extends PickerItem<any>> = {
   data: ReadonlyArray<ItemT>;
   value?: ItemT['value'];
-  onValueChanging?: (event: ValueChangingEvent<ItemT>) => void;
-  onValueChanged?: (event: ValueChangedEvent<ItemT>) => void;
   itemHeight?: number;
   width?: number | string;
+
+  onValueChanging?: (event: ValueChangingEvent<ItemT>) => void;
+  onValueChanged?: (event: ValueChangedEvent<ItemT>) => void;
+
   keyExtractor?: KeyExtractor<ItemT>;
   renderItem?: RenderItem<ItemT>;
   renderItemContainer?: RenderItemContainer<ItemT>;
   renderSelectionOverlay?: RenderSelectionOverlay | null;
   renderOverlayContainer?: RenderOverlayContainer | null;
+
   style?: StyleProp<ViewStyle>;
+  itemTextStyle?: StyleProp<TextStyle>;
+  selectionOverlayStyle?: StyleProp<ViewStyle>;
+
+  scrollEventThrottle?: number;
   disableVirtualization?: boolean;
   initialNumToRender?: number;
   windowSize?: number;
   maxToRenderPerBatch?: number;
   updateCellsBatchingPeriod?: number;
-  scrollEventThrottle?: number;
 };
 
 const defaultKeyExtractor: KeyExtractor<any> = (_, index) => index.toString();
@@ -70,20 +76,26 @@ const Picker = <ItemT extends PickerItem<any>>({
   value,
   width = 'auto',
   itemHeight = 48,
+
+  onValueChanged,
+  onValueChanging,
+
   keyExtractor = defaultKeyExtractor,
   renderItem = defaultRenderItem,
   renderItemContainer = defaultRenderItemContainer,
   renderSelectionOverlay = defaultRenderSelectionOverlay,
   renderOverlayContainer = defaultRenderOverlayContainer,
-  onValueChanged,
-  onValueChanging,
+
   style,
+  itemTextStyle,
+  selectionOverlayStyle,
+
+  scrollEventThrottle = 16,
   initialNumToRender = 3,
   maxToRenderPerBatch = 3,
   updateCellsBatchingPeriod = 10,
   disableVirtualization,
   windowSize,
-  scrollEventThrottle = 16,
 }: PickerProps<ItemT>) => {
   const valueIndex = useValueIndex(data, value);
   const offsetYAv = useRef(new Animated.Value(valueIndex * itemHeight)).current;
@@ -98,8 +110,8 @@ const Picker = <ItemT extends PickerItem<any>>({
   const faces = useMemo(() => createFaces(itemHeight), [itemHeight]);
   const renderPickerItem = useCallback(
     ({item, index}: ListRenderItemInfo<ItemT>) =>
-      renderItemContainer({item, index, faces, renderItem}),
-    [faces, renderItem, renderItemContainer],
+      renderItemContainer({item, index, faces, renderItem, itemTextStyle}),
+    [faces, itemTextStyle, renderItem, renderItemContainer],
   );
   const getItemLayout = useCallback(
     (_: any, index: number) => ({
@@ -126,6 +138,7 @@ const Picker = <ItemT extends PickerItem<any>>({
               renderSelectionOverlay,
               pickerWidth: width,
               pickerHeight: height,
+              selectionOverlayStyle,
             })}
           <Animated.FlatList
             ref={listRef}

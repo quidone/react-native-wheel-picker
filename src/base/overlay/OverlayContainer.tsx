@@ -1,22 +1,28 @@
 import React, {memo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import type {RenderSelectionOverlay} from '../types';
 
 type OverlayContainerProps = {
   itemHeight: number;
   pickerWidth: number | string;
   renderSelectionOverlay: RenderSelectionOverlay | null | undefined;
+  selectionOverlayStyle: StyleProp<ViewStyle> | undefined;
 };
 
 const OverlayContainer = ({
   pickerWidth,
   itemHeight,
   renderSelectionOverlay,
+  selectionOverlayStyle,
 }: OverlayContainerProps) => {
   return (
     <View style={[styles.overlayContainer]} pointerEvents={'none'}>
       {renderSelectionOverlay != null &&
-        renderSelectionOverlay?.({pickerWidth, itemHeight})}
+        renderSelectionOverlay?.({
+          pickerWidth,
+          itemHeight,
+          selectionOverlayStyle,
+        })}
     </View>
   );
 };

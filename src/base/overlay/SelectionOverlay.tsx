@@ -1,13 +1,18 @@
 import React, {memo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 
 type SelectionOverlayProps = {
   height: number;
   width: number | string;
+  selectionOverlayStyle?: StyleProp<ViewStyle>;
 };
 
-const SelectionOverlay = ({height, width}: SelectionOverlayProps) => {
-  return <View style={[styles.root, {height, width}]} />;
+const SelectionOverlay = ({
+  height,
+  width,
+  selectionOverlayStyle,
+}: SelectionOverlayProps) => {
+  return <View style={[styles.root, {height, width}, selectionOverlayStyle]} />;
 };
 
 const styles = StyleSheet.create({
