@@ -1,7 +1,7 @@
 import type {Animated} from 'react-native';
 import {useEffect, useMemo, useRef} from 'react';
 import {usePrevious, useStableCallback} from '@rozhkov/react-useful-hooks';
-import debounce from '../../../utils/debounce';
+import debounce from '@utils/debounce';
 
 const useValueEventsEffect = <ItemT>(
   // in
