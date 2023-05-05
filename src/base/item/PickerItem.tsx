@@ -5,7 +5,7 @@ import {usePickerItemHeight} from '../contexts/PickerItemHeightContext';
 type PickerItemProps = {
   value: any;
   label?: string;
-  itemTextStyle?: StyleProp<TextStyle>;
+  itemTextStyle: StyleProp<TextStyle>;
 };
 
 const PickerItem = ({value, label, itemTextStyle}: PickerItemProps) => {

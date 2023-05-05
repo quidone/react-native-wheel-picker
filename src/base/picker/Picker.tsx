@@ -52,14 +52,28 @@ export type PickerProps<ItemT extends PickerItem<any>> = {
 const defaultKeyExtractor: KeyExtractor<any> = (_, index) => index.toString();
 const defaultRenderItem: RenderItem<PickerItem<any>> = ({
   item: {value, label},
-}) => <PickerItemComponent value={value} label={label} />;
+  itemTextStyle,
+}) => (
+  <PickerItemComponent
+    value={value}
+    label={label}
+    itemTextStyle={itemTextStyle}
+  />
+);
 const defaultRenderItemContainer: RenderItemContainer<any> = (props) => (
   <PickerItemContainer {...props} />
 );
 const defaultRenderSelectionOverlay: RenderSelectionOverlay = ({
   itemHeight,
   pickerWidth,
-}) => <SelectionOverlay height={itemHeight} width={pickerWidth} />;
+  selectionOverlayStyle,
+}) => (
+  <SelectionOverlay
+    height={itemHeight}
+    width={pickerWidth}
+    selectionOverlayStyle={selectionOverlayStyle}
+  />
+);
 const defaultRenderOverlayContainer: RenderOverlayContainer = (props) => (
   <OverlayContainer {...props} />
 );
