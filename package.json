@@ -30,7 +30,9 @@
     "test": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
-    "prepack": "bob build",
+    "build:run": "cp -r ./src ./copied-src && yarn run build:resolve && bob build; rm -r ./src && cp -r ./copied-src ./src && rm -r ./copied-src",
+    "build:resolve": "babel --config-file ./babel.local-namespace-config.js ./src --out-dir ./src --extensions .ts,.js,.tsx,.json --keep-file-extension",
+    "prepack": "yarn run build:run",
     "release": "release-it",
     "example": "yarn --cwd example",
     "bootstrap": "yarn example && yarn install"
@@ -63,6 +65,8 @@
     "@rozhkov/react-useful-hooks": "^1.0.8"
   },
   "devDependencies": {
+    "@babel/cli": "^7.21.5",
+    "@babel/plugin-syntax-typescript": "^7.21.4",
     "@commitlint/config-conventional": "^17.0.2",
     "@evilmartians/lefthook": "^1.2.2",
     "@react-native-community/eslint-config": "^3.0.2",
@@ -70,6 +74,7 @@
     "@types/jest": "^28.1.2",
     "@types/react": "^18.2.0",
     "@types/react-native": "0.71.6",
+    "babel-plugin-module-resolver": "^4.1.0",
     "commitlint": "^17.0.2",
     "del-cli": "^5.0.0",
     "eslint": "^8.4.1",
