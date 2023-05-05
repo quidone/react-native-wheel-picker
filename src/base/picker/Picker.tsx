@@ -145,7 +145,7 @@ const Picker = <ItemT extends PickerItem<any>>({
   return (
     <ScrollContentOffsetContext.Provider value={offsetYAv}>
       <PickerItemHeightContext.Provider value={itemHeight}>
-        <View style={[styles.root, {height, width}, style]}>
+        <View style={[styles.root, style, {height, width}]}>
           {renderOverlayContainer !== null &&
             renderOverlayContainer({
               itemHeight,
