@@ -64,15 +64,12 @@ const useValueEventsEffect = <ItemT>(
   );
 
   useEffect(() => {
-    if (onValueChanging === undefined) {
-      return;
-    }
     const id = offsetYAv.addListener(({value: offset}) => {
       const index = getIndex(offset);
       const activeIndex = activeIndexRef.current;
       if (index !== activeIndex) {
         activeIndexRef.current = index;
-        onValueChanging({item: data[index]!, index});
+        onValueChanging?.({item: data[index]!, index});
         onValueChangedDebounce();
       }
     });
