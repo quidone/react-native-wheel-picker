@@ -18,10 +18,10 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Lint files
-        run: yarn lint
+        run: yarn lint:check
 
       - name: Typecheck files
-        run: yarn typecheck
+        run: yarn tsc:check
 
   test:
     runs-on: ubuntu-latest
