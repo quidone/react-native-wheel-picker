@@ -1,6 +1,6 @@
 import React, {useCallback, useMemo, useRef} from 'react';
 import type {FlatList, ListRenderItemInfo, TextStyle} from 'react-native';
-import {Animated, StyleProp, View, ViewStyle} from 'react-native';
+import {Animated, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import PickerItemComponent from '../item/PickerItem';
 import {ScrollContentOffsetContext} from '../contexts/ScrollContentOffsetContext';
 import {PickerItemHeightContext} from '../contexts/PickerItemHeightContext';
@@ -145,7 +145,7 @@ const Picker = <ItemT extends PickerItem<any>>({
   return (
     <ScrollContentOffsetContext.Provider value={offsetYAv}>
       <PickerItemHeightContext.Provider value={itemHeight}>
-        <View style={[{height, width}, style]}>
+        <View style={[styles.root, {height, width}, style]}>
           {renderOverlayContainer !== null &&
             renderOverlayContainer({
               itemHeight,
@@ -184,5 +184,9 @@ const Picker = <ItemT extends PickerItem<any>>({
     </ScrollContentOffsetContext.Provider>
   );
 };
+
+const styles = StyleSheet.create({
+  root: {justifyContent: 'center', alignItems: 'center'},
+});
 
 export default Picker;
