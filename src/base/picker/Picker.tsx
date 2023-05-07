@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useRef} from 'react';
+import React, {memo, useCallback, useMemo, useRef} from 'react';
 import type {FlatList, ListRenderItemInfo, TextStyle} from 'react-native';
 import {Animated, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import PickerItemComponent from '../item/PickerItem';
@@ -21,6 +21,11 @@ import OverlayContainer from '../overlay/OverlayContainer';
 import {createFaces} from '../item/faces';
 import PickerItemContainer from '../item/PickerItemContainer';
 import {useBoolean} from '@utils/react';
+import {useInit, useMemoObject} from '@rozhkov/react-useful-hooks';
+
+const MemoAnimatedFlatList = memo(
+  Animated.FlatList,
+) as unknown as typeof Animated.FlatList;
 
 export type PickerProps<ItemT extends PickerItem<any>> = {
   data: ReadonlyArray<ItemT>;
@@ -112,15 +117,13 @@ const Picker = <ItemT extends PickerItem<any>>({
   windowSize,
 }: PickerProps<ItemT>) => {
   const valueIndex = useValueIndex(data, value);
+  const initialScrollIndex = useInit(() => valueIndex);
   const offsetYAv = useRef(new Animated.Value(valueIndex * itemHeight)).current;
   const listRef = useRef<FlatList>(null);
   const touching = useBoolean(false);
 
   const height = itemHeight * 5;
-  const snapToOffsets = useMemo(
-    () => data.map((_, i) => i * itemHeight),
-    [data, itemHeight],
-  );
+  const paddingVertical = itemHeight * 2;
   const faces = useMemo(() => createFaces(itemHeight), [itemHeight]);
   const renderPickerItem = useCallback(
     ({item, index}: ListRenderItemInfo<ItemT>) =>
@@ -135,6 +138,18 @@ const Picker = <ItemT extends PickerItem<any>>({
     }),
     [itemHeight],
   );
+  const snapToOffsets = useMemo(
+    () => data.map((_, i) => i * itemHeight),
+    [data, itemHeight],
+  );
+  const onScroll = useMemo(
+    () =>
+      Animated.event([{nativeEvent: {contentOffset: {y: offsetYAv}}}], {
+        useNativeDriver: true,
+      }),
+    [offsetYAv],
+  );
+  const contentContainerStyle = useMemoObject({paddingVertical});
 
   useValueEventsEffect(
     {data, valueIndex, itemHeight, offsetYAv, touching: touching.value},
@@ -154,19 +169,16 @@ const Picker = <ItemT extends PickerItem<any>>({
               pickerHeight: height,
               selectionOverlayStyle,
             })}
-          <Animated.FlatList
+          <MemoAnimatedFlatList
             ref={listRef}
             data={data as Animated.WithAnimatedObject<typeof data>}
             renderItem={renderPickerItem}
             keyExtractor={keyExtractor}
             getItemLayout={getItemLayout}
-            onScroll={Animated.event(
-              [{nativeEvent: {contentOffset: {y: offsetYAv}}}],
-              {useNativeDriver: true},
-            )}
-            contentContainerStyle={{paddingVertical: itemHeight * 2}}
+            onScroll={onScroll}
+            contentContainerStyle={contentContainerStyle}
             scrollEventThrottle={scrollEventThrottle}
-            initialScrollIndex={valueIndex}
+            initialScrollIndex={initialScrollIndex}
             snapToOffsets={snapToOffsets}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
