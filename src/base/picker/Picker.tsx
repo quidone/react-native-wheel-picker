@@ -113,7 +113,7 @@ const Picker = <ItemT extends PickerItem<any>>({
   initialNumToRender = 3,
   maxToRenderPerBatch = 3,
   updateCellsBatchingPeriod = 10,
-  disableVirtualization = true,
+  disableVirtualization,
   windowSize,
 }: PickerProps<ItemT>) => {
   const valueIndex = useValueIndex(data, value);
