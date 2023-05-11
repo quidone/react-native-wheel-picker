@@ -70,12 +70,10 @@ const defaultRenderItemContainer: RenderItemContainer<any> = (props) => (
 );
 const defaultRenderSelectionOverlay: RenderSelectionOverlay = ({
   itemHeight,
-  pickerWidth,
   selectionOverlayStyle,
 }) => (
   <SelectionOverlay
     height={itemHeight}
-    width={pickerWidth}
     selectionOverlayStyle={selectionOverlayStyle}
   />
 );
