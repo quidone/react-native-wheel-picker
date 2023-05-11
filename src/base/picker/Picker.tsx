@@ -113,6 +113,8 @@ const Picker = <ItemT extends PickerItem<any>>({
   updateCellsBatchingPeriod = 10,
   disableVirtualization,
   windowSize,
+
+  ...restProps
 }: PickerProps<ItemT>) => {
   const valueIndex = useValueIndex(data, value);
   const initialScrollIndex = useInit(() => valueIndex);
@@ -168,6 +170,9 @@ const Picker = <ItemT extends PickerItem<any>>({
               selectionOverlayStyle,
             })}
           <MemoAnimatedFlatList
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            {...restProps}
             ref={listRef}
             data={data as Animated.WithAnimatedObject<typeof data>}
             renderItem={renderPickerItem}
@@ -179,8 +184,6 @@ const Picker = <ItemT extends PickerItem<any>>({
             scrollEventThrottle={scrollEventThrottle}
             initialScrollIndex={initialScrollIndex}
             snapToOffsets={snapToOffsets}
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
             initialNumToRender={initialNumToRender}
             maxToRenderPerBatch={maxToRenderPerBatch}
             updateCellsBatchingPeriod={updateCellsBatchingPeriod}
