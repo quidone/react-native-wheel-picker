@@ -6,5 +6,5 @@ module.exports = {
   rules: {
     'prettier/prettier': ['error', prettierConfig],
   },
-  ignorePatterns: ['node_modules/', 'lib/'],
+  ignorePatterns: ['node_modules/', 'dest/'],
 };
