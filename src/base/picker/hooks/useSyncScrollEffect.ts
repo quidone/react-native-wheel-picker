@@ -1,13 +1,13 @@
 import type {RefObject} from 'react';
 import {useEffect} from 'react';
-import type {FlatList} from 'react-native';
+import type {ListMethods} from '../../types';
 
 const useSyncScrollEffect = ({
   listRef,
   valueIndex,
   touching,
 }: {
-  listRef: RefObject<FlatList>;
+  listRef: RefObject<ListMethods>;
   valueIndex: number;
   touching: boolean;
 }) => {

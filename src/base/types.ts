@@ -1,6 +1,10 @@
 import type React from 'react';
 import type {Faces} from './item/faces';
-import type {StyleProp, TextStyle, ViewStyle} from 'react-native';
+import type {Animated, StyleProp, TextStyle, ViewStyle} from 'react-native';
+
+export type ListMethods = {
+  scrollToIndex: (params: {index: number; animated: boolean}) => void;
+};
 
 export type PickerItem<T> = {
   value: T;
@@ -17,12 +21,33 @@ export type RenderItem<ItemT extends PickerItem<any>> = (info: {
   itemTextStyle: StyleProp<TextStyle> | undefined;
 }) => React.ReactElement | null;
 export type RenderItemContainer<ItemT extends PickerItem<any>> = (info: {
+  key?: string;
   item: ItemT;
   index: number;
   faces: ReadonlyArray<Faces>;
   renderItem: RenderItem<ItemT>;
   itemTextStyle: StyleProp<TextStyle> | undefined;
-}) => React.ReactElement | null;
+}) => React.ReactElement;
+export type RenderPickerItem<ItemT extends PickerItem<any>> = (info: {
+  key?: string;
+  item: ItemT;
+  index: number;
+}) => React.ReactElement;
+
+export type RenderList<ItemT extends PickerItem<any>> = (
+  info: {
+    ref: React.RefObject<ListMethods>;
+    data: ReadonlyArray<ItemT>;
+    keyExtractor: KeyExtractor<ItemT>;
+    renderItem: RenderPickerItem<ItemT>;
+    itemHeight: number;
+    initialIndex: number;
+    scrollOffset: Animated.Value;
+    onTouchStart: () => void;
+    onTouchEnd: () => void;
+    onTouchCancel: () => void;
+  } & Record<string, any>,
+) => React.ReactElement;
 
 export type RenderSelectionOverlay = (info: {
   itemHeight: number;

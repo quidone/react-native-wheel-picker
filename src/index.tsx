@@ -1,13 +1,21 @@
-export {useScrollContentOffset} from './base/contexts/ScrollContentOffsetContext';
-export {usePickerItemHeight} from './base/contexts/PickerItemHeightContext';
-
 export type {
   PickerItem,
   ValueChangedEvent,
   ValueChangingEvent,
   RenderItem,
   RenderSelectionOverlay,
-} from './base/types';
-export {PickerProps} from './base/picker/Picker';
-import WheelPicker from './base/picker/Picker';
+  PickerProps,
+} from '@implementation/base';
+
+export {
+  usePickerItemHeight,
+  useScrollContentOffset,
+} from '@implementation/base';
+
+import {default as WheelPicker} from '@implementation/base';
 export default WheelPicker;
+
+export {
+  withVirtualized,
+  WithVirtualizedProps,
+} from '@implementation/virtualized';

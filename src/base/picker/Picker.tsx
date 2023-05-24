@@ -1,5 +1,5 @@
-import React, {memo, useCallback, useMemo, useRef} from 'react';
-import type {FlatList, ListRenderItemInfo, TextStyle} from 'react-native';
+import React, {useCallback, useMemo, useRef} from 'react';
+import type {TextStyle} from 'react-native';
 import {Animated, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import PickerItemComponent from '../item/PickerItem';
 import {ScrollContentOffsetContext} from '../contexts/ScrollContentOffsetContext';
@@ -9,10 +9,13 @@ import useValueEventsEffect from './hooks/useValueEventsEffect';
 import useSyncScrollEffect from './hooks/useSyncScrollEffect';
 import type {
   KeyExtractor,
+  ListMethods,
   PickerItem,
   RenderItem,
   RenderItemContainer,
+  RenderList,
   RenderOverlayContainer,
+  RenderPickerItem,
   RenderSelectionOverlay,
   ValueChangedEvent,
   ValueChangingEvent,
@@ -21,11 +24,8 @@ import OverlayContainer from '../overlay/OverlayContainer';
 import {createFaces} from '../item/faces';
 import PickerItemContainer from '../item/PickerItemContainer';
 import {useBoolean} from '@utils/react';
-import {useInit, useMemoObject} from '@rozhkov/react-useful-hooks';
-
-const MemoAnimatedFlatList = memo(
-  Animated.FlatList,
-) as unknown as typeof Animated.FlatList;
+import {useInit} from '@rozhkov/react-useful-hooks';
+import List from '../list/List';
 
 export type PickerProps<ItemT extends PickerItem<any>> = {
   data: ReadonlyArray<ItemT>;
@@ -41,6 +41,7 @@ export type PickerProps<ItemT extends PickerItem<any>> = {
   renderItemContainer?: RenderItemContainer<ItemT>;
   renderSelectionOverlay?: RenderSelectionOverlay | null;
   renderOverlayContainer?: RenderOverlayContainer | null;
+  renderList?: RenderList<ItemT>;
 
   style?: StyleProp<ViewStyle>;
   itemTextStyle?: StyleProp<TextStyle>;
@@ -80,6 +81,9 @@ const defaultRenderSelectionOverlay: RenderSelectionOverlay = ({
 const defaultRenderOverlayContainer: RenderOverlayContainer = (props) => (
   <OverlayContainer {...props} />
 );
+const defaultRenderList: RenderList<any> = (props) => {
+  return <List {...props} />;
+};
 
 const useValueIndex = (data: ReadonlyArray<PickerItem<any>>, value: any) => {
   return useMemo(() => {
@@ -102,63 +106,42 @@ const Picker = <ItemT extends PickerItem<any>>({
   renderItemContainer = defaultRenderItemContainer,
   renderSelectionOverlay = defaultRenderSelectionOverlay,
   renderOverlayContainer = defaultRenderOverlayContainer,
+  renderList = defaultRenderList,
 
   style,
   itemTextStyle,
   selectionOverlayStyle,
 
-  scrollEventThrottle = 16,
-  initialNumToRender = 3,
-  maxToRenderPerBatch = 3,
-  updateCellsBatchingPeriod = 10,
-  disableVirtualization,
-  windowSize,
-
   ...restProps
 }: PickerProps<ItemT>) => {
   const valueIndex = useValueIndex(data, value);
-  const initialScrollIndex = useInit(() => valueIndex);
-  const offsetYAv = useRef(new Animated.Value(valueIndex * itemHeight)).current;
-  const listRef = useRef<FlatList>(null);
+  const initialIndex = useInit(() => valueIndex);
+  const offsetY = useRef(new Animated.Value(valueIndex * itemHeight)).current;
+  const listRef = useRef<ListMethods>(null);
   const touching = useBoolean(false);
 
   const height = itemHeight * 5;
-  const paddingVertical = itemHeight * 2;
   const faces = useMemo(() => createFaces(itemHeight), [itemHeight]);
-  const renderPickerItem = useCallback(
-    ({item, index}: ListRenderItemInfo<ItemT>) =>
-      renderItemContainer({item, index, faces, renderItem, itemTextStyle}),
+  const renderPickerItem = useCallback<RenderPickerItem<ItemT>>(
+    ({item, index, key}) =>
+      renderItemContainer({key, item, index, faces, renderItem, itemTextStyle}),
     [faces, itemTextStyle, renderItem, renderItemContainer],
   );
-  const getItemLayout = useCallback(
-    (_: any, index: number) => ({
-      length: itemHeight,
-      offset: itemHeight * index,
-      index,
-    }),
-    [itemHeight],
-  );
-  const snapToOffsets = useMemo(
-    () => data.map((_, i) => i * itemHeight),
-    [data, itemHeight],
-  );
-  const onScroll = useMemo(
-    () =>
-      Animated.event([{nativeEvent: {contentOffset: {y: offsetYAv}}}], {
-        useNativeDriver: true,
-      }),
-    [offsetYAv],
-  );
-  const contentContainerStyle = useMemoObject({paddingVertical});
 
   useValueEventsEffect(
-    {data, valueIndex, itemHeight, offsetYAv, touching: touching.value},
+    {
+      data,
+      valueIndex,
+      itemHeight,
+      offsetYAv: offsetY,
+      touching: touching.value,
+    },
     {onValueChanging, onValueChanged},
   );
   useSyncScrollEffect({listRef, valueIndex, touching: touching.value});
 
   return (
-    <ScrollContentOffsetContext.Provider value={offsetYAv}>
+    <ScrollContentOffsetContext.Provider value={offsetY}>
       <PickerItemHeightContext.Provider value={itemHeight}>
         <View style={[styles.root, style, {height, width}]}>
           {renderOverlayContainer !== null &&
@@ -169,30 +152,19 @@ const Picker = <ItemT extends PickerItem<any>>({
               pickerHeight: height,
               selectionOverlayStyle,
             })}
-          <MemoAnimatedFlatList
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-            {...restProps}
-            ref={listRef}
-            data={data as Animated.WithAnimatedObject<typeof data>}
-            renderItem={renderPickerItem}
-            keyExtractor={keyExtractor}
-            getItemLayout={getItemLayout}
-            onScroll={onScroll}
-            style={styles.list}
-            contentContainerStyle={contentContainerStyle}
-            scrollEventThrottle={scrollEventThrottle}
-            initialScrollIndex={initialScrollIndex}
-            snapToOffsets={snapToOffsets}
-            initialNumToRender={initialNumToRender}
-            maxToRenderPerBatch={maxToRenderPerBatch}
-            updateCellsBatchingPeriod={updateCellsBatchingPeriod}
-            disableVirtualization={disableVirtualization}
-            windowSize={windowSize}
-            onTouchStart={touching.setTrue}
-            onTouchEnd={touching.setFalse}
-            onTouchCancel={touching.setFalse}
-          />
+          {renderList({
+            ...restProps,
+            ref: listRef,
+            data,
+            initialIndex,
+            itemHeight,
+            keyExtractor,
+            renderItem: renderPickerItem,
+            scrollOffset: offsetY,
+            onTouchStart: touching.setTrue,
+            onTouchEnd: touching.setFalse,
+            onTouchCancel: touching.setFalse,
+          })}
         </View>
       </PickerItemHeightContext.Provider>
     </ScrollContentOffsetContext.Provider>
