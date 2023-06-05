@@ -9,7 +9,7 @@ export type ListMethods = {
 export type PickerItem<T> = {
   value: T;
   label?: string;
-};
+} & Record<string, any>;
 
 export type KeyExtractor<ItemT extends PickerItem<any>> = (
   item: ItemT,
