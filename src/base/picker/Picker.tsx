@@ -4,7 +4,6 @@ import {Animated, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import PickerItemComponent from '../item/PickerItem';
 import {ScrollContentOffsetContext} from '../contexts/ScrollContentOffsetContext';
 import {PickerItemHeightContext} from '../contexts/PickerItemHeightContext';
-import SelectionOverlay from '../overlay/SelectionOverlay';
 import useValueEventsEffect from './hooks/useValueEventsEffect';
 import useSyncScrollEffect from './hooks/useSyncScrollEffect';
 import type {
@@ -16,11 +15,10 @@ import type {
   RenderItem,
   RenderItemContainer,
   RenderList,
-  RenderOverlayContainer,
+  RenderOverlay,
   RenderPickerItem,
-  RenderSelectionOverlay,
 } from '../types';
-import OverlayContainer from '../overlay/OverlayContainer';
+import Overlay from '../overlay/Overlay';
 import {createFaces} from '../item/faces';
 import PickerItemContainer from '../item/PickerItemContainer';
 import {useBoolean} from '@utils/react';
@@ -39,8 +37,7 @@ export type PickerProps<ItemT extends PickerItem<any>> = {
   keyExtractor?: KeyExtractor<ItemT>;
   renderItem?: RenderItem<ItemT>;
   renderItemContainer?: RenderItemContainer<ItemT>;
-  renderSelectionOverlay?: RenderSelectionOverlay | null;
-  renderOverlayContainer?: RenderOverlayContainer | null;
+  renderOverlay?: RenderOverlay | null;
   renderList?: RenderList<ItemT>;
 
   style?: StyleProp<ViewStyle>;
@@ -69,18 +66,7 @@ const defaultRenderItem: RenderItem<PickerItem<any>> = ({
 const defaultRenderItemContainer: RenderItemContainer<any> = (props) => (
   <PickerItemContainer {...props} />
 );
-const defaultRenderSelectionOverlay: RenderSelectionOverlay = ({
-  itemHeight,
-  selectionOverlayStyle,
-}) => (
-  <SelectionOverlay
-    height={itemHeight}
-    selectionOverlayStyle={selectionOverlayStyle}
-  />
-);
-const defaultRenderOverlayContainer: RenderOverlayContainer = (props) => (
-  <OverlayContainer {...props} />
-);
+const defaultRenderOverlay: RenderOverlay = (props) => <Overlay {...props} />;
 const defaultRenderList: RenderList<any> = (props) => {
   return <List {...props} />;
 };
@@ -104,8 +90,7 @@ const Picker = <ItemT extends PickerItem<any>>({
   keyExtractor = defaultKeyExtractor,
   renderItem = defaultRenderItem,
   renderItemContainer = defaultRenderItemContainer,
-  renderSelectionOverlay = defaultRenderSelectionOverlay,
-  renderOverlayContainer = defaultRenderOverlayContainer,
+  renderOverlay = defaultRenderOverlay,
   renderList = defaultRenderList,
 
   style,
@@ -157,10 +142,9 @@ const Picker = <ItemT extends PickerItem<any>>({
             onTouchEnd: touching.setFalse,
             onTouchCancel: touching.setFalse,
           })}
-          {renderOverlayContainer !== null &&
-            renderOverlayContainer({
+          {renderOverlay !== null &&
+            renderOverlay({
               itemHeight,
-              renderSelectionOverlay,
               pickerWidth: width,
               pickerHeight: height,
               selectionOverlayStyle,

@@ -56,18 +56,15 @@ export type RenderListProps<ItemT extends PickerItem<any>> = {
 export type RenderList<ItemT extends PickerItem<any>> = (
   props: RenderListProps<ItemT>,
 ) => React.ReactElement;
-export type RenderSelectionOverlay = (info: {
-  itemHeight: number;
-  pickerWidth: number | string;
-  selectionOverlayStyle: StyleProp<ViewStyle> | undefined;
-}) => React.ReactElement | null;
-export type RenderOverlayContainer = (info: {
+export type RenderOverlayProps = {
   itemHeight: number;
   pickerWidth: number | string;
   pickerHeight: number;
-  renderSelectionOverlay: RenderSelectionOverlay | null | undefined;
   selectionOverlayStyle: StyleProp<ViewStyle> | undefined;
-}) => React.ReactElement | null;
+};
+export type RenderOverlay = (
+  props: RenderOverlayProps,
+) => React.ReactElement | null;
 
 // events
 export type ValueChangingEvent<ItemT> = {item: ItemT; index: number};

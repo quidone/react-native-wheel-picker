@@ -4,13 +4,14 @@ export type {
   ValueChangingEvent,
   OnValueChanged,
   OnValueChanging,
-  RenderItem,
-  RenderItemContainer,
-  RenderSelectionOverlay,
-  RenderList,
   RenderItemProps,
   RenderItemContainerProps,
+  RenderOverlayProps,
   RenderListProps,
+  RenderItem,
+  RenderItemContainer,
+  RenderOverlay,
+  RenderList,
 } from './types';
 
 export {useScrollContentOffset} from './contexts/ScrollContentOffsetContext';

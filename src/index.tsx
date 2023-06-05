@@ -4,14 +4,14 @@ export type {
   ValueChangingEvent,
   OnValueChanged,
   OnValueChanging,
-  PickerProps,
-  RenderItem,
-  RenderItemContainer,
-  RenderSelectionOverlay,
-  RenderList,
   RenderItemProps,
   RenderItemContainerProps,
+  RenderOverlayProps,
   RenderListProps,
+  RenderItem,
+  RenderItemContainer,
+  RenderOverlay,
+  RenderList,
 } from '@implementation/base';
 
 export {
