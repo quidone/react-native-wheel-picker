@@ -102,6 +102,7 @@ const VirtualizedList = <ItemT extends PickerItem<any>>(
       maxToRenderPerBatch={maxToRenderPerBatch}
       updateCellsBatchingPeriod={updateCellsBatchingPeriod}
       windowSize={windowSize}
+      nestedScrollEnabled={true}
     />
   );
 };
