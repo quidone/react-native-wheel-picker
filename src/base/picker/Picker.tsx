@@ -173,7 +173,6 @@ const Picker = <ItemT extends PickerItem<any>>({
 
 const styles = StyleSheet.create({
   root: {justifyContent: 'center', alignItems: 'center'},
-  list: {width: '100%'},
 });
 
 export default Picker;
