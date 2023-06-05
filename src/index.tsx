@@ -2,9 +2,16 @@ export type {
   PickerItem,
   ValueChangedEvent,
   ValueChangingEvent,
-  RenderItem,
-  RenderSelectionOverlay,
+  OnValueChanged,
+  OnValueChanging,
   PickerProps,
+  RenderItem,
+  RenderItemContainer,
+  RenderSelectionOverlay,
+  RenderList,
+  RenderItemProps,
+  RenderItemContainerProps,
+  RenderListProps,
 } from '@implementation/base';
 
 export {
@@ -12,6 +19,7 @@ export {
   useScrollContentOffset,
 } from '@implementation/base';
 
+export {PickerProps as WheelPickerProps} from '@implementation/base';
 import {default as WheelPicker} from '@implementation/base';
 export default WheelPicker;
 

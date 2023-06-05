@@ -15,40 +15,47 @@ export type KeyExtractor<ItemT extends PickerItem<any>> = (
   item: ItemT,
   index: number,
 ) => string;
-export type RenderItem<ItemT extends PickerItem<any>> = (info: {
+
+// renders
+export type RenderItemProps<ItemT extends PickerItem<any>> = {
   item: ItemT;
   index: number;
   itemTextStyle: StyleProp<TextStyle> | undefined;
-}) => React.ReactElement | null;
-export type RenderItemContainer<ItemT extends PickerItem<any>> = (info: {
+};
+export type RenderItem<ItemT extends PickerItem<any>> = (
+  props: RenderItemProps<ItemT>,
+) => React.ReactElement | null;
+export type RenderItemContainerProps<ItemT extends PickerItem<any>> = {
   key?: string;
   item: ItemT;
   index: number;
   faces: ReadonlyArray<Faces>;
   renderItem: RenderItem<ItemT>;
   itemTextStyle: StyleProp<TextStyle> | undefined;
-}) => React.ReactElement;
+};
+export type RenderItemContainer<ItemT extends PickerItem<any>> = (
+  props: RenderItemContainerProps<ItemT>,
+) => React.ReactElement;
 export type RenderPickerItem<ItemT extends PickerItem<any>> = (info: {
   key?: string;
   item: ItemT;
   index: number;
 }) => React.ReactElement;
-
+export type RenderListProps<ItemT extends PickerItem<any>> = {
+  ref: React.RefObject<ListMethods>;
+  data: ReadonlyArray<ItemT>;
+  keyExtractor: KeyExtractor<ItemT>;
+  renderItem: RenderPickerItem<ItemT>;
+  itemHeight: number;
+  initialIndex: number;
+  scrollOffset: Animated.Value;
+  onTouchStart: () => void;
+  onTouchEnd: () => void;
+  onTouchCancel: () => void;
+} & Record<string, any>;
 export type RenderList<ItemT extends PickerItem<any>> = (
-  info: {
-    ref: React.RefObject<ListMethods>;
-    data: ReadonlyArray<ItemT>;
-    keyExtractor: KeyExtractor<ItemT>;
-    renderItem: RenderPickerItem<ItemT>;
-    itemHeight: number;
-    initialIndex: number;
-    scrollOffset: Animated.Value;
-    onTouchStart: () => void;
-    onTouchEnd: () => void;
-    onTouchCancel: () => void;
-  } & Record<string, any>,
+  props: RenderListProps<ItemT>,
 ) => React.ReactElement;
-
 export type RenderSelectionOverlay = (info: {
   itemHeight: number;
   pickerWidth: number | string;
@@ -62,5 +69,8 @@ export type RenderOverlayContainer = (info: {
   selectionOverlayStyle: StyleProp<ViewStyle> | undefined;
 }) => React.ReactElement | null;
 
+// events
 export type ValueChangingEvent<ItemT> = {item: ItemT; index: number};
 export type ValueChangedEvent<ItemT> = {item: ItemT; index: number};
+export type OnValueChanging<ItemT> = (event: ValueChangingEvent<ItemT>) => void;
+export type OnValueChanged<ItemT> = (event: ValueChangedEvent<ItemT>) => void;

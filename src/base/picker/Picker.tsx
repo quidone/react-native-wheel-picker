@@ -10,6 +10,8 @@ import useSyncScrollEffect from './hooks/useSyncScrollEffect';
 import type {
   KeyExtractor,
   ListMethods,
+  OnValueChanged,
+  OnValueChanging,
   PickerItem,
   RenderItem,
   RenderItemContainer,
@@ -17,8 +19,6 @@ import type {
   RenderOverlayContainer,
   RenderPickerItem,
   RenderSelectionOverlay,
-  ValueChangedEvent,
-  ValueChangingEvent,
 } from '../types';
 import OverlayContainer from '../overlay/OverlayContainer';
 import {createFaces} from '../item/faces';
@@ -33,8 +33,8 @@ export type PickerProps<ItemT extends PickerItem<any>> = {
   itemHeight?: number;
   width?: number | string;
 
-  onValueChanging?: (event: ValueChangingEvent<ItemT>) => void;
-  onValueChanged?: (event: ValueChangedEvent<ItemT>) => void;
+  onValueChanging?: OnValueChanging<ItemT>;
+  onValueChanged?: OnValueChanged<ItemT>;
 
   keyExtractor?: KeyExtractor<ItemT>;
   renderItem?: RenderItem<ItemT>;
