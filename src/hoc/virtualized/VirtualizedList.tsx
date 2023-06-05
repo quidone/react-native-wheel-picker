@@ -107,7 +107,7 @@ const VirtualizedList = <ItemT extends PickerItem<any>>(
 };
 
 const styles = StyleSheet.create({
-  list: {width: '100%'},
+  list: {width: '100%', overflow: 'visible'},
 });
 
 export default memo(forwardRef(VirtualizedList));

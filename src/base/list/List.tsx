@@ -12,7 +12,7 @@ import type {
   PickerItem,
   RenderPickerItem,
 } from '../types';
-import {Animated, ScrollView, StyleSheet} from 'react-native';
+import {Animated, ScrollView, StyleSheet, ViewStyle} from 'react-native';
 import {useInit, useMemoObject} from '@rozhkov/react-useful-hooks';
 
 const OFFSET_X = 0;
@@ -76,7 +76,7 @@ const List = <ItemT extends PickerItem<any>>(
     [scrollOffset],
   );
 
-  const contentContainerStyle = useMemoObject({
+  const contentContainerStyle = useMemoObject<ViewStyle>({
     paddingVertical: itemHeight * 2,
   });
 
@@ -104,7 +104,7 @@ const List = <ItemT extends PickerItem<any>>(
 };
 
 const styles = StyleSheet.create({
-  list: {width: '100%'},
+  list: {width: '100%', overflow: 'visible'},
 });
 
 export default memo(forwardRef(List));
