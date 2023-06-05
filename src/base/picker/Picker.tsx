@@ -144,14 +144,6 @@ const Picker = <ItemT extends PickerItem<any>>({
     <ScrollContentOffsetContext.Provider value={offsetY}>
       <PickerItemHeightContext.Provider value={itemHeight}>
         <View style={[styles.root, style, {height, width}]}>
-          {renderOverlayContainer !== null &&
-            renderOverlayContainer({
-              itemHeight,
-              renderSelectionOverlay,
-              pickerWidth: width,
-              pickerHeight: height,
-              selectionOverlayStyle,
-            })}
           {renderList({
             ...restProps,
             ref: listRef,
@@ -165,6 +157,14 @@ const Picker = <ItemT extends PickerItem<any>>({
             onTouchEnd: touching.setFalse,
             onTouchCancel: touching.setFalse,
           })}
+          {renderOverlayContainer !== null &&
+            renderOverlayContainer({
+              itemHeight,
+              renderSelectionOverlay,
+              pickerWidth: width,
+              pickerHeight: height,
+              selectionOverlayStyle,
+            })}
         </View>
       </PickerItemHeightContext.Provider>
     </ScrollContentOffsetContext.Provider>
