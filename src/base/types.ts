@@ -60,7 +60,7 @@ export type RenderOverlayProps = {
   itemHeight: number;
   pickerWidth: number | string;
   pickerHeight: number;
-  selectionOverlayStyle: StyleProp<ViewStyle> | undefined;
+  overlayItemStyle: StyleProp<ViewStyle> | undefined;
 };
 export type RenderOverlay = (
   props: RenderOverlayProps,

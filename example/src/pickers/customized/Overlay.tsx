@@ -2,11 +2,11 @@ import React, {memo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import type {RenderOverlayProps} from '@quidone/react-native-wheel-picker';
 
-const Overlay = ({itemHeight, selectionOverlayStyle}: RenderOverlayProps) => {
+const Overlay = ({itemHeight, overlayItemStyle}: RenderOverlayProps) => {
   return (
     <View style={[styles.overlayContainer]} pointerEvents={'none'}>
       <View
-        style={[styles.selection, {height: itemHeight}, selectionOverlayStyle]}
+        style={[styles.selection, {height: itemHeight}, overlayItemStyle]}
       />
     </View>
   );

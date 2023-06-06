@@ -136,7 +136,7 @@ const App = () => {
 - ```renderList?``` [function] - render list (Advanced, It is not recommended to use).
 - ```style?``` [object | array] - root style.
 - ```itemTextStyle?``` [object | array] - item text style for picker item.
-- ```selectionOverlayStyle?``` [object | array] - style for the overlay element in the center
+- ```overlayItemStyle?``` [object | array] - style for the overlay element in the center
 - ```scrollEventThrottle?``` [object | array] - [original](https://reactnative.dev/docs/scrollview#scrolleventthrottle-ios)
 
 

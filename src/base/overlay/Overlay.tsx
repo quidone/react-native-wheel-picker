@@ -4,14 +4,14 @@ import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 type OverlayProps = {
   itemHeight: number;
   pickerWidth: number | string;
-  selectionOverlayStyle: StyleProp<ViewStyle> | undefined;
+  overlayItemStyle: StyleProp<ViewStyle> | undefined;
 };
 
-const Overlay = ({itemHeight, selectionOverlayStyle}: OverlayProps) => {
+const Overlay = ({itemHeight, overlayItemStyle}: OverlayProps) => {
   return (
     <View style={[styles.overlayContainer]} pointerEvents={'none'}>
       <View
-        style={[styles.selection, {height: itemHeight}, selectionOverlayStyle]}
+        style={[styles.selection, {height: itemHeight}, overlayItemStyle]}
       />
     </View>
   );
