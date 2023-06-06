@@ -45,11 +45,6 @@ export type PickerProps<ItemT extends PickerItem<any>> = {
   selectionOverlayStyle?: StyleProp<ViewStyle>;
 
   scrollEventThrottle?: number;
-  disableVirtualization?: boolean;
-  initialNumToRender?: number;
-  windowSize?: number;
-  maxToRenderPerBatch?: number;
-  updateCellsBatchingPeriod?: number;
 };
 
 const defaultKeyExtractor: KeyExtractor<any> = (_, index) => index.toString();
@@ -96,7 +91,6 @@ const Picker = <ItemT extends PickerItem<any>>({
   style,
   itemTextStyle,
   selectionOverlayStyle,
-
   ...restProps
 }: PickerProps<ItemT>) => {
   const valueIndex = useValueIndex(data, value);
