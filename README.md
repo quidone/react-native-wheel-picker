@@ -6,9 +6,6 @@
   <a href="https://github.com/quidone/react-native-wheel-picker/blob/HEAD/LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="React Native Wheel Picker is released under the MIT license." />
   </a>
-  <a href="https://github.com/quidone/react-native-wheel-picker/actions/workflows/testing.yml">
-    <img src="https://github.com/quidone/react-native-wheel-picker/actions/workflows/ci.yml/badge.svg" alt="React Native Wheel Picker passed the testing" />
-  </a>
   <a href="https://www.npmjs.com/package/@quidone/react-native-wheel-picker">
     <img src="https://img.shields.io/npm/v/@quidone/react-native-wheel-picker?color=brightgreen&label=npm%20package" alt="Current npm package version." />
   </a>
@@ -111,7 +108,7 @@ const App = () => {
   return (
     <WheelPicker
       onValueChanging={() => {
-        WheelPickerFeedback.getSoundAndImpact();
+        WheelPickerFeedback.triggerSoundAndImpact();
       }}
     />
   );
