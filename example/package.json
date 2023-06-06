@@ -10,7 +10,7 @@
   "dependencies": {
     "@expo/ngrok": "^4.1.1",
     "@faker-js/faker": "^8.0.2",
-    "@quidone/react-native-wheel-picker-feedback": "^0.0.1",
+    "@quidone/react-native-wheel-picker-feedback": "^1.0.0",
     "@react-native-picker/picker": "^2.4.10",
     "@rozhkov/react-useful-hooks": "^1.0.8",
     "expo": "~48.0.18",

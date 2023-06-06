@@ -2364,13 +2364,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@quidone/react-native-wheel-picker-feedback@npm:^0.0.1":
-  version: 0.0.1
-  resolution: "@quidone/react-native-wheel-picker-feedback@npm:0.0.1"
+"@quidone/react-native-wheel-picker-feedback@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@quidone/react-native-wheel-picker-feedback@npm:1.0.0"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 83ab4479e879d718f6faaf50438ca1f8ae8b93082c88431ea0520d4a7b57c69df77169a93ba6f3cb42ef9edafa5df1a0c4ca2cc6e48f28d95ed1de9d348f1737
+  checksum: e1ba65190830110652b094b1c0fe6c30394b0cb0c0f231677bfa2b4061a92f3b9b2166a1737a910e6824b4d6e4ac7aa241ce8bd347c95bba18d8c4eba0c96ad1
   languageName: node
   linkType: hard
 
@@ -6313,7 +6313,7 @@ __metadata:
     "@expo/ngrok": ^4.1.1
     "@expo/webpack-config": ^0.17.2
     "@faker-js/faker": ^8.0.2
-    "@quidone/react-native-wheel-picker-feedback": ^0.0.1
+    "@quidone/react-native-wheel-picker-feedback": ^1.0.0
     "@react-native-picker/picker": ^2.4.10
     "@rozhkov/react-useful-hooks": ^1.0.8
     babel-loader: ^8.1.0
