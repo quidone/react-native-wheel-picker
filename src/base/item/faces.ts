@@ -12,6 +12,8 @@ const VISIBLE_FACE_COUNT = Math.round(FACE_COUNT / 2) + 1; // 7
 const VISIBLE_FACE_CENTER = Math.round(VISIBLE_FACE_COUNT / 2); // 4
 const OPACITIES = [0.35, 0.2, 0]; // HARD CODE!!!
 
+// TODO The algorithm can be universal, but additional refinement
+//  and testing is required for various numbers of parties.
 export const createFaces = (itemHeight: number): Faces[] => {
   const innerAngle = sumAnglePolygon(FACE_COUNT) / FACE_COUNT;
   // the step of deviation of the sides of the screen from the center
