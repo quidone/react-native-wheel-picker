@@ -28,4 +28,4 @@ project.xcworkspace
 
 # CocoaPods
 /Pods/
-Profile.lock
+Podfile.lock
