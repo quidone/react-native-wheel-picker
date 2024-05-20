@@ -61,7 +61,7 @@
   },
   "peerDependencies": {
     "react": "^16.8 || ^17 || ^18",
-    "react-native": ">=64"
+    "react-native": ">=0.71.6"
   },
   "dependencies": {
     "@rozhkov/react-useful-hooks": "^1.0.8"
