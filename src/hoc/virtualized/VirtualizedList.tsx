@@ -6,15 +6,19 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
-import {Animated, FlatList, FlatListProps, StyleSheet} from 'react-native';
+import {FlatList as RNFlatList, FlatListProps, StyleSheet} from 'react-native';
+import Animated, {
+  useAnimatedScrollHandler,
+  SharedValue,
+} from 'react-native-reanimated';
 import type {
   KeyExtractor,
   ListMethods,
   PickerItem,
   RenderPickerItem,
+  RenderScrollView,
 } from '../../base/types';
 import {useMemoObject} from '@rozhkov/react-useful-hooks';
-
 export type AdditionalProps = Pick<
   FlatListProps<any>,
   | 'initialNumToRender'
@@ -22,36 +26,34 @@ export type AdditionalProps = Pick<
   | 'windowSize'
   | 'updateCellsBatchingPeriod'
 >;
-
 type VirtualizedListProps<ItemT extends PickerItem<any>> = {
   data: ReadonlyArray<ItemT>;
   keyExtractor: KeyExtractor<ItemT>;
   renderItem: RenderPickerItem<ItemT>;
   itemHeight: number;
   initialIndex: number;
-  scrollOffset: Animated.Value;
+  scrollOffset: SharedValue<number>;
   onTouchStart: () => void;
   onTouchEnd: () => void;
   onTouchCancel: () => void;
+  renderScrollView?: RenderScrollView;
 } & AdditionalProps;
-
 const VirtualizedList = <ItemT extends PickerItem<any>>(
   {
     initialIndex,
     data,
     keyExtractor,
     renderItem,
+    renderScrollView,
     itemHeight,
     scrollOffset,
     onTouchEnd,
     onTouchStart,
     onTouchCancel,
-
     initialNumToRender = 3,
     maxToRenderPerBatch = 3,
     updateCellsBatchingPeriod = 10,
     windowSize,
-
     ...restProps
   }: VirtualizedListProps<ItemT>,
   forwardedRef: ForwardedRef<ListMethods>,
@@ -60,13 +62,9 @@ const VirtualizedList = <ItemT extends PickerItem<any>>(
     () => data.map((_, i) => i * itemHeight),
     [data, itemHeight],
   );
-  const onScroll = useMemo(
-    () =>
-      Animated.event([{nativeEvent: {contentOffset: {y: scrollOffset}}}], {
-        useNativeDriver: true,
-      }),
-    [scrollOffset],
-  );
+  const onScroll = useAnimatedScrollHandler((event) => {
+    scrollOffset.value = event.contentOffset.y;
+  });
   const getItemLayout = useCallback(
     (_: any, index: number) => ({
       length: itemHeight,
@@ -78,15 +76,17 @@ const VirtualizedList = <ItemT extends PickerItem<any>>(
   const contentContainerStyle = useMemoObject({
     paddingVertical: itemHeight * 2,
   });
-
+  const FlatList = useMemo(() => {
+    return renderScrollView ?? Animated.FlatList;
+  }, [renderScrollView]);
   return (
-    <Animated.FlatList
+    <FlatList
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
       scrollEventThrottle={16}
       {...restProps}
-      ref={forwardedRef as RefObject<FlatList>}
-      data={data as Animated.WithAnimatedObject<typeof data>}
+      ref={forwardedRef as RefObject<RNFlatList>}
+      data={data}
       renderItem={renderItem}
       keyExtractor={keyExtractor}
       getItemLayout={getItemLayout}
@@ -106,9 +106,10 @@ const VirtualizedList = <ItemT extends PickerItem<any>>(
     />
   );
 };
-
 const styles = StyleSheet.create({
-  list: {width: '100%', overflow: 'visible'},
+  list: {
+    width: '100%',
+    overflow: 'visible',
+  },
 });
-
 export default memo(forwardRef(VirtualizedList));

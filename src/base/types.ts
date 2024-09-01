@@ -1,16 +1,14 @@
 import type React from 'react';
 import type {Faces} from './item/faces';
-import type {Animated, StyleProp, TextStyle, ViewStyle} from 'react-native';
-
+import type {StyleProp, TextStyle, ViewStyle} from 'react-native';
+import {AnimatedScrollViewProps, SharedValue} from 'react-native-reanimated';
 export type ListMethods = {
   scrollToIndex: (params: {index: number; animated: boolean}) => void;
 };
-
 export type PickerItem<T> = {
   value: T;
   label?: string;
 } & Record<string, any>;
-
 export type KeyExtractor<ItemT extends PickerItem<any>> = (
   item: ItemT,
   index: number,
@@ -48,13 +46,16 @@ export type RenderListProps<ItemT extends PickerItem<any>> = {
   renderItem: RenderPickerItem<ItemT>;
   itemHeight: number;
   initialIndex: number;
-  scrollOffset: Animated.Value;
+  scrollOffset: SharedValue<number>;
   onTouchStart: () => void;
   onTouchEnd: () => void;
   onTouchCancel: () => void;
 } & Record<string, any>;
 export type RenderList<ItemT extends PickerItem<any>> = (
   props: RenderListProps<ItemT>,
+) => React.ReactElement;
+export type RenderScrollView = (
+  props: AnimatedScrollViewProps,
 ) => React.ReactElement;
 export type RenderOverlayProps = {
   itemHeight: number;
@@ -67,7 +68,13 @@ export type RenderOverlay = (
 ) => React.ReactElement | null;
 
 // events
-export type ValueChangingEvent<ItemT> = {item: ItemT; index: number};
-export type ValueChangedEvent<ItemT> = {item: ItemT; index: number};
+export type ValueChangingEvent<ItemT> = {
+  item: ItemT;
+  index: number;
+};
+export type ValueChangedEvent<ItemT> = {
+  item: ItemT;
+  index: number;
+};
 export type OnValueChanging<ItemT> = (event: ValueChangingEvent<ItemT>) => void;
 export type OnValueChanged<ItemT> = (event: ValueChangedEvent<ItemT>) => void;

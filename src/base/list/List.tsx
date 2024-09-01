@@ -12,24 +12,33 @@ import type {
   PickerItem,
   RenderPickerItem,
 } from '../types';
-import {Animated, ScrollView, StyleSheet, ViewStyle} from 'react-native';
+import {
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  ScrollView as RNScrollView,
+  StyleSheet,
+  ViewStyle,
+} from 'react-native';
+import Animated, {
+  AnimatedScrollViewProps,
+  SharedValue,
+  runOnJS,
+} from 'react-native-reanimated';
 import {useInit, useMemoObject} from '@rozhkov/react-useful-hooks';
-
 const OFFSET_X = 0;
 const getOffsetY = (index: number, itemHeight: number) => index * itemHeight;
-
 export type ListProps<ItemT extends PickerItem<any>> = {
   data: ReadonlyArray<ItemT>;
   keyExtractor: KeyExtractor<ItemT>;
   renderItem: RenderPickerItem<ItemT>;
   itemHeight: number;
   initialIndex: number;
-  scrollOffset: Animated.Value;
+  scrollOffset: SharedValue<number>;
   onTouchStart: () => void;
   onTouchEnd: () => void;
   onTouchCancel: () => void;
+  renderScrollView?: (props: AnimatedScrollViewProps) => any;
 };
-
 const List = <ItemT extends PickerItem<any>>(
   {
     initialIndex,
@@ -41,11 +50,12 @@ const List = <ItemT extends PickerItem<any>>(
     onTouchEnd,
     onTouchStart,
     onTouchCancel,
+    renderScrollView,
     ...restProps
   }: ListProps<ItemT>,
   forwardedRef: ForwardedRef<ListMethods>,
 ) => {
-  const listRef = useRef<ScrollView>(null);
+  const listRef = useRef<RNScrollView>(null);
   useImperativeHandle(
     forwardedRef,
     () => ({
@@ -63,30 +73,29 @@ const List = <ItemT extends PickerItem<any>>(
     x: OFFSET_X,
     y: getOffsetY(initialIndex, itemHeight),
   }));
-
   const snapToOffsets = useMemo(
     () => data.map((_, i) => i * itemHeight),
     [data, itemHeight],
   );
-  const onScroll = useMemo(
-    () =>
-      Animated.event([{nativeEvent: {contentOffset: {y: scrollOffset}}}], {
-        useNativeDriver: true,
-      }),
-    [scrollOffset],
-  );
-
+  const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const wrapper = (_e: NativeSyntheticEvent<NativeScrollEvent>) => {
+      scrollOffset.value = _e.nativeEvent.contentOffset.y;
+    };
+    renderScrollView ? runOnJS(wrapper)(e) : wrapper(e);
+  };
   const contentContainerStyle = useMemoObject<ViewStyle>({
     paddingVertical: itemHeight * 2,
   });
-
+  const AnimatedScrollView = useMemo(
+    () => renderScrollView ?? Animated.ScrollView,
+    [renderScrollView],
+  );
   return (
-    <Animated.ScrollView
+    <AnimatedScrollView
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
-      scrollEventThrottle={16}
       {...restProps}
-      ref={listRef}
+      ref={listRef as any}
       contentOffset={initialOffset}
       onScroll={onScroll}
       snapToOffsets={snapToOffsets}
@@ -98,14 +107,19 @@ const List = <ItemT extends PickerItem<any>>(
       nestedScrollEnabled={true}
     >
       {data.map((item, index) =>
-        renderItem({key: keyExtractor(item, index), item, index}),
+        renderItem({
+          key: keyExtractor(item, index),
+          item,
+          index,
+        }),
       )}
-    </Animated.ScrollView>
+    </AnimatedScrollView>
   );
 };
-
 const styles = StyleSheet.create({
-  list: {width: '100%', overflow: 'visible'},
+  list: {
+    width: '100%',
+    overflow: 'visible',
+  },
 });
-
 export default memo(forwardRef(List));
