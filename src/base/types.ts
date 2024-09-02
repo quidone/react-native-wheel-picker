@@ -1,14 +1,18 @@
 import type React from 'react';
 import type {Faces} from './item/faces';
 import type {StyleProp, TextStyle, ViewStyle} from 'react-native';
-import {AnimatedScrollViewProps, SharedValue} from 'react-native-reanimated';
+import {SharedValue} from 'react-native-reanimated';
+import type {AnimatedScrollView} from 'react-native-reanimated/lib/typescript/component/ScrollView';
+import {BottomSheetScrollView} from '@gorhom/bottom-sheet';
 export type ListMethods = {
   scrollToIndex: (params: {index: number; animated: boolean}) => void;
 };
+
 export type PickerItem<T> = {
   value: T;
   label?: string;
 } & Record<string, any>;
+
 export type KeyExtractor<ItemT extends PickerItem<any>> = (
   item: ItemT,
   index: number,
@@ -54,9 +58,9 @@ export type RenderListProps<ItemT extends PickerItem<any>> = {
 export type RenderList<ItemT extends PickerItem<any>> = (
   props: RenderListProps<ItemT>,
 ) => React.ReactElement;
-export type RenderScrollView = (
-  props: AnimatedScrollViewProps,
-) => React.ReactElement;
+export type RenderScrollView =
+  | AnimatedScrollView
+  | typeof BottomSheetScrollView;
 export type RenderOverlayProps = {
   itemHeight: number;
   pickerWidth: number | string;
@@ -68,13 +72,7 @@ export type RenderOverlay = (
 ) => React.ReactElement | null;
 
 // events
-export type ValueChangingEvent<ItemT> = {
-  item: ItemT;
-  index: number;
-};
-export type ValueChangedEvent<ItemT> = {
-  item: ItemT;
-  index: number;
-};
+export type ValueChangingEvent<ItemT> = {item: ItemT; index: number};
+export type ValueChangedEvent<ItemT> = {item: ItemT; index: number};
 export type OnValueChanging<ItemT> = (event: ValueChangingEvent<ItemT>) => void;
 export type OnValueChanged<ItemT> = (event: ValueChangedEvent<ItemT>) => void;

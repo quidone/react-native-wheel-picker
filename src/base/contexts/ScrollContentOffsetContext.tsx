@@ -1,9 +1,12 @@
 import {createContext, useContext} from 'react';
 import {SharedValue} from 'react-native-reanimated';
+
 type ContextValue = SharedValue<number>;
+
 export const ScrollContentOffsetContext = createContext<
   ContextValue | undefined
 >(undefined);
+
 export const useScrollContentOffset = () => {
   const value = useContext(ScrollContentOffsetContext);
   if (value === undefined) {

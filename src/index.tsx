@@ -12,6 +12,7 @@ export type {
   RenderItemContainer,
   RenderOverlay,
   RenderList,
+  RenderScrollView,
 } from '@implementation/base';
 
 export {

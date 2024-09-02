@@ -5,6 +5,7 @@ import {useScrollContentOffset} from '../contexts/ScrollContentOffsetContext';
 import {usePickerItemHeight} from '../contexts/PickerItemHeightContext';
 import type {RenderItem} from '../types';
 import type {Faces} from './faces';
+
 type PickerItemContainerProps = {
   item: any;
   index: number;
@@ -12,6 +13,7 @@ type PickerItemContainerProps = {
   renderItem: RenderItem<any>;
   itemTextStyle: StyleProp<TextStyle> | undefined;
 };
+
 const PickerItemContainer = ({
   index,
   item,
@@ -21,6 +23,7 @@ const PickerItemContainer = ({
 }: PickerItemContainerProps) => {
   const offset = useScrollContentOffset();
   const height = usePickerItemHeight();
+
   const inputRange = useMemo(
     () => faces.map((f) => height * (index + f.index)),
     [faces, height, index],
@@ -46,31 +49,14 @@ const PickerItemContainer = ({
     );
     return {
       opacity,
-      transform: [
-        {
-          translateY,
-        },
-        {
-          rotateX,
-        },
-      ],
+      transform: [{translateY}, {rotateX}],
     };
   }, [faces, inputRange, offset]);
   return (
-    <Animated.View
-      style={[
-        {
-          height,
-        },
-        animatedStyle,
-      ]}
-    >
-      {renderItem({
-        item,
-        index,
-        itemTextStyle,
-      })}
+    <Animated.View style={[{height}, animatedStyle]}>
+      {renderItem({item, index, itemTextStyle})}
     </Animated.View>
   );
 };
+
 export default memo(PickerItemContainer);

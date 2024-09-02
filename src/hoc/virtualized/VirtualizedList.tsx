@@ -16,9 +16,9 @@ import type {
   ListMethods,
   PickerItem,
   RenderPickerItem,
-  RenderScrollView,
 } from '../../base/types';
 import {useMemoObject} from '@rozhkov/react-useful-hooks';
+
 export type AdditionalProps = Pick<
   FlatListProps<any>,
   | 'initialNumToRender'
@@ -26,6 +26,7 @@ export type AdditionalProps = Pick<
   | 'windowSize'
   | 'updateCellsBatchingPeriod'
 >;
+
 type VirtualizedListProps<ItemT extends PickerItem<any>> = {
   data: ReadonlyArray<ItemT>;
   keyExtractor: KeyExtractor<ItemT>;
@@ -36,24 +37,25 @@ type VirtualizedListProps<ItemT extends PickerItem<any>> = {
   onTouchStart: () => void;
   onTouchEnd: () => void;
   onTouchCancel: () => void;
-  renderScrollView?: RenderScrollView;
 } & AdditionalProps;
+
 const VirtualizedList = <ItemT extends PickerItem<any>>(
   {
     initialIndex,
     data,
     keyExtractor,
     renderItem,
-    renderScrollView,
     itemHeight,
     scrollOffset,
     onTouchEnd,
     onTouchStart,
     onTouchCancel,
+
     initialNumToRender = 3,
     maxToRenderPerBatch = 3,
     updateCellsBatchingPeriod = 10,
     windowSize,
+
     ...restProps
   }: VirtualizedListProps<ItemT>,
   forwardedRef: ForwardedRef<ListMethods>,
@@ -76,11 +78,9 @@ const VirtualizedList = <ItemT extends PickerItem<any>>(
   const contentContainerStyle = useMemoObject({
     paddingVertical: itemHeight * 2,
   });
-  const FlatList = useMemo(() => {
-    return renderScrollView ?? Animated.FlatList;
-  }, [renderScrollView]);
+
   return (
-    <FlatList
+    <Animated.FlatList
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
       scrollEventThrottle={16}
@@ -106,10 +106,9 @@ const VirtualizedList = <ItemT extends PickerItem<any>>(
     />
   );
 };
+
 const styles = StyleSheet.create({
-  list: {
-    width: '100%',
-    overflow: 'visible',
-  },
+  list: {width: '100%', overflow: 'visible'},
 });
+
 export default memo(forwardRef(VirtualizedList));
