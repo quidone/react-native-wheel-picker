@@ -60,7 +60,6 @@
     "registry": "https://registry.npmjs.org/"
   },
   "peerDependencies": {
-    "@gorhom/bottom-sheet": "*",
     "react": "^16.8 || ^17 || ^18",
     "react-native": ">=0.71.6",
     "react-native-gesture-handler": "*",
