@@ -2,11 +2,14 @@ import React, {
   ForwardedRef,
   forwardRef,
   memo,
-  RefObject,
   useCallback,
   useMemo,
 } from 'react';
-import {Animated, FlatList, FlatListProps, StyleSheet} from 'react-native';
+import {FlatListProps, StyleSheet, FlatList} from 'react-native';
+import Animated, {
+  useAnimatedScrollHandler,
+  SharedValue,
+} from 'react-native-reanimated';
 import type {
   KeyExtractor,
   ListMethods,
@@ -29,7 +32,7 @@ type VirtualizedListProps<ItemT extends PickerItem<any>> = {
   renderItem: RenderPickerItem<ItemT>;
   itemHeight: number;
   initialIndex: number;
-  scrollOffset: Animated.Value;
+  scrollOffset: SharedValue<number>;
   onTouchStart: () => void;
   onTouchEnd: () => void;
   onTouchCancel: () => void;
@@ -60,13 +63,9 @@ const VirtualizedList = <ItemT extends PickerItem<any>>(
     () => data.map((_, i) => i * itemHeight),
     [data, itemHeight],
   );
-  const onScroll = useMemo(
-    () =>
-      Animated.event([{nativeEvent: {contentOffset: {y: scrollOffset}}}], {
-        useNativeDriver: true,
-      }),
-    [scrollOffset],
-  );
+  const onScroll = useAnimatedScrollHandler((event) => {
+    scrollOffset.value = event.contentOffset.y;
+  });
   const getItemLayout = useCallback(
     (_: any, index: number) => ({
       length: itemHeight,
@@ -85,8 +84,8 @@ const VirtualizedList = <ItemT extends PickerItem<any>>(
       showsVerticalScrollIndicator={false}
       scrollEventThrottle={16}
       {...restProps}
-      ref={forwardedRef as RefObject<FlatList>}
-      data={data as Animated.WithAnimatedObject<typeof data>}
+      ref={forwardedRef as ForwardedRef<FlatList>}
+      data={data}
       renderItem={renderItem}
       keyExtractor={keyExtractor}
       getItemLayout={getItemLayout}

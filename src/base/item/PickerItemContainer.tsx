@@ -1,5 +1,6 @@
 import React, {memo, useMemo} from 'react';
-import {Animated, StyleProp, TextStyle} from 'react-native';
+import {StyleProp, TextStyle} from 'react-native';
+import Animated, {useAnimatedStyle, interpolate} from 'react-native-reanimated';
 import {useScrollContentOffset} from '../contexts/ScrollContentOffsetContext';
 import {usePickerItemHeight} from '../contexts/PickerItemHeightContext';
 import type {RenderItem} from '../types';
@@ -27,32 +28,31 @@ const PickerItemContainer = ({
     () => faces.map((f) => height * (index + f.index)),
     [faces, height, index],
   );
-
-  const {opacity, rotateX, translateY} = useMemo(
-    () => ({
-      opacity: offset.interpolate({
-        inputRange: inputRange,
-        outputRange: faces.map((x) => x.opacity),
-        extrapolate: 'clamp',
-      }),
-      rotateX: offset.interpolate({
-        inputRange: inputRange,
-        outputRange: faces.map((x) => `${x.deg}deg`),
-        extrapolate: 'extend',
-      }),
-      translateY: offset.interpolate({
-        inputRange: inputRange,
-        outputRange: faces.map((x) => x.offsetY),
-        extrapolate: 'extend',
-      }),
-    }),
-    [faces, inputRange, offset],
-  );
-
+  const animatedStyle = useAnimatedStyle(() => {
+    const opacity = interpolate(
+      offset.value,
+      inputRange,
+      faces.map((x) => x.opacity),
+    );
+    const rotateX = `${interpolate(
+      offset.value,
+      inputRange,
+      faces.map((x) => x.deg),
+      'extend',
+    )}deg`;
+    const translateY = interpolate(
+      offset.value,
+      inputRange,
+      faces.map((x) => x.offsetY),
+      'extend',
+    );
+    return {
+      opacity,
+      transform: [{translateY}, {rotateX}],
+    };
+  }, [faces, inputRange, offset]);
   return (
-    <Animated.View
-      style={[{height, opacity, transform: [{translateY}, {rotateX}]}]}
-    >
+    <Animated.View style={animatedStyle}>
       {renderItem({item, index, itemTextStyle})}
     </Animated.View>
   );

@@ -1,7 +1,11 @@
-import type {Animated} from 'react-native';
-import {useEffect, useMemo, useRef} from 'react';
+import {useMemo, useRef} from 'react';
 import {usePrevious, useStableCallback} from '@rozhkov/react-useful-hooks';
 import debounce from '@utils/debounce';
+import {
+  runOnJS,
+  SharedValue,
+  useAnimatedReaction,
+} from 'react-native-reanimated';
 
 const useValueEventsEffect = <ItemT>(
   // in
@@ -15,7 +19,7 @@ const useValueEventsEffect = <ItemT>(
     valueIndex: number;
     data: ReadonlyArray<ItemT>;
     itemHeight: number;
-    offsetYAv: Animated.Value;
+    offsetYAv: SharedValue<number>;
     touching: boolean;
   },
   // events
@@ -63,27 +67,29 @@ const useValueEventsEffect = <ItemT>(
     [onStableValueChanged],
   );
 
-  useEffect(() => {
-    const id = offsetYAv.addListener(({value: offset}) => {
-      onValueChangedDebounce();
-      const index = getIndex(offset);
-      const activeIndex = activeIndexRef.current;
-      if (index !== activeIndex) {
-        activeIndexRef.current = index;
-        onValueChanging?.({item: data[index]!, index});
+  // must be defined outside useAnimatedReaction
+  const onOffsetChange = (offset: number) => {
+    onValueChangedDebounce();
+    const index = getIndex(offset);
+    const activeIndex = activeIndexRef.current;
+    if (index !== activeIndex) {
+      activeIndexRef.current = index;
+      if (onValueChanging) {
+        onValueChanging({
+          item: data[index]!,
+          index,
+        });
       }
-    });
-    return () => {
-      offsetYAv.removeListener(id);
-    };
-  }, [
-    data,
-    getIndex,
-    itemHeight,
-    offsetYAv,
-    onValueChangedDebounce,
-    onValueChanging,
-  ]);
+    }
+  };
+
+  useAnimatedReaction(
+    () => offsetYAv.value,
+    (offset) => {
+      runOnJS(onOffsetChange)(offset);
+    },
+    [data, getIndex, itemHeight, onValueChangedDebounce, onValueChanging],
+  );
 
   const prevTouching = usePrevious(touching);
   if (touching && !prevTouching) {
