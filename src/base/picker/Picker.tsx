@@ -25,6 +25,7 @@ import {useBoolean} from '@utils/react';
 import {useInit} from '@rozhkov/react-useful-hooks';
 import List from '../list/List';
 import {useSharedValue} from 'react-native-reanimated';
+
 export type PickerProps<ItemT extends PickerItem<any>> = {
   data: ReadonlyArray<ItemT>;
   value?: ItemT['value'];

@@ -9,6 +9,7 @@
       "@utils/math": ["./src/utils/math/index"],
       "@utils/debounce": ["./src/utils/debounce/index"]
     },
+    "importsNotUsedAsValues": "error",
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "esModuleInterop": true,

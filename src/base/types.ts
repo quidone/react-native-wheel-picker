@@ -1,7 +1,7 @@
 import type React from 'react';
 import type {Faces} from './item/faces';
 import type {StyleProp, TextStyle, ViewStyle} from 'react-native';
-import {SharedValue} from 'react-native-reanimated';
+import type {SharedValue} from 'react-native-reanimated';
 
 export type ListMethods = {
   scrollToIndex: (params: {index: number; animated: boolean}) => void;

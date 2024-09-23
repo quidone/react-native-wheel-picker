@@ -1,5 +1,5 @@
 import React, {memo, useMemo} from 'react';
-import {StyleProp, TextStyle} from 'react-native';
+import type {StyleProp, TextStyle} from 'react-native';
 import Animated, {useAnimatedStyle, interpolate} from 'react-native-reanimated';
 import {useScrollContentOffset} from '../contexts/ScrollContentOffsetContext';
 import {usePickerItemHeight} from '../contexts/PickerItemHeightContext';
@@ -52,7 +52,7 @@ const PickerItemContainer = ({
     };
   }, [faces, inputRange, offset]);
   return (
-    <Animated.View style={animatedStyle}>
+    <Animated.View style={[{height}, animatedStyle]}>
       {renderItem({item, index, itemTextStyle})}
     </Animated.View>
   );

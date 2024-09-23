@@ -1,5 +1,5 @@
 import {createContext, useContext} from 'react';
-import {SharedValue} from 'react-native-reanimated';
+import type {SharedValue} from 'react-native-reanimated';
 
 type ContextValue = SharedValue<number>;
 

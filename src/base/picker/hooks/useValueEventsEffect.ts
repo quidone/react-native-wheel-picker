@@ -1,4 +1,4 @@
-import {useMemo, useRef} from 'react';
+import {useCallback, useMemo, useRef} from 'react';
 import {usePrevious, useStableCallback} from '@rozhkov/react-useful-hooks';
 import debounce from '@utils/debounce';
 import {
@@ -68,27 +68,30 @@ const useValueEventsEffect = <ItemT>(
   );
 
   // must be defined outside useAnimatedReaction
-  const onOffsetChange = (offset: number) => {
-    onValueChangedDebounce();
-    const index = getIndex(offset);
-    const activeIndex = activeIndexRef.current;
-    if (index !== activeIndex) {
-      activeIndexRef.current = index;
-      if (onValueChanging) {
-        onValueChanging({
-          item: data[index]!,
-          index,
-        });
+  const onOffsetChange = useCallback(
+    (offset: number) => {
+      onValueChangedDebounce();
+      const index = getIndex(offset);
+      const activeIndex = activeIndexRef.current;
+      if (index !== activeIndex) {
+        activeIndexRef.current = index;
+        if (onValueChanging) {
+          onValueChanging({
+            item: data[index]!,
+            index,
+          });
+        }
       }
-    }
-  };
+    },
+    [data, getIndex, onValueChanging, onValueChangedDebounce],
+  );
 
   useAnimatedReaction(
     () => offsetYAv.value,
     (offset) => {
       runOnJS(onOffsetChange)(offset);
     },
-    [data, getIndex, itemHeight, onValueChangedDebounce, onValueChanging],
+    [onOffsetChange],
   );
 
   const prevTouching = usePrevious(touching);

@@ -18,7 +18,6 @@ import Animated, {
   useAnimatedScrollHandler,
 } from 'react-native-reanimated';
 import {useInit, useMemoObject} from '@rozhkov/react-useful-hooks';
-import {AnimatedScrollView} from 'react-native-reanimated/lib/typescript/component/ScrollView';
 
 const OFFSET_X = 0;
 const getOffsetY = (index: number, itemHeight: number) => index * itemHeight;
@@ -50,7 +49,7 @@ const List = <ItemT extends PickerItem<any>>(
   }: ListProps<ItemT>,
   forwardedRef: ForwardedRef<ListMethods>,
 ) => {
-  const listRef = useRef<AnimatedScrollView>(null);
+  const listRef = useRef<Animated.ScrollView>(null);
   useImperativeHandle(
     forwardedRef,
     () => ({
