@@ -58,8 +58,8 @@ const defaultRenderItem: RenderItem<PickerItem<any>> = ({
     itemTextStyle={itemTextStyle}
   />
 );
-const defaultRenderItemContainer: RenderItemContainer<any> = (props) => (
-  <PickerItemContainer {...props} />
+const defaultRenderItemContainer: RenderItemContainer<any> = ({key, ...props}) => (
+  <PickerItemContainer key={key} {...props} />
 );
 const defaultRenderOverlay: RenderOverlay = (props) => <Overlay {...props} />;
 const defaultRenderList: RenderList<any> = (props) => {
