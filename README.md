@@ -9,7 +9,7 @@
   <a href="https://www.npmjs.com/package/@quidone/react-native-wheel-picker">
     <img src="https://img.shields.io/npm/v/@quidone/react-native-wheel-picker?color=brightgreen&label=npm%20package" alt="Current npm package version." />
   </a>
-  <a href="https://img.shields.io/npm/dw/@quidone/react-native-wheel-picker">
+  <a href="https://www.npmjs.com/package/@quidone/react-native-wheel-picker">
     <img src="https://img.shields.io/npm/dw/@quidone/react-native-wheel-picker" alt="Number of downloads per week." />
   </a>
 </p>
