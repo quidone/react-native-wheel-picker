@@ -1,6 +1,6 @@
 import React, {useCallback, useMemo, useRef} from 'react';
 import type {TextStyle} from 'react-native';
-import {Animated, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
+import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import PickerItemComponent from '../item/PickerItem';
 import {ScrollContentOffsetContext} from '../contexts/ScrollContentOffsetContext';
 import {PickerItemHeightContext} from '../contexts/PickerItemHeightContext';
@@ -24,6 +24,7 @@ import PickerItemContainer from '../item/PickerItemContainer';
 import {useBoolean} from '@utils/react';
 import {useInit} from '@rozhkov/react-useful-hooks';
 import List from '../list/List';
+import {useSharedValue} from 'react-native-reanimated';
 
 export type PickerProps<ItemT extends PickerItem<any>> = {
   data: ReadonlyArray<ItemT>;
@@ -95,7 +96,7 @@ const Picker = <ItemT extends PickerItem<any>>({
 }: PickerProps<ItemT>) => {
   const valueIndex = useValueIndex(data, value);
   const initialIndex = useInit(() => valueIndex);
-  const offsetY = useRef(new Animated.Value(valueIndex * itemHeight)).current;
+  const offsetY = useSharedValue(initialIndex * itemHeight);
   const listRef = useRef<ListMethods>(null);
   const touching = useBoolean(false);
 

@@ -1,7 +1,7 @@
 import {createContext, useContext} from 'react';
-import type {Animated} from 'react-native';
+import type {SharedValue} from 'react-native-reanimated';
 
-type ContextValue = Animated.Value;
+type ContextValue = SharedValue<number>;
 
 export const ScrollContentOffsetContext = createContext<
   ContextValue | undefined

@@ -73,3 +73,7 @@ dest/
 
 # local temps
 copied-src/
+
+# example
+example/android
+example/ios

@@ -12,7 +12,11 @@ import type {
   PickerItem,
   RenderPickerItem,
 } from '../types';
-import {Animated, ScrollView, StyleSheet, ViewStyle} from 'react-native';
+import {StyleSheet, ViewStyle} from 'react-native';
+import Animated, {
+  SharedValue,
+  useAnimatedScrollHandler,
+} from 'react-native-reanimated';
 import {useInit, useMemoObject} from '@rozhkov/react-useful-hooks';
 
 const OFFSET_X = 0;
@@ -24,7 +28,7 @@ export type ListProps<ItemT extends PickerItem<any>> = {
   renderItem: RenderPickerItem<ItemT>;
   itemHeight: number;
   initialIndex: number;
-  scrollOffset: Animated.Value;
+  scrollOffset: SharedValue<number>;
   onTouchStart: () => void;
   onTouchEnd: () => void;
   onTouchCancel: () => void;
@@ -45,7 +49,7 @@ const List = <ItemT extends PickerItem<any>>(
   }: ListProps<ItemT>,
   forwardedRef: ForwardedRef<ListMethods>,
 ) => {
-  const listRef = useRef<ScrollView>(null);
+  const listRef = useRef<Animated.ScrollView>(null);
   useImperativeHandle(
     forwardedRef,
     () => ({
@@ -68,13 +72,10 @@ const List = <ItemT extends PickerItem<any>>(
     () => data.map((_, i) => i * itemHeight),
     [data, itemHeight],
   );
-  const onScroll = useMemo(
-    () =>
-      Animated.event([{nativeEvent: {contentOffset: {y: scrollOffset}}}], {
-        useNativeDriver: true,
-      }),
-    [scrollOffset],
-  );
+
+  const onScroll = useAnimatedScrollHandler((event) => {
+    scrollOffset.value = event.contentOffset.y;
+  });
 
   const contentContainerStyle = useMemoObject<ViewStyle>({
     paddingVertical: itemHeight * 2,
