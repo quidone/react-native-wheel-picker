@@ -127,6 +127,7 @@ const App = () => {
 - ```data``` [array] - items of picker
 - ```value?``` [any] - current value of picker item
 - ```itemHeight?``` [number] - height of picker item in the center.
+- ```visibleItemCount?``` [number] - number of displayed items: 1, 3, 5... (default = 5). For 5, the WheelPicker height is calculated incorrectly, left for backward compatibility.
 - ```width?``` [number | string] - width of picker.
 - ```onValueChanging?``` [function] - An event that is triggered when the value is changing.
 - ```onValueChanged?``` [function] - An event that is triggered when the value is changed (wheel is stopped and no touch).
@@ -157,8 +158,8 @@ const VirtualizedWheelPicker = withVirtualized(WheelPicker);
 ```
 
 #### Additional props
-- ```initialNumToRender?``` (default = 3) - [original](https://reactnative.dev/docs/flatlist#initialnumtorender).
-- ```maxToRenderPerBatch?``` (default = 3) - [original](https://reactnative.dev/docs/flatlist#maxtorenderperbatch).
+- ```initialNumToRender?``` (default = Math.ceil(visibleItemCount / 2)) - [original](https://reactnative.dev/docs/flatlist#initialnumtorender).
+- ```maxToRenderPerBatch?``` (default = Math.ceil(visibleItemCount / 2)) - [original](https://reactnative.dev/docs/flatlist#maxtorenderperbatch).
 - ```windowSize?``` - [original](https://reactnative.dev/docs/flatlist#windowsize).
 - ```updateCellsBatchingPeriod?``` (default = 10) - [original](https://reactnative.dev/docs/flatlist#updatecellsbatchingperiod).
 
