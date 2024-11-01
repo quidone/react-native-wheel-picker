@@ -158,8 +158,8 @@ const VirtualizedWheelPicker = withVirtualized(WheelPicker);
 ```
 
 #### Additional props
-- ```initialNumToRender?``` (default = Math.ceil(visibleItemCount / 2)) - [original](https://reactnative.dev/docs/flatlist#initialnumtorender).
-- ```maxToRenderPerBatch?``` (default = Math.ceil(visibleItemCount / 2)) - [original](https://reactnative.dev/docs/flatlist#maxtorenderperbatch).
+- ```initialNumToRender?``` (default = ```Math.ceil(visibleItemCount / 2)```) - [original](https://reactnative.dev/docs/flatlist#initialnumtorender).
+- ```maxToRenderPerBatch?``` (default = ```Math.ceil(visibleItemCount / 2)```) - [original](https://reactnative.dev/docs/flatlist#maxtorenderperbatch).
 - ```windowSize?``` - [original](https://reactnative.dev/docs/flatlist#windowsize).
 - ```updateCellsBatchingPeriod?``` (default = 10) - [original](https://reactnative.dev/docs/flatlist#updatecellsbatchingperiod).
 
