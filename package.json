@@ -68,6 +68,7 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.21.5",
+    "@babel/core": "^7.26.0",
     "@babel/plugin-syntax-typescript": "^7.21.4",
     "@commitlint/config-conventional": "^17.0.2",
     "@evilmartians/lefthook": "^1.2.2",
@@ -97,7 +98,7 @@
   "engines": {
     "node": ">= 16.0.0"
   },
-  "packageManager": "yarn@3.3.1",
+  "packageManager": "yarn@4.5.1",
   "jest": {
     "preset": "react-native",
     "modulePathIgnorePatterns": [
