@@ -102,13 +102,6 @@
     "node": ">= 16.0.0"
   },
   "packageManager": "yarn@4.5.1",
-  "jest": {
-    "preset": "react-native",
-    "modulePathIgnorePatterns": [
-      "<rootDir>/example/node_modules",
-      "<rootDir>/dest/"
-    ]
-  },
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
