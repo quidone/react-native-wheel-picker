@@ -23,6 +23,7 @@ export type ListProps<ItemT extends PickerItem<any>> = {
   keyExtractor: KeyExtractor<ItemT>;
   renderItem: RenderPickerItem<ItemT>;
   itemHeight: number;
+  pickerHeight: number;
   initialIndex: number;
   scrollOffset: Animated.Value;
   onTouchStart: () => void;
@@ -37,6 +38,7 @@ const List = <ItemT extends PickerItem<any>>(
     keyExtractor,
     renderItem,
     itemHeight,
+    pickerHeight,
     scrollOffset,
     onTouchEnd,
     onTouchStart,
@@ -77,7 +79,7 @@ const List = <ItemT extends PickerItem<any>>(
   );
 
   const contentContainerStyle = useMemoObject<ViewStyle>({
-    paddingVertical: itemHeight * 2,
+    paddingVertical: (pickerHeight - itemHeight) / 2,
   });
 
   return (

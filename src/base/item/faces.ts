@@ -1,66 +1,113 @@
-import {degToRad, sum, sumAnglePolygon, TRIANGLE_ANGLE_SUM} from '@utils/math';
+import {degToRad} from '@utils/math';
 
 export type Faces = {
   index: number;
   deg: number;
   offsetY: number;
   opacity: number;
+  screenHeight: number;
 };
 
-const FACE_COUNT = 12;
-const VISIBLE_FACE_COUNT = Math.round(FACE_COUNT / 2) + 1; // 7
-const VISIBLE_FACE_CENTER = Math.round(VISIBLE_FACE_COUNT / 2); // 4
-const OPACITIES = [0.35, 0.2, 0]; // HARD CODE!!!
+/**
+ * Calculates the height of the element after rotating it relative to the user's screen.
+ * @param degree - the angle relative to the screen plane.
+ * @param itemHeight - original height
+ */
+const calcHeight = (degree: number, itemHeight: number) =>
+  itemHeight * Math.cos(degToRad(degree));
 
-// TODO The algorithm can be universal, but additional refinement
-//  and testing is required for various numbers of parties.
-export const createFaces = (itemHeight: number): Faces[] => {
-  const innerAngle = sumAnglePolygon(FACE_COUNT) / FACE_COUNT;
-  // the step of deviation of the sides of the screen from the center
-  const stepAngle = TRIANGLE_ANGLE_SUM - innerAngle;
-  const centerItemHalfHeight = itemHeight / 2;
-  const opacities: number[] = OPACITIES;
-  const degrees: number[] = [];
-  const screenFaceHeights: number[] = [];
-  const offsets: number[] = [];
+export const calcPickerHeight = (faces: Faces[], itemHeight: number) => {
+  // TODO left for backward compatibility, it must be removed after updating the major version.
+  if (faces.length === 7) {
+    return itemHeight * 5;
+  }
+  return faces.reduce((r, v) => r + calcHeight(Math.abs(v.deg), itemHeight), 0);
+};
 
-  // We find the values from the center to the top
-  for (let i = 1; i < VISIBLE_FACE_CENTER; ++i) {
-    const degree = i * stepAngle;
-    const screenFaceHeight = Math.round(
-      itemHeight * Math.cos(degToRad(degree)),
+export const createFaces = (
+  itemHeight: number,
+  visibleCount: number,
+): Faces[] => {
+  if (__DEV__) {
+    if (visibleCount < 1 || visibleCount % 2 === 0) {
+      throw new Error(
+        `WheelPicker cannot display the number of visible items "${visibleCount}".` +
+          ` The value must be greater than 0 and be an odd number. E.g 1, 3, 5, 7...`,
+      );
+    }
+  }
+
+  // e.g [30, 60, 90]
+  const getDegreesRelativeCenter = () => {
+    const maxStep = Math.trunc((visibleCount + 2) / 2); // + 2 because there are 2 more faces at 90 degrees
+    const stepDegree = 90 / maxStep;
+
+    const result = [];
+    for (let i = 1; i <= maxStep; i++) {
+      result.push(i * stepDegree);
+    }
+    return result;
+  };
+
+  const getScreenHeightsAndOffsets = <T extends readonly number[]>(
+    degrees: T,
+  ): [T, T] => {
+    const screenHeights = degrees.map((deg) =>
+      calcHeight(deg, itemHeight),
+    ) as unknown as T;
+    const freeSpaces = screenHeights.map(
+      (screenHeight) => itemHeight - screenHeight,
     );
-    const originalOffsetFromCenter = itemHeight * i * -1;
-    const needOffsetFromCenter =
-      (centerItemHalfHeight + sum(screenFaceHeights) + screenFaceHeight / 2) *
-      -1;
-    const offset = originalOffsetFromCenter - needOffsetFromCenter;
-    degrees.push(degree);
-    screenFaceHeights.push(screenFaceHeight);
-    offsets.push(offset);
-  }
+    const offsets = freeSpaces.map((freeSpace, index) => {
+      let offset = freeSpace / 2;
+      for (let i = 0; i < index; i++) {
+        offset += freeSpaces[i]!;
+      }
+      return offset;
+    }) as unknown as T;
+    return [screenHeights, offsets];
+  };
 
-  const result: Faces[] = [];
-  // top
-  for (let index = 2; index >= 0; --index) {
-    const deg = degrees[index]!;
-    const opacity = opacities[index] ?? 0;
-    const translateY = offsets[index]!;
-    result.push({index: index * -1 - 1, deg, opacity, offsetY: translateY});
-  }
-  // middle
-  result.push({
-    index: 0,
-    deg: 0,
-    opacity: 1,
-    offsetY: 0,
-  });
-  // bottom
-  for (let index = 0; index < VISIBLE_FACE_CENTER - 1; ++index) {
-    const deg = degrees[index]! * -1;
-    const opacity = opacities[index] ?? 0;
-    const translateY = offsets[index]! * -1;
-    result.push({index: index + 1, deg, opacity, offsetY: translateY});
-  }
-  return result;
+  const getOpacity = (index: number) => {
+    const map: Record<number, number> = {
+      0: 0,
+      1: 0.2,
+      2: 0.35,
+      3: 0.45,
+      4: 0.5,
+    };
+    return map[index] ?? Math.min(1, map[4]! + index * 0.5);
+  };
+
+  const degrees = getDegreesRelativeCenter();
+  const [screenHeight, offsets] = getScreenHeightsAndOffsets(degrees);
+
+  return [
+    // top items
+    ...degrees
+      .map<Faces>((degree, index) => {
+        return {
+          index: -1 * (index + 1),
+          deg: degree,
+          opacity: getOpacity(degrees.length - 1 - index),
+          offsetY: -1 * offsets[index]!,
+          screenHeight: screenHeight[index]!,
+        };
+      })
+      .reverse(),
+
+    // center item
+    {index: 0, deg: 0, opacity: 1, offsetY: 0, screenHeight: itemHeight},
+
+    // bottom items
+    ...degrees.map<Faces>((degree, index) => {
+      return {
+        index: index + 1,
+        deg: -1 * degree,
+        opacity: getOpacity(degrees.length - 1 - index),
+        offsetY: offsets[index]!,
+        screenHeight: screenHeight[index]!,
+      };
+    }),
+  ];
 };

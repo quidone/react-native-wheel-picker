@@ -19,7 +19,7 @@ import type {
   RenderPickerItem,
 } from '../types';
 import Overlay from '../overlay/Overlay';
-import {createFaces} from '../item/faces';
+import {calcPickerHeight, createFaces} from '../item/faces';
 import PickerItemContainer from '../item/PickerItemContainer';
 import {useBoolean} from '@utils/react';
 import {useInit} from '@rozhkov/react-useful-hooks';
@@ -29,6 +29,7 @@ export type PickerProps<ItemT extends PickerItem<any>> = {
   data: ReadonlyArray<ItemT>;
   value?: ItemT['value'];
   itemHeight?: number;
+  visibleItemCount?: number;
   width?: number | string;
 
   onValueChanging?: OnValueChanging<ItemT>;
@@ -79,6 +80,7 @@ const Picker = <ItemT extends PickerItem<any>>({
   value,
   width = 'auto',
   itemHeight = 48,
+  visibleItemCount = 5,
 
   onValueChanged,
   onValueChanging,
@@ -100,8 +102,11 @@ const Picker = <ItemT extends PickerItem<any>>({
   const listRef = useRef<ListMethods>(null);
   const touching = useBoolean(false);
 
-  const height = itemHeight * 5;
-  const faces = useMemo(() => createFaces(itemHeight), [itemHeight]);
+  const [faces, pickerHeight] = useMemo(() => {
+    const items = createFaces(itemHeight, visibleItemCount);
+    const height = calcPickerHeight(items, itemHeight);
+    return [items, height];
+  }, [itemHeight, visibleItemCount]);
   const renderPickerItem = useCallback<RenderPickerItem<ItemT>>(
     ({item, index, key}) =>
       renderItemContainer({key, item, index, faces, renderItem, itemTextStyle}),
@@ -123,13 +128,15 @@ const Picker = <ItemT extends PickerItem<any>>({
   return (
     <ScrollContentOffsetContext.Provider value={offsetY}>
       <PickerItemHeightContext.Provider value={itemHeight}>
-        <View style={[styles.root, style, {height, width}]}>
+        <View style={[styles.root, style, {height: pickerHeight, width}]}>
           {renderList({
             ...restProps,
             ref: listRef,
             data,
             initialIndex,
             itemHeight,
+            pickerHeight,
+            visibleItemCount,
             keyExtractor,
             renderItem: renderPickerItem,
             scrollOffset: offsetY,
@@ -137,11 +144,11 @@ const Picker = <ItemT extends PickerItem<any>>({
             onTouchEnd: touching.setFalse,
             onTouchCancel: touching.setFalse,
           })}
-          {renderOverlay !== null &&
+          {renderOverlay &&
             renderOverlay({
               itemHeight,
               pickerWidth: width,
-              pickerHeight: height,
+              pickerHeight,
               overlayItemStyle,
             })}
         </View>

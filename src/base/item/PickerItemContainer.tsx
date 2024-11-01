@@ -51,6 +51,7 @@ const PickerItemContainer = ({
 
   return (
     <Animated.View
+      // first translateY, then rotateX for correct transformation.
       style={[{height, opacity, transform: [{translateY}, {rotateX}]}]}
     >
       {renderItem({item, index, itemTextStyle})}
