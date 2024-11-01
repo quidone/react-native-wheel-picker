@@ -34,7 +34,7 @@
     "build:check-all": "yarn lint:fix && yarn tsc:check",
     "build:resolve": "babel --config-file ./babel.local-namespace-config.js ./src --out-dir ./src --extensions .ts,.js,.tsx,.json --keep-file-extension",
     "build:bob": "cp -r ./src ./copied-src && yarn run build:resolve && yarn run lint:fix && bob build",
-    "prepack": "yarn build:check-all && build:bob",
+    "prepack": "yarn build:check-all && yarn build:bob",
     "postpublish": "rm -r ./src && cp -r ./copied-src ./src && rm -r ./copied-src",
     "release": "release-it",
     "example": "yarn --cwd example",
