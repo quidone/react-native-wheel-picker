@@ -1,4 +1,4 @@
-name: CI
+name: Tests
 on:
   push:
     branches:
@@ -8,11 +8,11 @@ on:
       - main
 
 jobs:
-  lint:
+  static-check:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup
         uses: ./.github/actions/setup
@@ -20,26 +20,26 @@ jobs:
       - name: Lint files
         run: yarn lint:check
 
-      - name: Typecheck files
+      - name: Type check files
         run: yarn tsc:check
 
   test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup
         uses: ./.github/actions/setup
 
       - name: Run unit tests
-        run: yarn test --maxWorkers=2 --coverage
+        run: test:run
 
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup
         uses: ./.github/actions/setup
