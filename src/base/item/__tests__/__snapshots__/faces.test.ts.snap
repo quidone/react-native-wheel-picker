@@ -1,0 +1,189 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createFaces Check 1 visible item count 1`] = `
+Array [
+  Object {
+    "deg": 90,
+    "index": -1,
+    "offsetY": -24,
+    "opacity": 0,
+    "screenHeight": 2.9391523179536475e-15,
+  },
+  Object {
+    "deg": 0,
+    "index": 0,
+    "offsetY": 0,
+    "opacity": 1,
+    "screenHeight": 48,
+  },
+  Object {
+    "deg": -90,
+    "index": 1,
+    "offsetY": 24,
+    "opacity": 0,
+    "screenHeight": 2.9391523179536475e-15,
+  },
+]
+`;
+
+exports[`createFaces Check 3 visible item count 1`] = `
+Array [
+  Object {
+    "deg": 90,
+    "index": -2,
+    "offsetY": -38.058874503045715,
+    "opacity": 0,
+    "screenHeight": 2.9391523179536475e-15,
+  },
+  Object {
+    "deg": 45,
+    "index": -1,
+    "offsetY": -7.029437251522857,
+    "opacity": 0.2,
+    "screenHeight": 33.941125496954285,
+  },
+  Object {
+    "deg": 0,
+    "index": 0,
+    "offsetY": 0,
+    "opacity": 1,
+    "screenHeight": 48,
+  },
+  Object {
+    "deg": -45,
+    "index": 1,
+    "offsetY": 7.029437251522857,
+    "opacity": 0.2,
+    "screenHeight": 33.941125496954285,
+  },
+  Object {
+    "deg": -90,
+    "index": 2,
+    "offsetY": 38.058874503045715,
+    "opacity": 0,
+    "screenHeight": 2.9391523179536475e-15,
+  },
+]
+`;
+
+exports[`createFaces Check 5 visible item count 1`] = `
+Array [
+  Object {
+    "deg": 90,
+    "index": -3,
+    "offsetY": -54.43078061834694,
+    "opacity": 0,
+    "screenHeight": 2.9391523179536475e-15,
+  },
+  Object {
+    "deg": 60,
+    "index": -2,
+    "offsetY": -18.43078061834694,
+    "opacity": 0.2,
+    "screenHeight": 24.000000000000007,
+  },
+  Object {
+    "deg": 30,
+    "index": -1,
+    "offsetY": -3.215390309173472,
+    "opacity": 0.35,
+    "screenHeight": 41.569219381653056,
+  },
+  Object {
+    "deg": 0,
+    "index": 0,
+    "offsetY": 0,
+    "opacity": 1,
+    "screenHeight": 48,
+  },
+  Object {
+    "deg": -30,
+    "index": 1,
+    "offsetY": 3.215390309173472,
+    "opacity": 0.35,
+    "screenHeight": 41.569219381653056,
+  },
+  Object {
+    "deg": -60,
+    "index": 2,
+    "offsetY": 18.43078061834694,
+    "opacity": 0.2,
+    "screenHeight": 24.000000000000007,
+  },
+  Object {
+    "deg": -90,
+    "index": 3,
+    "offsetY": 54.43078061834694,
+    "opacity": 0,
+    "screenHeight": 2.9391523179536475e-15,
+  },
+]
+`;
+
+exports[`createFaces Check 7 visible item count 1`] = `
+Array [
+  Object {
+    "deg": 90,
+    "index": -4,
+    "offsetY": -71.34385218897964,
+    "opacity": 0,
+    "screenHeight": 2.9391523179536475e-15,
+  },
+  Object {
+    "deg": 67.5,
+    "index": -3,
+    "offsetY": -32.5282545657418,
+    "opacity": 0.2,
+    "screenHeight": 18.368804753524312,
+  },
+  Object {
+    "deg": 45,
+    "index": -2,
+    "offsetY": -10.683219690981097,
+    "opacity": 0.35,
+    "screenHeight": 33.941125496954285,
+  },
+  Object {
+    "deg": 22.5,
+    "index": -1,
+    "offsetY": -1.82689121972912,
+    "opacity": 0.45,
+    "screenHeight": 44.34621756054176,
+  },
+  Object {
+    "deg": 0,
+    "index": 0,
+    "offsetY": 0,
+    "opacity": 1,
+    "screenHeight": 48,
+  },
+  Object {
+    "deg": -22.5,
+    "index": 1,
+    "offsetY": 1.82689121972912,
+    "opacity": 0.45,
+    "screenHeight": 44.34621756054176,
+  },
+  Object {
+    "deg": -45,
+    "index": 2,
+    "offsetY": 10.683219690981097,
+    "opacity": 0.35,
+    "screenHeight": 33.941125496954285,
+  },
+  Object {
+    "deg": -67.5,
+    "index": 3,
+    "offsetY": 32.5282545657418,
+    "opacity": 0.2,
+    "screenHeight": 18.368804753524312,
+  },
+  Object {
+    "deg": -90,
+    "index": 4,
+    "offsetY": 71.34385218897964,
+    "opacity": 0,
+    "screenHeight": 2.9391523179536475e-15,
+  },
+]
+`;

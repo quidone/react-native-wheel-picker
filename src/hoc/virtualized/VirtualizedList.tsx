@@ -28,6 +28,8 @@ type VirtualizedListProps<ItemT extends PickerItem<any>> = {
   keyExtractor: KeyExtractor<ItemT>;
   renderItem: RenderPickerItem<ItemT>;
   itemHeight: number;
+  pickerHeight: number;
+  visibleItemCount: number;
   initialIndex: number;
   scrollOffset: Animated.Value;
   onTouchStart: () => void;
@@ -42,13 +44,15 @@ const VirtualizedList = <ItemT extends PickerItem<any>>(
     keyExtractor,
     renderItem,
     itemHeight,
+    pickerHeight,
+    visibleItemCount,
     scrollOffset,
     onTouchEnd,
     onTouchStart,
     onTouchCancel,
 
-    initialNumToRender = 3,
-    maxToRenderPerBatch = 3,
+    initialNumToRender,
+    maxToRenderPerBatch,
     updateCellsBatchingPeriod = 10,
     windowSize,
 
@@ -76,7 +80,7 @@ const VirtualizedList = <ItemT extends PickerItem<any>>(
     [itemHeight],
   );
   const contentContainerStyle = useMemoObject({
-    paddingVertical: itemHeight * 2,
+    paddingVertical: (pickerHeight - itemHeight) / 2,
   });
 
   return (
@@ -98,8 +102,10 @@ const VirtualizedList = <ItemT extends PickerItem<any>>(
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
       onTouchCancel={onTouchCancel}
-      initialNumToRender={initialNumToRender}
-      maxToRenderPerBatch={maxToRenderPerBatch}
+      initialNumToRender={initialNumToRender ?? Math.ceil(visibleItemCount / 2)}
+      maxToRenderPerBatch={
+        maxToRenderPerBatch ?? Math.ceil(visibleItemCount / 2)
+      }
       updateCellsBatchingPeriod={updateCellsBatchingPeriod}
       windowSize={windowSize}
       nestedScrollEnabled={true}
