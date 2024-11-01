@@ -12,5 +12,5 @@ runs:
     - name: Install dependencies
       run: |
         yarn install --immutable
-        yarn install --cwd example --immutable
+        yarn --cwd example install --immutable
       shell: bash
