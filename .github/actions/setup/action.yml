@@ -10,5 +10,7 @@ runs:
         node-version: '18'
 
     - name: Install dependencies
-      run: yarn install --immutable
+      run: |
+        yarn install --immutable
+        yarn install --cwd example --immutable
       shell: bash
