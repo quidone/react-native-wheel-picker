@@ -44,6 +44,7 @@ export type PickerProps<ItemT extends PickerItem<any>> = {
   style?: StyleProp<ViewStyle>;
   itemTextStyle?: StyleProp<TextStyle>;
   overlayItemStyle?: StyleProp<ViewStyle>;
+  contentContainerStyle?: StyleProp<ViewStyle>;
 
   scrollEventThrottle?: number;
 };
@@ -94,6 +95,7 @@ const Picker = <ItemT extends PickerItem<any>>({
   style,
   itemTextStyle,
   overlayItemStyle,
+  contentContainerStyle,
   ...restProps
 }: PickerProps<ItemT>) => {
   const valueIndex = useValueIndex(data, value);
@@ -143,6 +145,7 @@ const Picker = <ItemT extends PickerItem<any>>({
             onTouchStart: touching.setTrue,
             onTouchEnd: touching.setFalse,
             onTouchCancel: touching.setFalse,
+            contentContainerStyle,
           })}
           {renderOverlay &&
             renderOverlay({
