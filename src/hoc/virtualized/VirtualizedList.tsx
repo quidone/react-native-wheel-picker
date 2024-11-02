@@ -109,6 +109,7 @@ const VirtualizedList = <ItemT extends PickerItem<any>>(
       updateCellsBatchingPeriod={updateCellsBatchingPeriod}
       windowSize={windowSize}
       nestedScrollEnabled={true}
+      removeClippedSubviews={false}
     />
   );
 };
