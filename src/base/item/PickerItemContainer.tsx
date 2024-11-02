@@ -51,8 +51,17 @@ const PickerItemContainer = ({
 
   return (
     <Animated.View
-      // first translateY, then rotateX for correct transformation.
-      style={[{height, opacity, transform: [{translateY}, {rotateX}]}]}
+      style={[
+        {
+          height,
+          opacity,
+          transform: [
+            {translateY}, // first translateY, then rotateX for correct transformation.
+            {rotateX},
+            {perspective: 1000}, // without this line this Animation will not render on Android https://reactnative.dev/docs/animations#bear-in-mind
+          ],
+        },
+      ]}
     >
       {renderItem({item, index, itemTextStyle})}
     </Animated.View>
