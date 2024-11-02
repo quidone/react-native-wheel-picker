@@ -54,6 +54,7 @@ export type RenderListProps<ItemT extends PickerItem<any>> = {
   onTouchStart: () => void;
   onTouchEnd: () => void;
   onTouchCancel: () => void;
+  contentContainerStyle: StyleProp<ViewStyle> | undefined;
 } & Record<string, any>;
 export type RenderList<ItemT extends PickerItem<any>> = (
   props: RenderListProps<ItemT>,

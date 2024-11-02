@@ -12,8 +12,14 @@ import type {
   PickerItem,
   RenderPickerItem,
 } from '../types';
-import {Animated, ScrollView, StyleSheet, ViewStyle} from 'react-native';
-import {useInit, useMemoObject} from '@rozhkov/react-useful-hooks';
+import {
+  Animated,
+  ScrollView,
+  StyleProp,
+  StyleSheet,
+  ViewStyle,
+} from 'react-native';
+import {useInit} from '@rozhkov/react-useful-hooks';
 
 const OFFSET_X = 0;
 const getOffsetY = (index: number, itemHeight: number) => index * itemHeight;
@@ -29,6 +35,7 @@ export type ListProps<ItemT extends PickerItem<any>> = {
   onTouchStart: () => void;
   onTouchEnd: () => void;
   onTouchCancel: () => void;
+  contentContainerStyle: StyleProp<ViewStyle> | undefined;
 };
 
 const List = <ItemT extends PickerItem<any>>(
@@ -43,6 +50,7 @@ const List = <ItemT extends PickerItem<any>>(
     onTouchEnd,
     onTouchStart,
     onTouchCancel,
+    contentContainerStyle: contentContainerStyleProp,
     ...restProps
   }: ListProps<ItemT>,
   forwardedRef: ForwardedRef<ListMethods>,
@@ -78,9 +86,14 @@ const List = <ItemT extends PickerItem<any>>(
     [scrollOffset],
   );
 
-  const contentContainerStyle = useMemoObject<ViewStyle>({
-    paddingVertical: (pickerHeight - itemHeight) / 2,
-  });
+  const contentContainerStyle = useMemo(() => {
+    return [
+      {
+        paddingVertical: (pickerHeight - itemHeight) / 2,
+      },
+      contentContainerStyleProp,
+    ];
+  }, [pickerHeight, itemHeight, contentContainerStyleProp]);
 
   return (
     <Animated.ScrollView

@@ -6,14 +6,20 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
-import {Animated, FlatList, FlatListProps, StyleSheet} from 'react-native';
+import {
+  Animated,
+  FlatList,
+  FlatListProps,
+  StyleProp,
+  StyleSheet,
+  type ViewStyle,
+} from 'react-native';
 import type {
   KeyExtractor,
   ListMethods,
   PickerItem,
   RenderPickerItem,
 } from '../../base/types';
-import {useMemoObject} from '@rozhkov/react-useful-hooks';
 
 export type AdditionalProps = Pick<
   FlatListProps<any>,
@@ -35,6 +41,7 @@ type VirtualizedListProps<ItemT extends PickerItem<any>> = {
   onTouchStart: () => void;
   onTouchEnd: () => void;
   onTouchCancel: () => void;
+  contentContainerStyle: StyleProp<ViewStyle> | undefined;
 } & AdditionalProps;
 
 const VirtualizedList = <ItemT extends PickerItem<any>>(
@@ -50,6 +57,7 @@ const VirtualizedList = <ItemT extends PickerItem<any>>(
     onTouchEnd,
     onTouchStart,
     onTouchCancel,
+    contentContainerStyle: contentContainerStyleProp,
 
     initialNumToRender,
     maxToRenderPerBatch,
@@ -79,9 +87,15 @@ const VirtualizedList = <ItemT extends PickerItem<any>>(
     }),
     [itemHeight],
   );
-  const contentContainerStyle = useMemoObject({
-    paddingVertical: (pickerHeight - itemHeight) / 2,
-  });
+
+  const contentContainerStyle = useMemo(() => {
+    return [
+      {
+        paddingVertical: (pickerHeight - itemHeight) / 2,
+      },
+      contentContainerStyleProp,
+    ];
+  }, [pickerHeight, itemHeight, contentContainerStyleProp]);
 
   return (
     <Animated.FlatList
