@@ -1,5 +1,5 @@
-import {Animated} from 'react-native';
 import React, {memo, useMemo} from 'react';
+import {Animated} from 'react-native';
 import {
   PickerItem,
   RenderItemContainerProps,

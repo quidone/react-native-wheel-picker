@@ -1,18 +1,20 @@
-import React, {memo} from 'react';
+import React, {memo, useCallback, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 import WheelPicker, {
   PickerItem,
   RenderItem,
   RenderItemContainer,
   RenderOverlay,
+  type ValueChangedEvent,
 } from '@quidone/react-native-wheel-picker';
 import {useInit} from '@rozhkov/react-useful-hooks';
-import {StyleSheet} from 'react-native';
-import withExamplePickerConfig from '../../picker-config/withExamplePickerConfig';
+import {faker} from '@faker-js/faker';
+import {withExamplePickerConfig} from '../../../picker-config';
+import {Header} from '../../base';
 import PickerItemContainer from './PickerItemContainer';
 import PickerItemComponent from './PickerItem';
 import Overlay from './Overlay';
 import type {CusPickerItem} from './types';
-import {faker} from '@faker-js/faker';
 
 const ExampleWheelPicker = withExamplePickerConfig(WheelPicker);
 const createPickerItem = (index: number): CusPickerItem => {
@@ -37,25 +39,40 @@ const renderItemContainer: RenderItemContainer<PickerItem<any>> = (props) => (
 const renderOverlay: RenderOverlay = (props) => <Overlay {...props} />;
 
 const CustomizedPicker = () => {
-  const data = useInit(() =>
-    [...Array(100).keys()].map((index) => createPickerItem(index)),
+  const data = useInit(() => [...Array(100).keys()].map(createPickerItem));
+  const [value, setValue] = useState(0);
+
+  const onValueChanged = useCallback(
+    ({item: {value: val}}: ValueChangedEvent<PickerItem<number>>) => {
+      setValue(val);
+    },
+    [],
   );
 
   return (
-    <ExampleWheelPicker
-      renderItem={renderItem}
-      renderItemContainer={renderItemContainer}
-      renderOverlay={renderOverlay}
-      style={styles.root}
-      data={data}
-      width={280}
-      itemHeight={60}
-    />
+    <>
+      <Header title={'Customized Picker'} />
+      <View style={styles.outerContainer}>
+        <ExampleWheelPicker
+          data={data}
+          value={value}
+          onValueChanged={onValueChanged}
+          renderItem={renderItem}
+          renderItemContainer={renderItemContainer}
+          renderOverlay={renderOverlay}
+          itemHeight={60}
+          style={styles.picker}
+          contentContainerStyle={styles.contentContainerStyle}
+        />
+      </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  root: {marginTop: 20},
+  outerContainer: {width: '100%'},
+  picker: {marginTop: 20, overflow: 'visible'},
+  contentContainerStyle: {paddingLeft: 32},
 });
 
 export default memo(CustomizedPicker);

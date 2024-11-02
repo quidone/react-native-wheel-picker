@@ -1,14 +1,15 @@
 import React, {FC, memo, useCallback, useState} from 'react';
+import {Platform, StyleSheet, Text, View} from 'react-native';
 import Picker, {
   OnValueChanged,
   PickerItem,
 } from '@quidone/react-native-wheel-picker';
 import {Picker as IOSPicker} from '@react-native-picker/picker';
-import {Platform, StyleSheet, Text, View} from 'react-native';
-import withExamplePickerConfig from '../picker-config/withExamplePickerConfig';
 import {useInit} from '@rozhkov/react-useful-hooks';
+import {withExamplePickerConfig} from '../../picker-config';
+import {Header} from '../base';
 
-let CompareWithNativeIOS: FC;
+let WheelPickers: FC;
 
 if (Platform.OS === 'ios') {
   const ExamplePicker = withExamplePickerConfig(Picker);
@@ -17,10 +18,8 @@ if (Platform.OS === 'ios') {
     label: index.toString(),
   });
 
-  CompareWithNativeIOS = () => {
-    const items = useInit(() =>
-      [...Array(100).keys()].map((index) => createPickerItem(index)),
-    );
+  WheelPickers = memo(() => {
+    const items = useInit(() => [...Array(100).keys()].map(createPickerItem));
     const [value, setValue] = useState<number>(0);
     const onValueChangedEx = useCallback<OnValueChanged<PickerItem<number>>>(
       ({item}) => {
@@ -41,7 +40,7 @@ if (Platform.OS === 'ios') {
             width={100}
             data={items}
           />
-          <Text style={styles.subtitle}>From here</Text>
+          <Text style={styles.subtitle}>WheelPicker</Text>
         </View>
         <View style={styles.itemContainer}>
           <IOSPicker
@@ -64,34 +63,43 @@ if (Platform.OS === 'ios') {
         </View>
       </View>
     );
-  };
+  });
 
   const styles = StyleSheet.create({
     root: {
       flexDirection: 'row',
-      alignItems: 'center',
-      height: 300,
+      alignItems: 'stretch',
+      paddingVertical: 20,
+      minHeight: 240,
     },
     itemContainer: {
       alignItems: 'center',
       justifyContent: 'space-between',
-      height: '100%',
       marginHorizontal: 10,
     },
-    subtitle: {color: 'gray', fontSize: 10},
+    subtitle: {color: 'gray', fontSize: 10, padding: 16},
     iosPicker: {width: 120, marginTop: 12},
     iosPickerItem: {fontSize: 20},
   });
 } else {
-  CompareWithNativeIOS = () => {
+  WheelPickers = memo(() => {
     return (
       <Text style={styles.root}>
         To compare with iOS native wheel picker, run the example on an emulator
         or a real device on the iOS operating system
       </Text>
     );
-  };
-  const styles = StyleSheet.create({root: {textAlign: 'center'}});
+  });
+  const styles = StyleSheet.create({root: {textAlign: 'center', padding: 20}});
 }
 
-export default memo(CompareWithNativeIOS);
+const CompareWithNativeIOSBlockExample = () => {
+  return (
+    <>
+      <Header title={'Comparing with Native iOS'} />
+      <WheelPickers />
+    </>
+  );
+};
+
+export default CompareWithNativeIOSBlockExample;

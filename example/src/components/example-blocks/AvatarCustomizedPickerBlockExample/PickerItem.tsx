@@ -1,9 +1,11 @@
-import type {RenderItemProps} from '@quidone/react-native-wheel-picker';
-import {usePickerItemHeight} from '@quidone/react-native-wheel-picker';
 import React, {memo} from 'react';
-import {Avatar, ListItem} from 'react-native-elements';
-import type {CusPickerItem} from './types';
 import {StyleSheet} from 'react-native';
+import {Avatar, ListItem} from 'react-native-elements';
+import {
+  usePickerItemHeight,
+  type RenderItemProps,
+} from '@quidone/react-native-wheel-picker';
+import type {CusPickerItem} from './types';
 
 const PickerItem = ({
   item: {
