@@ -98,6 +98,7 @@ const List = <ItemT extends PickerItem<any>>(
       onTouchEnd={onTouchEnd}
       onTouchCancel={onTouchCancel}
       nestedScrollEnabled={true}
+      removeClippedSubviews={false}
     >
       {data.map((item, index) =>
         renderItem({key: keyExtractor(item, index), item, index}),
