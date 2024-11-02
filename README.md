@@ -1,5 +1,6 @@
 [AUTHOR]: https://github.com/rozhkovs
 [FEEDBACK_GITHUB]: https://github.com/quidone/react-native-wheel-picker-feedback
+[EXPO_SNACK]: https://snack.expo.dev/@sergeyrozhkov/quidone-react-native-wheel-picker
 
 # React Native Wheel Picker
 <p>
@@ -43,7 +44,7 @@ A flexible React Native Wheel Picker for iOS and Android without using the nativ
  - Only native animations.
  - [Support native feedback](#Native-Feedback).
  - [Support virtualization](#withVirtualized).
- - Compatible with Expo.
+ - Compatible with Expo ([Snack][EXPO_SNACK]).
  - Deep customization
  - Written ```TypeScript```.
 
@@ -64,6 +65,8 @@ yarn add @quidone/react-native-wheel-picker
 - [Footer](#-Author)
 
 ## Usage
+
+### [🚀 Expo Snack example][EXPO_SNACK]
 
 If you want to see more examples and experiment, run the examples locally.
 
