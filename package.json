@@ -1,6 +1,6 @@
 {
   "name": "@quidone/react-native-wheel-picker",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Picker is a UI component for selecting an item from a list of options.",
   "main": "dest/commonjs/index",
   "module": "dest/module/index",
