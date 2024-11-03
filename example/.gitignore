@@ -1,0 +1,34 @@
+# OSX
+#
+.DS_Store
+
+# Android/IJ
+#
+.classpath
+.cxx
+.gradle
+.idea
+.project
+.settings
+local.properties
+android.iml
+
+# yarn https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# node.js
+#
+node_modules/
+
+# XDE
+.expo/
+
+# build
+ios/
+android/
