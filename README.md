@@ -142,6 +142,7 @@ const App = () => {
 - ```style?``` [object | array] - root style.
 - ```itemTextStyle?``` [object | array] - item text style for picker item.
 - ```overlayItemStyle?``` [object | array] - style for the overlay element in the center
+- ```contentContainerStyle?``` [object | array] - style which wraps all of the child views [original](https://reactnative.dev/docs/scrollview#contentcontainerstyle)
 - ```scrollEventThrottle?``` [object | array] - [original](https://reactnative.dev/docs/scrollview#scrolleventthrottle-ios)
 
 
