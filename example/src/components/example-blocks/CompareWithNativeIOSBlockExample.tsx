@@ -27,8 +27,10 @@ if (Platform.OS === 'ios') {
       },
       [],
     );
-    const onValueChangeIOS = useCallback((v: number) => {
-      setValue(v);
+    const onValueChangeIOS = useCallback((itemValue: number) => {
+      // itemValue is a magic number: 1 (is itemValue) === 1 return false;
+      // parseInt helps to fix this
+      setValue(parseInt(itemValue as any));
     }, []);
 
     return (
