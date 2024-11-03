@@ -3,7 +3,7 @@ import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 
 type OverlayProps = {
   itemHeight: number;
-  pickerWidth: number | string;
+  pickerWidth: number | 'auto' | `${number}%`;
   overlayItemStyle: StyleProp<ViewStyle> | undefined;
 };
 

@@ -61,7 +61,7 @@ export type RenderList<ItemT extends PickerItem<any>> = (
 ) => React.ReactElement;
 export type RenderOverlayProps = {
   itemHeight: number;
-  pickerWidth: number | string;
+  pickerWidth: number | 'auto' | `${number}%`;
   pickerHeight: number;
   overlayItemStyle: StyleProp<ViewStyle> | undefined;
 };

@@ -30,7 +30,7 @@ export type PickerProps<ItemT extends PickerItem<any>> = {
   value?: ItemT['value'];
   itemHeight?: number;
   visibleItemCount?: number;
-  width?: number | string;
+  width?: number | 'auto' | `${number}%`;
 
   onValueChanging?: OnValueChanging<ItemT>;
   onValueChanged?: OnValueChanged<ItemT>;
