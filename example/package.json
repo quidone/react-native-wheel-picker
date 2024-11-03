@@ -12,7 +12,7 @@
     "@faker-js/faker": "^8.0.2",
     "@quidone/react-native-wheel-picker-feedback": "^1.0.0",
     "@react-native-picker/picker": "2.7.5",
-    "@rozhkov/react-useful-hooks": "^1.0.8",
+    "@rozhkov/react-useful-hooks": "^1.0.9",
     "expo": "51",
     "expo-splash-screen": "~0.27.6",
     "expo-status-bar": "~1.12.1",
