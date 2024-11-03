@@ -2901,7 +2901,7 @@ __metadata:
     "@evilmartians/lefthook": "npm:^1.2.2"
     "@react-native-community/eslint-config": "npm:^3.0.2"
     "@release-it/conventional-changelog": "npm:^5.0.0"
-    "@rozhkov/react-useful-hooks": "npm:^1.0.8"
+    "@rozhkov/react-useful-hooks": "npm:^1.0.9"
     "@types/jest": "npm:^28.1.2"
     "@types/react": "npm:^18.2.0"
     babel-plugin-module-resolver: "npm:^4.1.0"
@@ -3352,14 +3352,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rozhkov/react-useful-hooks@npm:^1.0.8":
-  version: 1.0.8
-  resolution: "@rozhkov/react-useful-hooks@npm:1.0.8"
+"@rozhkov/react-useful-hooks@npm:^1.0.9":
+  version: 1.0.9
+  resolution: "@rozhkov/react-useful-hooks@npm:1.0.9"
   dependencies:
     default-values: "npm:^1.0.1"
   peerDependencies:
     react: ^16.8 || ^17 || ^18
-  checksum: 10/6acc1a2272d7cb2f4a935ef98e512484586361e9341bc0ba70ba8d6df962979217b3a971ea9b0b896be8f38752f1916298db66af2e58f2c7a4a5d911cc35cc53
+  checksum: 10/bb518eee26ba54d0376045af6d9199da7db0d424752cad42d16dae9b2469443a3daa7c0af5a8970983b451237054ba55c368880a20e32a22d46bd0c591ad2793
   languageName: node
   linkType: hard
 

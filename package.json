@@ -65,7 +65,7 @@
     "react-native": ">=0.71.6"
   },
   "dependencies": {
-    "@rozhkov/react-useful-hooks": "^1.0.8"
+    "@rozhkov/react-useful-hooks": "^1.0.9"
   },
   "devDependencies": {
     "@babel/cli": "^7.21.5",
