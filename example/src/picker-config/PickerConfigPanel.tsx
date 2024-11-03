@@ -1,19 +1,24 @@
 import React, {memo} from 'react';
-import ListItemCheckBox from '../components/ListItemCheckBox';
-import Divider from '../components/Divider';
 import {Linking, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {usePickerConfig} from '../picker-config/PickerConfigProvider';
+import {ListItemCheckBox, Divider} from '../components/base';
+import {usePickerConfig} from './PickerConfigProvider';
 import {WP_FEEDBACK_GITHUB_URL} from '../contants';
+import {ButtonGroup} from 'react-native-elements';
+import {useInit} from '@rozhkov/react-useful-hooks';
 
 const PickerConfigPanel = () => {
   const {
     enabledVirtualized,
     enabledSound,
     enabledImpact,
+    visibleItemCount,
     toggleVirtualized,
     toggleSound,
     toggleImpact,
+    changeVisibleItemCount,
   } = usePickerConfig();
+
+  const visibleItemCounts = useInit(() => ['1', '3', '5', '7', '9']);
 
   return (
     <View style={styles.root}>
@@ -36,6 +41,18 @@ const PickerConfigPanel = () => {
         onToggle={toggleVirtualized}
       />
       <Divider />
+      <View style={styles.buttonGroupListItem}>
+        <Text style={{fontSize: 16}}>Visible Count:</Text>
+        <ButtonGroup
+          buttons={visibleItemCounts}
+          selectedIndex={visibleItemCounts.indexOf(`${visibleItemCount}`)}
+          onPress={(value) => {
+            changeVisibleItemCount(parseInt(visibleItemCounts[value]!));
+          }}
+          containerStyle={styles.buttonGroupContainer}
+        />
+      </View>
+      <Divider />
       <TouchableOpacity
         style={styles.touchable}
         onPress={() => {
@@ -57,6 +74,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   touchable: {paddingVertical: 12},
+  buttonGroupListItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+    justifyContent: 'space-between',
+  },
+  buttonGroupContainer: {
+    flex: 1,
+    maxWidth: 200,
+    marginLeft: 40,
+    marginRight: 0,
+  },
 });
 
 export default memo(PickerConfigPanel);

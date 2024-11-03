@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useMemo} from 'react';
+import React, {FC, memo, useCallback, useMemo} from 'react';
 import type {
   default as WheelPicker,
   OnValueChanging,
@@ -27,7 +27,7 @@ const withExamplePickerConfig = (
     onValueChanging: onValueChangingProp,
     ...restProps
   }: WheelPickerProps<any>) => {
-    const {enabledVirtualized} = usePickerConfig();
+    const {enabledVirtualized, visibleItemCount} = usePickerConfig();
     const callFeedback = useCallFeedback();
 
     const onValueChanging = useCallback<OnValueChanging<any>>(
@@ -45,12 +45,18 @@ const withExamplePickerConfig = (
       return withVirtualized(WrappedComponent as any);
     }, [enabledVirtualized]);
 
-    return <ResultComponent {...restProps} onValueChanging={onValueChanging} />;
+    return (
+      <ResultComponent
+        visibleItemCount={visibleItemCount}
+        {...restProps}
+        onValueChanging={onValueChanging}
+      />
+    );
   };
 
   Wrapper.displayName = `withExamplePickerConfig(${WrappedComponent.displayName})`;
 
-  return Wrapper as typeof WheelPicker;
+  return memo(Wrapper) as typeof WheelPicker;
 };
 
 export default withExamplePickerConfig;

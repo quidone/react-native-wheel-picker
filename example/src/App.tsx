@@ -1,25 +1,20 @@
 import * as React from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
-import PickerConfigProvider from './picker-config/PickerConfigProvider';
-import SimplePicker from './pickers/SimplePicker';
-import CompareWithNativeIOS from './pickers/CompareWithNativeIOS';
-import PickerConfigPanel from './pickers/PickerConfigPanel';
-import CustomizedPicker from './pickers/customized/CustomizedPicker';
-import Header from './components/Header';
-import Box from './components/Box';
+import {PickerConfigProvider} from './picker-config';
+import {Box} from './components/base';
+import {
+  AvatarCustomizedPickerBlockExample,
+  CompareWithNativeIOSBlockExample,
+  SimplePickerBlockExample,
+} from './components/example-blocks';
 
 const App = () => {
   return (
     <ScrollView contentContainerStyle={styles.contentContainer}>
-      <Header title={'Simple Picker'} />
-      <SimplePicker />
-      <PickerConfigPanel />
-      <Box height={40} />
-      <Header title={'Comparing with Native iOS'} />
-      <CompareWithNativeIOS />
+      <SimplePickerBlockExample />
+      <AvatarCustomizedPickerBlockExample />
+      <CompareWithNativeIOSBlockExample />
       <Box height={100} />
-      <Header title={'Customized Picker'} />
-      <CustomizedPicker />
     </ScrollView>
   );
 };
