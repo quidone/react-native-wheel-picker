@@ -23,13 +23,9 @@ const PickerItemContainer = ({
   const offset = useScrollContentOffset();
   const height = usePickerItemHeight();
 
-  const inputRange = useMemo(
-    () => faces.map((f) => height * (index + f.index)),
-    [faces, height, index],
-  );
-
-  const {opacity, rotateX, translateY} = useMemo(
-    () => ({
+  const {opacity, rotateX, translateY} = useMemo(() => {
+    const inputRange = faces.map((f) => height * (index + f.index));
+    return {
       opacity: offset.interpolate({
         inputRange: inputRange,
         outputRange: faces.map((x) => x.opacity),
@@ -45,9 +41,8 @@ const PickerItemContainer = ({
         outputRange: faces.map((x) => x.offsetY),
         extrapolate: 'extend',
       }),
-    }),
-    [faces, inputRange, offset],
-  );
+    };
+  }, [faces, height, index, offset]);
 
   return (
     <Animated.View
