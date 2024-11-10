@@ -31,6 +31,7 @@ export type PickerProps<ItemT extends PickerItem<any>> = {
   itemHeight?: number;
   visibleItemCount?: number;
   width?: number | 'auto' | `${number}%`;
+  readOnly?: boolean;
 
   onValueChanging?: OnValueChanging<ItemT>;
   onValueChanged?: OnValueChanged<ItemT>;
@@ -82,6 +83,7 @@ const Picker = <ItemT extends PickerItem<any>>({
   width = 'auto',
   itemHeight = 48,
   visibleItemCount = 5,
+  readOnly = false,
 
   onValueChanged,
   onValueChanging,
@@ -139,6 +141,7 @@ const Picker = <ItemT extends PickerItem<any>>({
             itemHeight,
             pickerHeight,
             visibleItemCount,
+            readOnly,
             keyExtractor,
             renderItem: renderPickerItem,
             scrollOffset: offsetY,
