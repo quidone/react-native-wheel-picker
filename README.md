@@ -132,6 +132,7 @@ const App = () => {
 - ```itemHeight?``` [number] - height of picker item in the center.
 - ```visibleItemCount?``` [number] - number of displayed items: 1, 3, 5... (default = 5). For 5, the WheelPicker height is calculated incorrectly, left for backward compatibility.
 - ```width?``` [number | string] - width of picker.
+- ```readOnly?``` [boolean] - read only mode.
 - ```onValueChanging?``` [function] - An event that is triggered when the value is changing.
 - ```onValueChanged?``` [function] - An event that is triggered when the value is changed (wheel is stopped and no touch).
 - ```keyExtractor?``` [function] - key extractor from picker item.
