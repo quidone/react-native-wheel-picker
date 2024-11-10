@@ -12,6 +12,7 @@ type PickerConfig = {
   enabledSound: boolean;
   enabledImpact: boolean;
   enabledVirtualized: boolean;
+  readOnly: boolean;
   visibleItemCount: number;
 };
 
@@ -19,6 +20,7 @@ type ContextVal = {
   toggleSound: () => void;
   toggleImpact: () => void;
   toggleVirtualized: () => void;
+  toggleReadOnly: () => void;
   changeVisibleItemCount: (count: number) => void;
 } & PickerConfig;
 
@@ -37,6 +39,7 @@ const PickerConfigProvider = ({children}: PropsWithChildren) => {
     enabledSound: false,
     enabledImpact: false,
     enabledVirtualized: false,
+    readOnly: false,
     visibleItemCount: 5,
   }));
   const toggleSound = useStableCallback(() => {
@@ -59,6 +62,12 @@ const PickerConfigProvider = ({children}: PropsWithChildren) => {
       enabledVirtualized: !prev.enabledVirtualized,
     }));
   });
+  const toggleReadOnly = useStableCallback(() => {
+    setConfig((prev) => ({
+      ...prev,
+      readOnly: !prev.readOnly,
+    }));
+  });
   const changeVisibleItemCount = useStableCallback(
     (count: 1 | 3 | 5 | 7 | 9 | number) => {
       setConfig((prev) => ({
@@ -73,6 +82,7 @@ const PickerConfigProvider = ({children}: PropsWithChildren) => {
     toggleSound,
     toggleImpact,
     toggleVirtualized,
+    toggleReadOnly,
     changeVisibleItemCount,
   });
 

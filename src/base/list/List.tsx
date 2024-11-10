@@ -30,6 +30,7 @@ export type ListProps<ItemT extends PickerItem<any>> = {
   renderItem: RenderPickerItem<ItemT>;
   itemHeight: number;
   pickerHeight: number;
+  readOnly: boolean;
   initialIndex: number;
   scrollOffset: Animated.Value;
   onTouchStart: () => void;
@@ -46,6 +47,7 @@ const List = <ItemT extends PickerItem<any>>(
     renderItem,
     itemHeight,
     pickerHeight,
+    readOnly,
     scrollOffset,
     onTouchEnd,
     onTouchStart,
@@ -100,6 +102,7 @@ const List = <ItemT extends PickerItem<any>>(
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
       scrollEventThrottle={16}
+      scrollEnabled={!readOnly}
       {...restProps}
       ref={listRef}
       contentOffset={initialOffset}

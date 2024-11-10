@@ -27,7 +27,7 @@ const withExamplePickerConfig = (
     onValueChanging: onValueChangingProp,
     ...restProps
   }: WheelPickerProps<any>) => {
-    const {enabledVirtualized, visibleItemCount} = usePickerConfig();
+    const {enabledVirtualized, readOnly, visibleItemCount} = usePickerConfig();
     const callFeedback = useCallFeedback();
 
     const onValueChanging = useCallback<OnValueChanging<any>>(
@@ -48,6 +48,7 @@ const withExamplePickerConfig = (
     return (
       <ResultComponent
         visibleItemCount={visibleItemCount}
+        readOnly={readOnly}
         {...restProps}
         onValueChanging={onValueChanging}
       />

@@ -36,6 +36,7 @@ type VirtualizedListProps<ItemT extends PickerItem<any>> = {
   itemHeight: number;
   pickerHeight: number;
   visibleItemCount: number;
+  readOnly: boolean;
   initialIndex: number;
   scrollOffset: Animated.Value;
   onTouchStart: () => void;
@@ -53,6 +54,7 @@ const VirtualizedList = <ItemT extends PickerItem<any>>(
     itemHeight,
     pickerHeight,
     visibleItemCount,
+    readOnly,
     scrollOffset,
     onTouchEnd,
     onTouchStart,
@@ -102,6 +104,7 @@ const VirtualizedList = <ItemT extends PickerItem<any>>(
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
       scrollEventThrottle={16}
+      scrollEnabled={!readOnly}
       {...restProps}
       ref={forwardedRef as RefObject<FlatList>}
       data={data as Animated.WithAnimatedObject<typeof data>}

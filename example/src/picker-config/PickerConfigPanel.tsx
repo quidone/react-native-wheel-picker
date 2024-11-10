@@ -11,10 +11,12 @@ const PickerConfigPanel = () => {
     enabledVirtualized,
     enabledSound,
     enabledImpact,
+    readOnly,
     visibleItemCount,
     toggleVirtualized,
     toggleSound,
     toggleImpact,
+    toggleReadOnly,
     changeVisibleItemCount,
   } = usePickerConfig();
 
@@ -39,6 +41,12 @@ const PickerConfigPanel = () => {
         title={'Virtualized'}
         value={enabledVirtualized}
         onToggle={toggleVirtualized}
+      />
+      <Divider />
+      <ListItemCheckBox
+        title={'readOnly'}
+        value={readOnly}
+        onToggle={toggleReadOnly}
       />
       <Divider />
       <View style={styles.buttonGroupListItem}>
