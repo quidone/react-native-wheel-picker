@@ -9,7 +9,20 @@ runs:
       with:
         node-version: '18'
 
+    - name: Cache dependencies
+      id: yarn-cache
+      uses: actions/cache@v3
+      with:
+        path: |
+          **/node_modules
+          **/.yarn/install-state.gz
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock', '!node_modules/**') }}-${{ hashFiles('**/package.json', '!node_modules/**') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock', '!node_modules/**') }}
+          ${{ runner.os }}-yarn-
+
     - name: Install dependencies
+      if: steps.yarn-cache.outputs.cache-hit != 'true'
       run: |
         yarn install --immutable
         yarn --cwd example install --immutable
