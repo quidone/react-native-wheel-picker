@@ -1,7 +1,6 @@
+import {useEffect, useRef} from 'react';
 import type {Animated} from 'react-native';
-import {useEffect, useMemo, useRef} from 'react';
-import {usePrevious, useStableCallback} from '@rozhkov/react-useful-hooks';
-import debounce from '@utils/debounce';
+import {useStableCallback} from '@rozhkov/react-useful-hooks';
 
 const useValueEventsEffect = <ItemT>(
   // in
@@ -10,21 +9,21 @@ const useValueEventsEffect = <ItemT>(
     data,
     itemHeight,
     offsetYAv,
-    touching,
   }: {
     valueIndex: number;
     data: ReadonlyArray<ItemT>;
     itemHeight: number;
     offsetYAv: Animated.Value;
-    touching: boolean;
   },
   // events
   {
     onValueChanging,
     onValueChanged,
   }: {
-    onValueChanging?: (event: {item: ItemT; index: number}) => void;
-    onValueChanged?: (event: {item: ItemT; index: number}) => void;
+    onValueChanging:
+      | ((event: {item: ItemT; index: number}) => void)
+      | undefined;
+    onValueChanged: ((event: {item: ItemT; index: number}) => void) | undefined;
   },
 ) => {
   const activeIndexRef = useRef(valueIndex);
@@ -49,23 +48,8 @@ const useValueEventsEffect = <ItemT>(
     }
   });
 
-  const onStableValueChanged = useStableCallback(() => {
-    if (onValueChanged === undefined || touching) {
-      return;
-    }
-    const activeIndex = activeIndexRef.current;
-    if (activeIndex !== valueIndex) {
-      onValueChanged({index: activeIndex, item: data[activeIndex]!});
-    }
-  });
-  const onValueChangedDebounce = useMemo(
-    () => debounce(onStableValueChanged, 300),
-    [onStableValueChanged],
-  );
-
   useEffect(() => {
     const id = offsetYAv.addListener(({value: offset}) => {
-      onValueChangedDebounce();
       const index = getIndex(offset);
       const activeIndex = activeIndexRef.current;
       if (index !== activeIndex) {
@@ -76,21 +60,16 @@ const useValueEventsEffect = <ItemT>(
     return () => {
       offsetYAv.removeListener(id);
     };
-  }, [
-    data,
-    getIndex,
-    itemHeight,
-    offsetYAv,
-    onValueChangedDebounce,
-    onValueChanging,
-  ]);
+  }, [data, getIndex, itemHeight, offsetYAv, onValueChanging]);
 
-  const prevTouching = usePrevious(touching);
-  if (touching && !prevTouching) {
-    onValueChangedDebounce.clear();
-  } else if (!touching && prevTouching) {
-    onValueChangedDebounce();
-  }
+  const onStableValueChanged = useStableCallback(() => {
+    const activeIndex = activeIndexRef.current;
+    if (activeIndex !== valueIndex) {
+      onValueChanged?.({index: activeIndex, item: data[activeIndex]!});
+    }
+  });
+
+  return {onScrollEnd: onStableValueChanged};
 };
 
 export default useValueEventsEffect;
