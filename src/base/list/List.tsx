@@ -20,7 +20,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import {useInit} from '@rozhkov/react-useful-hooks';
-import {withScrollEndEvent} from '../../utils/scrolling';
+import {withScrollEndEvent} from '@utils/scrolling';
 
 const ExtendedAnimatedScrollView = withScrollEndEvent(Animated.ScrollView);
 
