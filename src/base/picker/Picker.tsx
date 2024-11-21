@@ -117,13 +117,12 @@ const Picker = <ItemT extends PickerItem<any>>({
     [faces, itemTextStyle, renderItem, renderItemContainer],
   );
 
-  useValueEventsEffect(
+  const {onScrollEnd} = useValueEventsEffect(
     {
       data,
       valueIndex,
       itemHeight,
       offsetYAv: offsetY,
-      touching: touching.value,
     },
     {onValueChanging, onValueChanged},
   );
@@ -148,6 +147,7 @@ const Picker = <ItemT extends PickerItem<any>>({
             onTouchStart: touching.setTrue,
             onTouchEnd: touching.setFalse,
             onTouchCancel: touching.setFalse,
+            onScrollEnd,
             contentContainerStyle,
           })}
           {renderOverlay &&

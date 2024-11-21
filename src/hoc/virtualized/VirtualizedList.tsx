@@ -14,12 +14,16 @@ import {
   StyleSheet,
   type ViewStyle,
 } from 'react-native';
+import {withScrollEndEvent} from '@utils/scrolling';
 import type {
   KeyExtractor,
   ListMethods,
   PickerItem,
   RenderPickerItem,
 } from '../../base/types';
+
+// TODO "any" is not an exact type. How to pass the generic type?
+const ExtendedAnimatedFlatList = withScrollEndEvent(Animated.FlatList<any>);
 
 export type AdditionalProps = Pick<
   FlatListProps<any>,
@@ -42,6 +46,7 @@ type VirtualizedListProps<ItemT extends PickerItem<any>> = {
   onTouchStart: () => void;
   onTouchEnd: () => void;
   onTouchCancel: () => void;
+  onScrollEnd: () => void;
   contentContainerStyle: StyleProp<ViewStyle> | undefined;
 } & AdditionalProps;
 
@@ -59,6 +64,7 @@ const VirtualizedList = <ItemT extends PickerItem<any>>(
     onTouchEnd,
     onTouchStart,
     onTouchCancel,
+    onScrollEnd,
     contentContainerStyle: contentContainerStyleProp,
 
     initialNumToRender,
@@ -100,7 +106,7 @@ const VirtualizedList = <ItemT extends PickerItem<any>>(
   }, [pickerHeight, itemHeight, contentContainerStyleProp]);
 
   return (
-    <Animated.FlatList
+    <ExtendedAnimatedFlatList
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
       scrollEventThrottle={16}
@@ -119,6 +125,7 @@ const VirtualizedList = <ItemT extends PickerItem<any>>(
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
       onTouchCancel={onTouchCancel}
+      onScrollEnd={onScrollEnd}
       initialNumToRender={initialNumToRender ?? Math.ceil(visibleItemCount / 2)}
       maxToRenderPerBatch={
         maxToRenderPerBatch ?? Math.ceil(visibleItemCount / 2)

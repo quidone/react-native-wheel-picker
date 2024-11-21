@@ -20,6 +20,9 @@ import {
   ViewStyle,
 } from 'react-native';
 import {useInit} from '@rozhkov/react-useful-hooks';
+import {withScrollEndEvent} from '../../utils/scrolling';
+
+const ExtendedAnimatedScrollView = withScrollEndEvent(Animated.ScrollView);
 
 const OFFSET_X = 0;
 const getOffsetY = (index: number, itemHeight: number) => index * itemHeight;
@@ -36,6 +39,7 @@ export type ListProps<ItemT extends PickerItem<any>> = {
   onTouchStart: () => void;
   onTouchEnd: () => void;
   onTouchCancel: () => void;
+  onScrollEnd: () => void;
   contentContainerStyle: StyleProp<ViewStyle> | undefined;
 };
 
@@ -52,6 +56,7 @@ const List = <ItemT extends PickerItem<any>>(
     onTouchEnd,
     onTouchStart,
     onTouchCancel,
+    onScrollEnd,
     contentContainerStyle: contentContainerStyleProp,
     ...restProps
   }: ListProps<ItemT>,
@@ -98,7 +103,7 @@ const List = <ItemT extends PickerItem<any>>(
   }, [pickerHeight, itemHeight, contentContainerStyleProp]);
 
   return (
-    <Animated.ScrollView
+    <ExtendedAnimatedScrollView
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
       scrollEventThrottle={16}
@@ -115,11 +120,12 @@ const List = <ItemT extends PickerItem<any>>(
       onTouchCancel={onTouchCancel}
       nestedScrollEnabled={true}
       removeClippedSubviews={false}
+      onScrollEnd={onScrollEnd}
     >
       {data.map((item, index) =>
         renderItem({key: keyExtractor(item, index), item, index}),
       )}
-    </Animated.ScrollView>
+    </ExtendedAnimatedScrollView>
   );
 };
 
