@@ -117,7 +117,7 @@ const Picker = <ItemT extends PickerItem<any>>({
     [faces, itemTextStyle, renderItem, renderItemContainer],
   );
 
-  const {onScrollEnd} = useValueEventsEffect(
+  const {activeIndexRef, onScrollEnd} = useValueEventsEffect(
     {
       data,
       valueIndex,
@@ -126,7 +126,12 @@ const Picker = <ItemT extends PickerItem<any>>({
     },
     {onValueChanging, onValueChanged},
   );
-  useSyncScrollEffect({listRef, valueIndex, touching: touching.value});
+  useSyncScrollEffect({
+    listRef,
+    valueIndex,
+    activeIndexRef,
+    touching: touching.value,
+  });
 
   return (
     <ScrollContentOffsetContext.Provider value={offsetY}>

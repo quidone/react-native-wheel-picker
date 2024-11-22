@@ -1,6 +1,7 @@
 import {useEffect, useRef} from 'react';
 import type {Animated} from 'react-native';
 import {useStableCallback} from '@rozhkov/react-useful-hooks';
+import {getPageIndex} from '@utils/scrolling';
 
 const useValueEventsEffect = <ItemT>(
   // in
@@ -27,26 +28,12 @@ const useValueEventsEffect = <ItemT>(
   },
 ) => {
   const activeIndexRef = useRef(valueIndex);
-  activeIndexRef.current = valueIndex;
-  const indexMax = data.length - 1;
-  const getIndex = useStableCallback((offset: number) => {
-    const calc = Math.trunc(offset / itemHeight);
-    if (calc < 0) {
-      return 0;
-    } else if (calc > indexMax) {
-      return indexMax;
-    } else {
-      const activeIndex = activeIndexRef.current;
-      if (activeIndex === calc) {
-        return activeIndex;
-      } else if (calc > activeIndex) {
-        return calc;
-      } else {
-        const hasPart = offset % itemHeight > 0;
-        return calc + (hasPart ? 1 : 0);
-      }
-    }
-  });
+  const getIndex = useStableCallback((offset: number) =>
+    getPageIndex(offset, {
+      maxIndex: data.length - 1,
+      pageLength: itemHeight,
+    }),
+  );
 
   useEffect(() => {
     const id = offsetYAv.addListener(({value: offset}) => {
@@ -69,7 +56,7 @@ const useValueEventsEffect = <ItemT>(
     }
   });
 
-  return {onScrollEnd: onStableValueChanged};
+  return {onScrollEnd: onStableValueChanged, activeIndexRef};
 };
 
 export default useValueEventsEffect;
