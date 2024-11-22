@@ -1,24 +1,22 @@
-import {useEffect, type RefObject} from 'react';
-import {usePrevious} from '@rozhkov/react-useful-hooks';
+import {type RefObject, useEffect} from 'react';
 import type {ListMethods} from '../../types';
 
 const useSyncScrollEffect = ({
   listRef,
   valueIndex,
+  activeIndexRef,
   touching,
 }: {
   listRef: RefObject<ListMethods>;
   valueIndex: number;
+  activeIndexRef: RefObject<number>;
   touching: boolean;
 }) => {
-  const prevIndex = usePrevious(valueIndex);
-
   useEffect(() => {
     if (
       listRef.current == null ||
       touching ||
-      prevIndex == null ||
-      prevIndex === valueIndex
+      activeIndexRef.current === valueIndex
     ) {
       return;
     }
