@@ -138,7 +138,10 @@ const Picker = <ItemT extends PickerItem<any>>({
   return (
     <ScrollContentOffsetContext.Provider value={offsetY}>
       <PickerItemHeightContext.Provider value={itemHeight}>
-        <View testID={testID} style={[styles.root, style, {height: pickerHeight, width}]}>
+        <View
+          testID={testID}
+          style={[styles.root, style, {height: pickerHeight, width}]}
+        >
           {renderList({
             ...restProps,
             ref: listRef,
