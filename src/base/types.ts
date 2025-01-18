@@ -50,7 +50,6 @@ export type RenderListProps<ItemT extends PickerItem<any>> = {
   pickerHeight: number;
   visibleItemCount: number;
   readOnly: boolean;
-  testID?: string | undefined;
   initialIndex: number;
   scrollOffset: Animated.Value;
   onTouchStart: () => void;

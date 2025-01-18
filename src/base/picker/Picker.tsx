@@ -32,7 +32,7 @@ export type PickerProps<ItemT extends PickerItem<any>> = {
   visibleItemCount?: number;
   width?: number | 'auto' | `${number}%`;
   readOnly?: boolean;
-  testID?: string | undefined;
+  testID?: string;
 
   onValueChanging?: OnValueChanging<ItemT>;
   onValueChanged?: OnValueChanged<ItemT>;
