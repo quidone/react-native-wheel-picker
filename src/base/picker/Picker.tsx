@@ -32,6 +32,7 @@ export type PickerProps<ItemT extends PickerItem<any>> = {
   visibleItemCount?: number;
   width?: number | 'auto' | `${number}%`;
   readOnly?: boolean;
+  testID?: string;
 
   onValueChanging?: OnValueChanging<ItemT>;
   onValueChanged?: OnValueChanged<ItemT>;
@@ -84,6 +85,7 @@ const Picker = <ItemT extends PickerItem<any>>({
   itemHeight = 48,
   visibleItemCount = 5,
   readOnly = false,
+  testID,
 
   onValueChanged,
   onValueChanging,
@@ -136,7 +138,10 @@ const Picker = <ItemT extends PickerItem<any>>({
   return (
     <ScrollContentOffsetContext.Provider value={offsetY}>
       <PickerItemHeightContext.Provider value={itemHeight}>
-        <View style={[styles.root, style, {height: pickerHeight, width}]}>
+        <View
+          testID={testID}
+          style={[styles.root, style, {height: pickerHeight, width}]}
+        >
           {renderList({
             ...restProps,
             ref: listRef,

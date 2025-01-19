@@ -50,7 +50,7 @@ yarn lint:check
 To fix formatting errors, run the following:
 
 ```sh
-yarn lint --fix
+yarn lint:fix
 ```
 
 Remember to add tests for your change if possible. Run the unit tests by:

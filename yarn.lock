@@ -2904,6 +2904,7 @@ __metadata:
     "@rozhkov/react-useful-hooks": "npm:^1.0.9"
     "@types/jest": "npm:^28.1.2"
     "@types/react": "npm:^18.2.0"
+    "@types/react-test-renderer": "npm:^18"
     babel-plugin-module-resolver: "npm:^4.1.0"
     commitlint: "npm:^17.0.2"
     del-cli: "npm:^5.0.0"
@@ -2918,6 +2919,7 @@ __metadata:
     react: "npm:18.2.0"
     react-native: "npm:0.74.5"
     react-native-builder-bob: "npm:^0.20.0"
+    react-test-renderer: "npm:18.2.0"
     release-it: "npm:^15.0.0"
     typescript: "npm:^4.5.2"
   peerDependencies:
@@ -3650,6 +3652,15 @@ __metadata:
   version: 15.7.5
   resolution: "@types/prop-types@npm:15.7.5"
   checksum: 10/5b43b8b15415e1f298243165f1d44390403bb2bd42e662bca3b5b5633fdd39c938e91b7fce3a9483699db0f7a715d08cef220c121f723a634972fdf596aec980
+  languageName: node
+  linkType: hard
+
+"@types/react-test-renderer@npm:^18":
+  version: 18.3.1
+  resolution: "@types/react-test-renderer@npm:18.3.1"
+  dependencies:
+    "@types/react": "npm:^18"
+  checksum: 10/f8cc23cc8decdb6068cdc8f8c306e189eab8e569443ce97b216e757ee42eb20b18d2280ef41e2955668413f14be92765a3ba86cfcfeeae6b20c965acd9674786
   languageName: node
   linkType: hard
 
@@ -11204,6 +11215,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-is@npm:^18.2.0":
+  version: 18.3.1
+  resolution: "react-is@npm:18.3.1"
+  checksum: 10/d5f60c87d285af24b1e1e7eaeb123ec256c3c8bdea7061ab3932e3e14685708221bf234ec50b21e10dd07f008f1b966a2730a0ce4ff67905b3872ff2042aec22
+  languageName: node
+  linkType: hard
+
 "react-native-builder-bob@npm:^0.20.0":
   version: 0.20.4
   resolution: "react-native-builder-bob@npm:0.20.4"
@@ -11313,6 +11331,19 @@ __metadata:
   peerDependencies:
     react: ^16.0.0 || ^17.0.0 || ^18.0.0
   checksum: 10/06457fe5bcaa44aeca998905b6849304742ea1cc2d3841e4a0964c745ff392bc4dec07f8c779f317faacce3a0bf6f84e15020ac0fa81adb931067dbb0baf707b
+  languageName: node
+  linkType: hard
+
+"react-test-renderer@npm:18.2.0":
+  version: 18.2.0
+  resolution: "react-test-renderer@npm:18.2.0"
+  dependencies:
+    react-is: "npm:^18.2.0"
+    react-shallow-renderer: "npm:^16.15.0"
+    scheduler: "npm:^0.23.0"
+  peerDependencies:
+    react: ^18.2.0
+  checksum: 10/39473e43f64eec92da35db9d4411f3887b368038670787d49dd23172eb3a29953eb13767d1bfa34cbe2665b6e25632cad146e362e8910ce33755d343537763ae
   languageName: node
   linkType: hard
 
@@ -11894,6 +11925,15 @@ __metadata:
   dependencies:
     loose-envify: "npm:^1.1.0"
   checksum: 10/862881c8d3ece854331516cc048e26a86af461e896ab412506a5b1ffcc82990a08445e0127545ab524df15f88c2a691d8505fc2226a9bddf99bf8a8425bdcc0e
+  languageName: node
+  linkType: hard
+
+"scheduler@npm:^0.23.0":
+  version: 0.23.2
+  resolution: "scheduler@npm:0.23.2"
+  dependencies:
+    loose-envify: "npm:^1.1.0"
+  checksum: 10/e8d68b89d18d5b028223edf090092846868a765a591944760942b77ea1f69b17235f7e956696efbb62c8130ab90af7e0949bfb8eba7896335507317236966bc9
   languageName: node
   linkType: hard
 
