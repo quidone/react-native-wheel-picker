@@ -36,6 +36,10 @@ export type PickerProps<ItemT extends PickerItem<any>> = {
 
   onValueChanging?: OnValueChanging<ItemT>;
   onValueChanged?: OnValueChanged<ItemT>;
+  onTouchStart?: () => void;
+  onTouchEnd?: () => void;
+  onTouchCancel?: () => void;
+  onScrollEnd?: () => void;
 
   keyExtractor?: KeyExtractor<ItemT>;
   renderItem?: RenderItem<ItemT>;
@@ -135,6 +139,26 @@ const Picker = <ItemT extends PickerItem<any>>({
     touching: touching.value,
   });
 
+  const onTouchStart = useCallback(() => {
+    touching.setTrue();
+    restProps.onTouchStart?.();
+  }, [touching, restProps]);
+
+  const onTouchEnd = useCallback(() => {
+    touching.setFalse();
+    restProps.onTouchEnd?.();
+  }, [touching, restProps]);
+
+  const onTouchCancel = useCallback(() => {
+    touching.setFalse();
+    restProps.onTouchCancel?.();
+  }, [touching, restProps]);
+
+  const onListScrollEnd = useCallback(() => {
+    onScrollEnd();
+    restProps.onScrollEnd?.();
+  }, [onScrollEnd, restProps]);
+
   return (
     <ScrollContentOffsetContext.Provider value={offsetY}>
       <PickerItemHeightContext.Provider value={itemHeight}>
@@ -154,10 +178,10 @@ const Picker = <ItemT extends PickerItem<any>>({
             keyExtractor,
             renderItem: renderPickerItem,
             scrollOffset: offsetY,
-            onTouchStart: touching.setTrue,
-            onTouchEnd: touching.setFalse,
-            onTouchCancel: touching.setFalse,
-            onScrollEnd,
+            onTouchStart,
+            onTouchEnd,
+            onTouchCancel,
+            onScrollEnd: onListScrollEnd,
             contentContainerStyle,
           })}
           {renderOverlay &&
