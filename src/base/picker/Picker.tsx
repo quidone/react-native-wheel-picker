@@ -1,6 +1,7 @@
 import React, {useCallback, useMemo, useRef} from 'react';
 import type {TextStyle} from 'react-native';
 import {Animated, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
+import {useStableCallback} from '@rozhkov/react-useful-hooks';
 import PickerItemComponent from '../item/PickerItem';
 import {ScrollContentOffsetContext} from '../contexts/ScrollContentOffsetContext';
 import {PickerItemHeightContext} from '../contexts/PickerItemHeightContext';
@@ -144,25 +145,25 @@ const Picker = <ItemT extends PickerItem<any>>({
     touching: touching.value,
   });
 
-  const onTouchStartProp = useCallback(() => {
+  const onTouchStartProp = useStableCallback(() => {
     touching.setTrue();
     onTouchStart?.();
-  }, [touching, onTouchStart]);
+  });
 
-  const onTouchEndProp = useCallback(() => {
+  const onTouchEndProp = useStableCallback(() => {
     touching.setFalse();
     onTouchEnd?.();
-  }, [touching, onTouchEnd]);
+  });
 
-  const onTouchCancelProp = useCallback(() => {
+  const onTouchCancelProp = useStableCallback(() => {
     touching.setFalse();
     onTouchCancel?.();
-  }, [touching, onTouchCancel]);
+  });
 
-  const onScrollEndProp = useCallback(() => {
+  const onScrollEndProp = useStableCallback(() => {
     onScrollEnd();
     onListScrollEnd?.();
-  }, [onScrollEnd, onListScrollEnd]);
+  });
 
   return (
     <ScrollContentOffsetContext.Provider value={offsetY}>
