@@ -94,6 +94,11 @@ const Picker = <ItemT extends PickerItem<any>>({
   onValueChanged,
   onValueChanging,
 
+  onTouchStart,
+  onTouchEnd,
+  onTouchCancel,
+  onScrollEnd: onListScrollEnd,
+
   keyExtractor = defaultKeyExtractor,
   renderItem = defaultRenderItem,
   renderItemContainer = defaultRenderItemContainer,
@@ -139,25 +144,25 @@ const Picker = <ItemT extends PickerItem<any>>({
     touching: touching.value,
   });
 
-  const onTouchStart = useCallback(() => {
+  const onTouchStartProp = useCallback(() => {
     touching.setTrue();
-    restProps.onTouchStart?.();
-  }, [touching, restProps]);
+    onTouchStart?.();
+  }, [touching, onTouchStart]);
 
-  const onTouchEnd = useCallback(() => {
+  const onTouchEndProp = useCallback(() => {
     touching.setFalse();
-    restProps.onTouchEnd?.();
-  }, [touching, restProps]);
+    onTouchEnd?.();
+  }, [touching, onTouchEnd]);
 
-  const onTouchCancel = useCallback(() => {
+  const onTouchCancelProp = useCallback(() => {
     touching.setFalse();
-    restProps.onTouchCancel?.();
-  }, [touching, restProps]);
+    onTouchCancel?.();
+  }, [touching, onTouchCancel]);
 
-  const onListScrollEnd = useCallback(() => {
+  const onScrollEndProp = useCallback(() => {
     onScrollEnd();
-    restProps.onScrollEnd?.();
-  }, [onScrollEnd, restProps]);
+    onListScrollEnd?.();
+  }, [onScrollEnd, onListScrollEnd]);
 
   return (
     <ScrollContentOffsetContext.Provider value={offsetY}>
@@ -178,10 +183,10 @@ const Picker = <ItemT extends PickerItem<any>>({
             keyExtractor,
             renderItem: renderPickerItem,
             scrollOffset: offsetY,
-            onTouchStart,
-            onTouchEnd,
-            onTouchCancel,
-            onScrollEnd: onListScrollEnd,
+            onTouchStart: onTouchStartProp,
+            onTouchEnd: onTouchEndProp,
+            onTouchCancel: onTouchCancelProp,
+            onScrollEnd: onScrollEndProp,
             contentContainerStyle,
           })}
           {renderOverlay &&
