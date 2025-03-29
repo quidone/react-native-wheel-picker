@@ -83,7 +83,11 @@ const withScrollEndEvent = <PropsT extends ComponentProps>(
     Component.displayName || 'Component'
   })`;
 
-  return memo(forwardRef(Wrapper));
+  return memo(
+    forwardRef<ComponentRef<ComponentType<PropsT>>, ExtendProps<PropsT>>(
+      Wrapper as any,
+    ),
+  );
 };
 
 export default withScrollEndEvent;
