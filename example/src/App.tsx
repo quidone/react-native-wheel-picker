@@ -7,10 +7,15 @@ import {
   CompareWithNativeIOSBlockExample,
   SimplePickerBlockExample,
 } from './components/example-blocks';
+import DatePickerExample from './components/example-blocks/DatePickerExample';
 
 const App = () => {
   return (
-    <ScrollView contentContainerStyle={styles.contentContainer}>
+    <ScrollView
+      contentContainerStyle={styles.contentContainer}
+      scrollEnabled={false}
+    >
+      <DatePickerExample />
       <SimplePickerBlockExample />
       <AvatarCustomizedPickerBlockExample />
       <CompareWithNativeIOSBlockExample />
