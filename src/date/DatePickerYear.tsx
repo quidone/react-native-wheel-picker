@@ -2,6 +2,7 @@ import React, {memo, useMemo} from 'react';
 import {useStableCallback} from '@rozhkov/react-useful-hooks';
 import Picker, {type PickerProps} from '@implementation/base';
 import {useDateContext} from './DatePickerProvider';
+import {useOverlayItemStyle} from './useOverlayItemStyle';
 
 export type DatePickerYearProps = Omit<
   PickerProps<{value: number}>,
@@ -9,6 +10,8 @@ export type DatePickerYearProps = Omit<
 >;
 
 const DatePickerYear = ({
+  width = 100,
+  overlayItemStyle: overlayItemStyleProp,
   onValueChanged: onValueChangedProp,
   ...restProps
 }: DatePickerYearProps) => {
@@ -29,11 +32,19 @@ const DatePickerYear = ({
     onValueChangedProp?.(event);
   });
 
+  const overlayItemStyle = useOverlayItemStyle({
+    curUnit: 'year',
+    unitPositions: dateContext.unitPosition,
+    propStyle: overlayItemStyleProp,
+  });
+
   return (
     <Picker
       {...restProps}
       value={value.year}
       data={data}
+      width={width}
+      overlayItemStyle={overlayItemStyle}
       onValueChanged={onValueChanged}
     />
   );

@@ -27,10 +27,51 @@ const getDaysInMonth = (year: number, month: number): number => {
   return new Date(year, month + 1, 0).getDate();
 };
 
+export type DateUnitType = 'date' | 'month' | 'year';
+
+export type DateLocale = {
+  locale: string;
+};
+
+const getSortedDateUnitPositions = ({locale}: DateLocale) => {
+  const formatter = new Intl.DateTimeFormat(locale, {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+  });
+  const parts = formatter.formatToParts(new Date());
+  const orderMap: Record<string, DateUnitType> = {
+    day: 'date',
+    month: 'month',
+    year: 'year',
+  };
+
+  // Создаем массив с правильным порядком элементов
+  const order: DateUnitType[] = [];
+  parts.forEach((part) => {
+    // part - это объект {type: string, value: string}
+    if (part.type in orderMap) {
+      order.push(orderMap[part.type as keyof typeof orderMap]!);
+    }
+  });
+
+  return order;
+};
+
+const isFirstUnitPosition = (list: DateUnitType[], search: DateUnitType) => {
+  return list[0] === search;
+};
+const isLastUnitPosition = (list: DateUnitType[], search: DateUnitType) => {
+  return list.at(-1) === search;
+};
+
 export const DateUtils = {
   MONTH_COUNT: 12,
 
   toUnits,
   toOnlyDateFormat,
   getDaysInMonth,
+  getSortedDateUnitPositions,
+  isFirstUnitPosition,
+  isLastUnitPosition,
 };

@@ -114,6 +114,12 @@ const List = <ItemT extends PickerItem<any>>(
       onScroll={onScroll}
       snapToOffsets={snapToOffsets}
       style={styles.list}
+      onLayout={(event) => {
+        console.log(
+          'event.nativeEvent.layout.width',
+          event.nativeEvent.layout.width,
+        );
+      }}
       contentContainerStyle={contentContainerStyle}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}

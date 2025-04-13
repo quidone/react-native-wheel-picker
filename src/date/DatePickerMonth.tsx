@@ -1,8 +1,9 @@
 import React, {memo, useMemo} from 'react';
+import {useStableCallback} from '@rozhkov/react-useful-hooks';
 import Picker, {type PickerProps} from '@implementation/base';
 import {useDateContext} from './DatePickerProvider';
+import {useOverlayItemStyle} from './useOverlayItemStyle';
 import {DateUtils} from './date';
-import {useStableCallback} from '@rozhkov/react-useful-hooks';
 
 export type DatePickerMonthProps = Omit<
   PickerProps<{value: number}>,
@@ -10,6 +11,8 @@ export type DatePickerMonthProps = Omit<
 >;
 
 const DatePickerMonth = ({
+  width = 60,
+  overlayItemStyle: overlayItemStyleProp,
   onValueChanged: onValueChangedProp,
   ...restProps
 }: DatePickerMonthProps) => {
@@ -29,11 +32,19 @@ const DatePickerMonth = ({
     onValueChangedProp?.(event);
   });
 
+  const overlayItemStyle = useOverlayItemStyle({
+    curUnit: 'month',
+    unitPositions: dateContext.unitPosition,
+    propStyle: overlayItemStyleProp,
+  });
+
   return (
     <Picker
       {...restProps}
       value={value.month}
       data={data}
+      width={width}
+      overlayItemStyle={overlayItemStyle}
       onValueChanged={onValueChanged}
     />
   );

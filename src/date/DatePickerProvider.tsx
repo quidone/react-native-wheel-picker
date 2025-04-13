@@ -5,29 +5,38 @@ import React, {
   useMemo,
 } from 'react';
 import {useStableCallback} from '@rozhkov/react-useful-hooks';
-import {DateUtils, type OnlyDateFormat, type OnlyDateUnits} from './date';
+import {
+  DateLocale,
+  DateUnitType,
+  DateUtils,
+  type OnlyDateFormat,
+  type OnlyDateUnits,
+} from './date';
 
 type ContextValue = {
   value: OnlyDateUnits;
-  onDateUnitsChanged: (date: OnlyDateUnits) => void;
   max: Date;
   min: Date;
+  unitPosition: DateUnitType[];
+  onDateUnitsChanged: (date: OnlyDateUnits) => void;
 };
 
 const DatePickerContext = createContext<ContextValue | undefined>(undefined);
 
 type DatePickerProviderProps = PropsWithChildren<{
   date: OnlyDateFormat;
-  onDateChanged: (event: {date: OnlyDateFormat}) => void;
+  locale?: DateLocale;
   minDate?: OnlyDateFormat;
   maxDate?: OnlyDateFormat;
+  onDateChanged: (event: {date: OnlyDateFormat}) => void;
 }>;
 
 const DatePickerProvider = ({
   date,
-  onDateChanged,
+  locale,
   maxDate,
   minDate,
+  onDateChanged,
   children,
 }: DatePickerProviderProps) => {
   const {min, max} = useMemo(() => {
@@ -49,11 +58,14 @@ const DatePickerProvider = ({
   const value = useMemo<ContextValue>(
     () => ({
       value: DateUtils.toUnits(date),
-      onDateUnitsChanged,
+      unitPosition: DateUtils.getSortedDateUnitPositions(
+        locale ?? {locale: 'en'},
+      ),
       max,
       min,
+      onDateUnitsChanged,
     }),
-    [date, max, min, onDateUnitsChanged],
+    [date, locale, max, min, onDateUnitsChanged],
   );
 
   return (
