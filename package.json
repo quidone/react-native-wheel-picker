@@ -61,11 +61,11 @@
     "registry": "https://registry.npmjs.org/"
   },
   "peerDependencies": {
-    "react": "^16.8 || ^17 || ^18",
+    "react": ">=16.8",
     "react-native": ">=0.71.6"
   },
   "dependencies": {
-    "@rozhkov/react-useful-hooks": "^1.0.9"
+    "@rozhkov/react-useful-hooks": "^1.0.10"
   },
   "devDependencies": {
     "@babel/cli": "^7.21.5",
