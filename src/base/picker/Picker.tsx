@@ -1,11 +1,16 @@
 import React, {useCallback, useMemo, useRef} from 'react';
 import type {TextStyle} from 'react-native';
-import {Animated, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
+import {
+  Animated,
+  StyleProp,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
 import PickerItemComponent from '../item/PickerItem';
 import {ScrollContentOffsetContext} from '../contexts/ScrollContentOffsetContext';
 import {PickerItemHeightContext} from '../contexts/PickerItemHeightContext';
-import useValueEventsEffect from './hooks/useValueEventsEffect';
-import useSyncScrollEffect from './hooks/useSyncScrollEffect';
 import type {
   KeyExtractor,
   ListMethods,
@@ -86,10 +91,6 @@ const Picker = <ItemT extends PickerItem<any>>({
   visibleItemCount = 5,
   readOnly = false,
   testID,
-
-  onValueChanged,
-  onValueChanging,
-
   keyExtractor = defaultKeyExtractor,
   renderItem = defaultRenderItem,
   renderItemContainer = defaultRenderItemContainer,
@@ -114,26 +115,28 @@ const Picker = <ItemT extends PickerItem<any>>({
     return [items, height];
   }, [itemHeight, visibleItemCount]);
   const renderPickerItem = useCallback<RenderPickerItem<ItemT>>(
-    ({item, index, key}) =>
-      renderItemContainer({key, item, index, faces, renderItem, itemTextStyle}),
-    [faces, itemTextStyle, renderItem, renderItemContainer],
-  );
+    ({item, index, key}) => {
+      const handlePress = () => {
+        if (listRef.current?.scrollToIndex && !readOnly) {
+          listRef.current.scrollToIndex({index, animated: true});
+        }
+      };
 
-  const {activeIndexRef, onScrollEnd} = useValueEventsEffect(
-    {
-      data,
-      valueIndex,
-      itemHeight,
-      offsetYAv: offsetY,
+      return (
+        <TouchableOpacity key={key} onPress={handlePress} activeOpacity={0.6}>
+          {renderItemContainer({
+            key,
+            item,
+            index,
+            faces,
+            renderItem,
+            itemTextStyle,
+          })}
+        </TouchableOpacity>
+      );
     },
-    {onValueChanging, onValueChanged},
+    [faces, itemTextStyle, renderItem, renderItemContainer, readOnly],
   );
-  useSyncScrollEffect({
-    listRef,
-    valueIndex,
-    activeIndexRef,
-    touching: touching.value,
-  });
 
   return (
     <ScrollContentOffsetContext.Provider value={offsetY}>
