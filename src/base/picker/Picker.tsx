@@ -1,6 +1,13 @@
 import React, {useCallback, useMemo, useRef} from 'react';
-import type {TextStyle} from 'react-native';
-import {Animated, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
+import type {GestureResponderEvent, TextStyle} from 'react-native';
+import {
+  Animated,
+  StyleProp,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
 import PickerItemComponent from '../item/PickerItem';
 import {ScrollContentOffsetContext} from '../contexts/ScrollContentOffsetContext';
 import {PickerItemHeightContext} from '../contexts/PickerItemHeightContext';
@@ -33,6 +40,11 @@ export type PickerProps<ItemT extends PickerItem<any>> = {
   width?: number | 'auto' | `${number}%`;
   readOnly?: boolean;
   testID?: string;
+  onPress?: (
+    event: GestureResponderEvent,
+    item: PickerItem<ItemT>,
+    index: number,
+  ) => void;
 
   onValueChanging?: OnValueChanging<ItemT>;
   onValueChanged?: OnValueChanged<ItemT>;
@@ -86,6 +98,7 @@ const Picker = <ItemT extends PickerItem<any>>({
   visibleItemCount = 5,
   readOnly = false,
   testID,
+  onPress,
 
   onValueChanged,
   onValueChanging,
@@ -114,11 +127,32 @@ const Picker = <ItemT extends PickerItem<any>>({
     return [items, height];
   }, [itemHeight, visibleItemCount]);
   const renderPickerItem = useCallback<RenderPickerItem<ItemT>>(
-    ({item, index, key}) =>
-      renderItemContainer({key, item, index, faces, renderItem, itemTextStyle}),
-    [faces, itemTextStyle, renderItem, renderItemContainer],
-  );
+    ({item, index, key}) => {
+      const handlePress = (event: GestureResponderEvent) => {
+        onPress?.(event, item, index);
 
+        listRef.current?.scrollToIndex({index, animated: true});
+      };
+
+      return renderItemContainer({
+        key,
+        item,
+        index,
+        faces,
+        renderItem: (props) => (
+          <TouchableOpacity
+            onPress={handlePress}
+            activeOpacity={0.7}
+            disabled={readOnly}
+          >
+            {renderItem(props)}
+          </TouchableOpacity>
+        ),
+        itemTextStyle,
+      });
+    },
+    [faces, itemTextStyle, renderItem, renderItemContainer, onPress, readOnly],
+  );
   const {activeIndexRef, onScrollEnd} = useValueEventsEffect(
     {
       data,
