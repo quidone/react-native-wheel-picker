@@ -1,5 +1,5 @@
 import React, {memo, useMemo} from 'react';
-import {Animated} from 'react-native';
+import {Animated, TouchableOpacity} from 'react-native';
 import {
   PickerItem,
   RenderItemContainerProps,
@@ -13,6 +13,7 @@ const PickerItemContainer = ({
   faces,
   renderItem,
   itemTextStyle,
+  onPress,
 }: RenderItemContainerProps<PickerItem<any>>) => {
   const offset = useScrollContentOffset();
   const height = usePickerItemHeight();
@@ -46,13 +47,16 @@ const PickerItemContainer = ({
     }),
     [faces, height, index, inputRange, offset],
   );
-
+  const AnimatedTouchableOpacity =
+    Animated.createAnimatedComponent(TouchableOpacity);
+  const ContainerComponent = onPress ? AnimatedTouchableOpacity : Animated.View;
   return (
-    <Animated.View
+    <ContainerComponent
       style={[{height, opacity, transform: [{translateY}, {translateX}]}]}
+      onPress={onPress ? (e) => onPress(e, item, index) : undefined}
     >
       {renderItem({item, index, itemTextStyle})}
-    </Animated.View>
+    </ContainerComponent>
   );
 };
 

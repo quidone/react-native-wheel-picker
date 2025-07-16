@@ -1,6 +1,12 @@
 import type React from 'react';
 import type {Faces} from './item/faces';
-import type {Animated, StyleProp, TextStyle, ViewStyle} from 'react-native';
+import type {
+  Animated,
+  GestureResponderEvent,
+  StyleProp,
+  TextStyle,
+  ViewStyle,
+} from 'react-native';
 
 export type ListMethods = {
   scrollToIndex: (params: {index: number; animated: boolean}) => void;
@@ -32,6 +38,11 @@ export type RenderItemContainerProps<ItemT extends PickerItem<any>> = {
   faces: ReadonlyArray<Faces>;
   renderItem: RenderItem<ItemT>;
   itemTextStyle: StyleProp<TextStyle> | undefined;
+  onPress?: (
+    event: GestureResponderEvent,
+    item: PickerItem<ItemT>,
+    index: number,
+  ) => void;
 };
 export type RenderItemContainer<ItemT extends PickerItem<any>> = (
   props: RenderItemContainerProps<ItemT>,
