@@ -63,6 +63,7 @@ const CustomizedPicker = () => {
           itemHeight={60}
           style={styles.picker}
           contentContainerStyle={styles.contentContainerStyle}
+          enableScrollByTapOnItem={true}
         />
       </View>
     </>
