@@ -136,6 +136,7 @@ const App = () => {
 - ```visibleItemCount?``` [number] - number of displayed items: 1, 3, 5... (default = 5). For 5, the WheelPicker height is calculated incorrectly, left for backward compatibility.
 - ```width?``` [number | string] - width of picker.
 - ```readOnly?``` [boolean] - read only mode.
+- ```enableScrollByTapOnItem?``` [boolean] - allow scrolling by tap on an item (default = false)
 - ```testID?``` [string] - Used to locate this component in end-to-end tests.
 - ```onValueChanging?``` [function] - An event that is triggered when the value is changing.
 - ```onValueChanged?``` [function] - An event that is triggered when the value is changed (wheel is stopped and no touch).

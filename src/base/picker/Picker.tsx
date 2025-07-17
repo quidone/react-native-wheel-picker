@@ -33,6 +33,7 @@ export type PickerProps<ItemT extends PickerItem<any>> = {
   width?: number | 'auto' | `${number}%`;
   readOnly?: boolean;
   testID?: string;
+  enableScrollByTapOnItem?: boolean;
 
   onValueChanging?: OnValueChanging<ItemT>;
   onValueChanged?: OnValueChanged<ItemT>;
@@ -85,6 +86,7 @@ const Picker = <ItemT extends PickerItem<any>>({
   itemHeight = 48,
   visibleItemCount = 5,
   readOnly = false,
+  enableScrollByTapOnItem,
   testID,
 
   onValueChanged,
@@ -115,8 +117,23 @@ const Picker = <ItemT extends PickerItem<any>>({
   }, [itemHeight, visibleItemCount]);
   const renderPickerItem = useCallback<RenderPickerItem<ItemT>>(
     ({item, index, key}) =>
-      renderItemContainer({key, item, index, faces, renderItem, itemTextStyle}),
-    [faces, itemTextStyle, renderItem, renderItemContainer],
+      renderItemContainer({
+        listRef,
+        key,
+        item,
+        index,
+        faces,
+        renderItem,
+        itemTextStyle,
+        enableScrollByTapOnItem,
+      }),
+    [
+      enableScrollByTapOnItem,
+      faces,
+      itemTextStyle,
+      renderItem,
+      renderItemContainer,
+    ],
   );
 
   const {activeIndexRef, onScrollEnd} = useValueEventsEffect(
