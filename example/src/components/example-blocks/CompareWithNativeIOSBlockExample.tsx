@@ -41,6 +41,7 @@ if (Platform.OS === 'ios') {
             value={value}
             width={100}
             data={items}
+            enableScrollByTapOnItem={true}
           />
           <Text style={styles.subtitle}>WheelPicker</Text>
         </View>

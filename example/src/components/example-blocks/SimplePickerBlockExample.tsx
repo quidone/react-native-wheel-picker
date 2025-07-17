@@ -32,6 +32,7 @@ const SimplePicker = () => {
         value={value}
         onValueChanged={onValueChanged}
         width={100}
+        enableScrollByTapOnItem={true}
       />
       <PickerConfigPanel />
     </>
