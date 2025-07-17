@@ -1,4 +1,5 @@
 import type React from 'react';
+import type {RefObject} from 'react';
 import type {Faces} from './item/faces';
 import type {Animated, StyleProp, TextStyle, ViewStyle} from 'react-native';
 
@@ -26,12 +27,14 @@ export type RenderItem<ItemT extends PickerItem<any>> = (
   props: RenderItemProps<ItemT>,
 ) => React.ReactElement | null;
 export type RenderItemContainerProps<ItemT extends PickerItem<any>> = {
+  listRef: RefObject<ListMethods>;
   key?: string;
   item: ItemT;
   index: number;
   faces: ReadonlyArray<Faces>;
   renderItem: RenderItem<ItemT>;
   itemTextStyle: StyleProp<TextStyle> | undefined;
+  enableScrollByTapOnItem: boolean | undefined;
 };
 export type RenderItemContainer<ItemT extends PickerItem<any>> = (
   props: RenderItemContainerProps<ItemT>,
