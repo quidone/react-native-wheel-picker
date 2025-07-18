@@ -98,6 +98,7 @@ const App = () => {
       data={data}
       value={value}
       onValueChanged={({item: {value}}) => setValue(value)}
+      enableScrollByTapOnItem={true}
     />
   );
 };
