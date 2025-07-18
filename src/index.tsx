@@ -27,3 +27,10 @@ export {
   withVirtualized,
   WithVirtualizedProps,
 } from '@implementation/virtualized';
+
+export {
+  DatePicker,
+  DatePickerYearProps,
+  DatePickerMonthProps,
+  DatePickerDateProps,
+} from './date';

@@ -33,9 +33,10 @@ const createPickerItem = (index: number): CusPickerItem => {
 const renderItem: RenderItem<PickerItem<any>> = (props) => (
   <PickerItemComponent {...props} />
 );
-const renderItemContainer: RenderItemContainer<PickerItem<any>> = (props) => (
-  <PickerItemContainer {...props} />
-);
+const renderItemContainer: RenderItemContainer<PickerItem<any>> = ({
+  key,
+  ...restProps
+}) => <PickerItemContainer key={key} {...restProps} />;
 const renderOverlay: RenderOverlay = (props) => <Overlay {...props} />;
 
 const CustomizedPicker = () => {
