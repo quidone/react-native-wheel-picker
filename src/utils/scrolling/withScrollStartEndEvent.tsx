@@ -61,18 +61,20 @@ const withScrollStartEndEvent = <PropsT extends ComponentProps>(
     });
 
     const onScrollEndStable = useStableCallback(() => {
+      console.log('[withScrollStartEndEvent] onScrollEndStable');
       maybeCallOnScrollStart();
       onScrollEndProp?.();
       deactivateOnScrollStart();
     });
 
     const onScrollEnd = useMemo(
-      () => debounce(onScrollEndStable, 0), // A small delay is needed so that onScrollEnd doesn't trigger prematurely.
+      () => debounce(onScrollEndStable, 100), // A small delay is needed so that onScrollEnd doesn't trigger prematurely.
       [onScrollEndStable],
     );
 
     const onScrollBeginDrag = useStableCallback(
       (args: NativeSyntheticEvent<NativeScrollEvent>) => {
+        console.log('[withScrollStartEndEvent] onScrollBeginDrag');
         maybeCallOnScrollStart();
         onScrollBeginDragProp?.(args);
       },
@@ -80,6 +82,7 @@ const withScrollStartEndEvent = <PropsT extends ComponentProps>(
 
     const onScrollEndDrag = useStableCallback(
       (args: NativeSyntheticEvent<NativeScrollEvent>) => {
+        console.log('[withScrollStartEndEvent] onScrollEndDrag');
         onScrollEndDragProp?.(args);
         onScrollEnd();
       },
@@ -87,6 +90,7 @@ const withScrollStartEndEvent = <PropsT extends ComponentProps>(
 
     const onMomentumScrollBegin = useStableCallback(
       (args: NativeSyntheticEvent<NativeScrollEvent>) => {
+        console.log('[withScrollStartEndEvent] onMomentumScrollBegin');
         maybeCallOnScrollStart();
         onScrollEnd.clear();
         onMomentumScrollBeginProp?.(args);
@@ -95,6 +99,7 @@ const withScrollStartEndEvent = <PropsT extends ComponentProps>(
 
     const onMomentumScrollEnd = useStableCallback(
       (args: NativeSyntheticEvent<NativeScrollEvent>) => {
+        console.log('[withScrollStartEndEvent] onMomentumScrollEnd');
         onMomentumScrollEndProp?.(args);
         onScrollEnd();
       },

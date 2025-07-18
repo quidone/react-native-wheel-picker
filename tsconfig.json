@@ -4,6 +4,7 @@
     "paths": {
       "@quidone/react-native-wheel-picker": ["./src/index"],
       "@implementation/base": ["./src/base/index"],
+      "@implementation/picker-control": ["./src/picker-control/index"],
       "@implementation/virtualized": ["./src/hoc/virtualized/index"],
       "@utils/react": ["./src/utils/react/index"],
       "@utils/math": ["./src/utils/math/index"],

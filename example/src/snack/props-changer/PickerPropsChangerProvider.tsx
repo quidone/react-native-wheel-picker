@@ -4,14 +4,15 @@ import React, {
   useContext,
   useState,
 } from 'react';
-import {useMemoObject, useStableCallback} from '@rozhkov/react-useful-hooks';
-import {IS_EXPO_SNACK} from '../contants';
 import {Alert} from 'react-native';
+import {useMemoObject, useStableCallback} from '@rozhkov/react-useful-hooks';
+import {useNativeFeedbackModule} from '../native-api-provider';
 
 type PickerConfig = {
   enabledSound: boolean;
   enabledImpact: boolean;
   enabledVirtualized: boolean;
+  enableScrollByTapOnItem: boolean;
   readOnly: boolean;
   visibleItemCount: number;
 };
@@ -20,6 +21,7 @@ type ContextVal = {
   toggleSound: () => void;
   toggleImpact: () => void;
   toggleVirtualized: () => void;
+  toggleScrollByTapOnItem: () => void;
   toggleReadOnly: () => void;
   changeVisibleItemCount: (count: number) => void;
 } & PickerConfig;
@@ -34,23 +36,26 @@ const alertNotAvailableFeedback = () => {
   );
 };
 
-const PickerConfigProvider = ({children}: PropsWithChildren) => {
+const PickerPropsChangerProvider = ({children}: PropsWithChildren) => {
+  const nativeFeedbackModule = useNativeFeedbackModule();
+
   const [config, setConfig] = useState<PickerConfig>(() => ({
     enabledSound: false,
     enabledImpact: false,
     enabledVirtualized: false,
+    enableScrollByTapOnItem: true,
     readOnly: false,
     visibleItemCount: 5,
   }));
   const toggleSound = useStableCallback(() => {
-    if (IS_EXPO_SNACK) {
+    if (nativeFeedbackModule === 'NOT_SUPPORT_IN_SNACK') {
       alertNotAvailableFeedback();
       return;
     }
     setConfig((prev) => ({...prev, enabledSound: !prev.enabledSound}));
   });
   const toggleImpact = useStableCallback(() => {
-    if (IS_EXPO_SNACK) {
+    if (nativeFeedbackModule === 'NOT_SUPPORT_IN_SNACK') {
       alertNotAvailableFeedback();
       return;
     }
@@ -68,6 +73,12 @@ const PickerConfigProvider = ({children}: PropsWithChildren) => {
       readOnly: !prev.readOnly,
     }));
   });
+  const toggleScrollByTapOnItem = useStableCallback(() => {
+    setConfig((prev) => ({
+      ...prev,
+      enableScrollByTapOnItem: !prev.enableScrollByTapOnItem,
+    }));
+  });
   const changeVisibleItemCount = useStableCallback(
     (count: 1 | 3 | 5 | 7 | 9 | number) => {
       setConfig((prev) => ({
@@ -82,6 +93,7 @@ const PickerConfigProvider = ({children}: PropsWithChildren) => {
     toggleSound,
     toggleImpact,
     toggleVirtualized,
+    toggleScrollByTapOnItem,
     toggleReadOnly,
     changeVisibleItemCount,
   });
@@ -89,13 +101,13 @@ const PickerConfigProvider = ({children}: PropsWithChildren) => {
   return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 
-export default PickerConfigProvider;
+export default PickerPropsChangerProvider;
 
-export const usePickerConfig = () => {
+export const usePickerPropsChanger = () => {
   const value = useContext(Context);
   if (value === undefined) {
     throw new Error(
-      `usePickerConfig must be called from within PickerConfigProvider!`,
+      `usePickerPropsChanger must be called from within PickerPropsChangerProvider!`,
     );
   }
   return value;

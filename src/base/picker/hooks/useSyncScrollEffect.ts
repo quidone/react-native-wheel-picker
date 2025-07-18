@@ -1,4 +1,4 @@
-import {type RefObject, useEffect, useRef} from 'react';
+import {type RefObject, useRef} from 'react';
 import {useStableCallback} from '@rozhkov/react-useful-hooks';
 import {useEffectWithDynamicDepsLength} from '@utils/react';
 import type {ListMethods} from '../../types';
@@ -10,6 +10,7 @@ const useSyncScrollEffect = ({
   extraValues = [],
   activeIndexRef,
   touching,
+  enableSyncScrollAfterScrollEnd,
 }: {
   listRef: RefObject<ListMethods>;
   value: unknown;
@@ -17,6 +18,7 @@ const useSyncScrollEffect = ({
   extraValues: unknown[] | undefined;
   activeIndexRef: RefObject<number>;
   touching: boolean;
+  enableSyncScrollAfterScrollEnd: boolean;
 }) => {
   const syncScroll = useStableCallback(() => {
     if (
@@ -30,17 +32,13 @@ const useSyncScrollEffect = ({
     listRef.current.scrollToIndex({index: valueIndex, animated: true});
   });
 
-  useEffect(() => {
-    syncScroll();
-  }, [valueIndex]); // eslint-disable-line react-hooks/exhaustive-deps
-
   useEffectWithDynamicDepsLength(() => {
     syncScroll();
-  }, extraValues);
+  }, [valueIndex, enableSyncScrollAfterScrollEnd, ...extraValues]);
 
   const timeoutId = useRef<any>(undefined);
   const onScrollEnd = useStableCallback(() => {
-    if (value !== undefined) {
+    if (enableSyncScrollAfterScrollEnd && value !== undefined) {
       clearTimeout(timeoutId.current);
       timeoutId.current = setTimeout(syncScroll, 0);
     }

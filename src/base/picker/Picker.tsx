@@ -52,6 +52,7 @@ export type PickerProps<ItemT extends PickerItem<any>> = {
 
   scrollEventThrottle?: number;
 
+  _enableSyncScrollAfterScrollEnd?: boolean;
   _onScrollStart?: () => void;
   _onScrollEnd?: () => void;
 };
@@ -76,7 +77,10 @@ const defaultRenderList: RenderList<any> = (props) => {
   return <List {...props} />;
 };
 
-const useValueIndex = (data: ReadonlyArray<PickerItem<any>>, value: any) => {
+export const useValueIndex = (
+  data: ReadonlyArray<PickerItem<any>>,
+  value: any,
+) => {
   return useMemo(() => {
     const index = data.findIndex((x) => x.value === value);
     return index >= 0 ? index : 0;
@@ -108,13 +112,21 @@ const Picker = <ItemT extends PickerItem<any>>({
   overlayItemStyle,
   contentContainerStyle,
 
+  _enableSyncScrollAfterScrollEnd = true,
   _onScrollStart,
   _onScrollEnd,
   ...restProps
 }: PickerProps<ItemT>) => {
   const valueIndex = useValueIndex(data, value);
+  console.log('[Picker] [value]', value);
+  console.log('[Picker] [valueIndex]', valueIndex);
+
   const initialIndex = useInit(() => valueIndex);
-  const offsetY = useRef(new Animated.Value(valueIndex * itemHeight)).current;
+  const offsetY = useMemo(
+    () => new Animated.Value(valueIndex * itemHeight),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [readOnly], // when scrollEnabled changes, the events stop coming. Re-creating
+  );
   const listRef = useRef<ListMethods>(null);
   const touching = useBoolean(false);
 
@@ -163,6 +175,7 @@ const Picker = <ItemT extends PickerItem<any>>({
     extraValues,
     activeIndexRef,
     touching: touching.value,
+    enableSyncScrollAfterScrollEnd: _enableSyncScrollAfterScrollEnd,
   });
 
   const onScrollEnd = useStableCallback(() => {
