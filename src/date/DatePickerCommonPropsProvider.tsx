@@ -80,17 +80,28 @@ export const withCommonProps = <ComponentPropsT extends PickedWheelPickerProps>(
       ...restCommonProps
     } = useDatePickerCommonProps();
 
+    const style = useMemoObject([pickerStyleCommon, pickerStyleProp]);
+    const contentContainerStyle = useMemoObject([
+      contentContainerStyleCommon,
+      contentContainerStyleProp,
+    ]);
+    const itemTextStyle = useMemoObject([
+      itemTextStyleCommon,
+      itemTextStyleProp,
+    ]);
+    const overlayItemStyle = useMemoObject([
+      overlayItemStyleCommon,
+      overlayItemStyleProp,
+    ]);
+
     return (
       <WheelPickerComponent
         {...(restCommonProps as ComponentPropsT)}
         {...(restProps as ComponentPropsT)}
-        style={[pickerStyleCommon, pickerStyleProp]}
-        contentContainerStyle={[
-          contentContainerStyleCommon,
-          contentContainerStyleProp,
-        ]}
-        itemTextStyle={[itemTextStyleCommon, itemTextStyleProp]}
-        overlayItemStyle={[overlayItemStyleCommon, overlayItemStyleProp]}
+        style={style}
+        contentContainerStyle={contentContainerStyle}
+        itemTextStyle={itemTextStyle}
+        overlayItemStyle={overlayItemStyle}
         ref={forwardedRef}
       />
     );
