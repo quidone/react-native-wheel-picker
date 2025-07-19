@@ -1,52 +1,82 @@
 import React, {memo} from 'react';
 import {Linking, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {ListItemCheckBox, Divider} from '../snack/ui-base';
-import {usePickerConfig} from './PickerConfigProvider';
-import {WP_FEEDBACK_GITHUB_URL} from '../contants';
+import {ListItemCheckBox, Divider} from '../ui-base';
 import {ButtonGroup} from 'react-native-elements';
 import {useInit} from '@rozhkov/react-useful-hooks';
+import {usePickerPropsChanger} from './PickerPropsChangerProvider';
+import {WP_FEEDBACK_GITHUB_URL} from '../contants';
 
-const PickerConfigPanel = () => {
+type PickerPropsChangerPanelProps = {
+  hideSound?: boolean;
+  hideImpact?: boolean;
+  hideVirtualized?: boolean;
+};
+
+const PickerPropsChangerPanel = ({
+  hideImpact,
+  hideSound,
+  hideVirtualized,
+}: PickerPropsChangerPanelProps) => {
   const {
     enabledVirtualized,
     enabledSound,
     enabledImpact,
     readOnly,
+    enableScrollByTapOnItem,
     visibleItemCount,
     toggleVirtualized,
     toggleSound,
     toggleImpact,
     toggleReadOnly,
+    toggleScrollByTapOnItem,
     changeVisibleItemCount,
-  } = usePickerConfig();
+  } = usePickerPropsChanger();
 
   const visibleItemCounts = useInit(() => ['1', '3', '5', '7', '9']);
 
   return (
     <View style={styles.root}>
       <Divider />
-      <ListItemCheckBox
-        title={'Sound'}
-        value={enabledSound}
-        onToggle={toggleSound}
-      />
-      <Divider />
-      <ListItemCheckBox
-        title={'Impact'}
-        value={enabledImpact}
-        onToggle={toggleImpact}
-      />
-      <Divider />
-      <ListItemCheckBox
-        title={'Virtualized'}
-        value={enabledVirtualized}
-        onToggle={toggleVirtualized}
-      />
-      <Divider />
+      {!hideSound && (
+        <>
+          <ListItemCheckBox
+            title={'Sound'}
+            value={enabledSound}
+            onToggle={toggleSound}
+          />
+          <Divider />
+        </>
+      )}
+      {!hideImpact && (
+        <>
+          <ListItemCheckBox
+            title={'Impact'}
+            value={enabledImpact}
+            onToggle={toggleImpact}
+          />
+          <Divider />
+        </>
+      )}
+      {!hideVirtualized && (
+        <>
+          <ListItemCheckBox
+            title={'Virtualized'}
+            value={enabledVirtualized}
+            onToggle={toggleVirtualized}
+          />
+          <Divider />
+        </>
+      )}
       <ListItemCheckBox
         title={'readOnly'}
         value={readOnly}
         onToggle={toggleReadOnly}
+      />
+      <Divider />
+      <ListItemCheckBox
+        title={'enableScrollByTapOnItem'}
+        value={enableScrollByTapOnItem}
+        onToggle={toggleScrollByTapOnItem}
       />
       <Divider />
       <View style={styles.buttonGroupListItem}>
@@ -96,4 +126,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default memo(PickerConfigPanel);
+export default memo(PickerPropsChangerPanel);
