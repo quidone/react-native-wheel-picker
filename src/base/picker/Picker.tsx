@@ -126,11 +126,13 @@ const Picker = <ItemT extends PickerItem<any>>({
         renderItem,
         itemTextStyle,
         enableScrollByTapOnItem,
+        readOnly,
       }),
     [
       enableScrollByTapOnItem,
       faces,
       itemTextStyle,
+      readOnly,
       renderItem,
       renderItemContainer,
     ],

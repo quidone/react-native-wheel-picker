@@ -18,6 +18,7 @@ type PickerItemContainerProps = {
   renderItem: RenderItem<any>;
   itemTextStyle: StyleProp<TextStyle> | undefined;
   enableScrollByTapOnItem: boolean | undefined;
+  readOnly: boolean | undefined;
 };
 
 const PickerItemContainer = ({
@@ -28,6 +29,7 @@ const PickerItemContainer = ({
   renderItem,
   itemTextStyle,
   enableScrollByTapOnItem,
+  readOnly,
 }: PickerItemContainerProps) => {
   const offset = useScrollContentOffset();
   const height = usePickerItemHeight();
@@ -73,7 +75,7 @@ const PickerItemContainer = ({
     );
   };
 
-  if (!enableScrollByTapOnItem) {
+  if (!enableScrollByTapOnItem || readOnly) {
     return renderAnimatedView();
   }
 

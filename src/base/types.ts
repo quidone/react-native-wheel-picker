@@ -35,6 +35,7 @@ export type RenderItemContainerProps<ItemT extends PickerItem<any>> = {
   renderItem: RenderItem<ItemT>;
   itemTextStyle: StyleProp<TextStyle> | undefined;
   enableScrollByTapOnItem: boolean | undefined;
+  readOnly: boolean | undefined;
 };
 export type RenderItemContainer<ItemT extends PickerItem<any>> = (
   props: RenderItemContainerProps<ItemT>,
