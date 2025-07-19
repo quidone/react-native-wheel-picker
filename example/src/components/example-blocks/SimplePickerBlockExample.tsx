@@ -5,7 +5,7 @@ import WheelPicker, {
 } from '@quidone/react-native-wheel-picker';
 import {useInit} from '@rozhkov/react-useful-hooks';
 import {withExamplePickerConfig, PickerConfigPanel} from '../../picker-config';
-import {Header} from '../base';
+import {Header} from '../../snack/ui-base';
 
 const ExampleWheelPicker = withExamplePickerConfig(WheelPicker);
 const createPickerItem = (index: number): PickerItem<number> => ({
