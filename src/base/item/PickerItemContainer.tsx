@@ -53,15 +53,8 @@ const PickerItemContainer = ({
     };
   }, [faces, height, index, offset]);
 
-  const TouchableComponent = enableScrollByTapOnItem
-    ? TouchableWithoutFeedback
-    : React.Fragment;
-
-  const scrollToItem = () =>
-    listRef.current?.scrollToIndex({index, animated: true});
-
-  return (
-    <TouchableComponent onPress={scrollToItem}>
+  const renderAnimatedView = () => {
+    return (
       <Animated.View
         style={[
           {
@@ -77,7 +70,20 @@ const PickerItemContainer = ({
       >
         {renderItem({item, index, itemTextStyle})}
       </Animated.View>
-    </TouchableComponent>
+    );
+  };
+
+  if (!enableScrollByTapOnItem) {
+    return renderAnimatedView();
+  }
+
+  const scrollToItem = () =>
+    listRef.current?.scrollToIndex({index, animated: true});
+
+  return (
+    <TouchableWithoutFeedback onPress={scrollToItem}>
+      {renderAnimatedView()}
+    </TouchableWithoutFeedback>
   );
 };
 
