@@ -1,6 +1,7 @@
 import React, {useCallback, useMemo, useRef} from 'react';
 import type {TextStyle} from 'react-native';
 import {Animated, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
+import {useStableCallback} from '@rozhkov/react-useful-hooks';
 import PickerItemComponent from '../item/PickerItem';
 import {ScrollContentOffsetContext} from '../contexts/ScrollContentOffsetContext';
 import {PickerItemHeightContext} from '../contexts/PickerItemHeightContext';
@@ -37,6 +38,10 @@ export type PickerProps<ItemT extends PickerItem<any>> = {
 
   onValueChanging?: OnValueChanging<ItemT>;
   onValueChanged?: OnValueChanged<ItemT>;
+  onTouchStart?: () => void;
+  onTouchEnd?: () => void;
+  onTouchCancel?: () => void;
+  onScrollEnd?: () => void;
 
   keyExtractor?: KeyExtractor<ItemT>;
   renderItem?: RenderItem<ItemT>;
@@ -91,6 +96,11 @@ const Picker = <ItemT extends PickerItem<any>>({
 
   onValueChanged,
   onValueChanging,
+
+  onTouchStart,
+  onTouchEnd,
+  onTouchCancel,
+  onScrollEnd: onListScrollEnd,
 
   keyExtractor = defaultKeyExtractor,
   renderItem = defaultRenderItem,
@@ -154,6 +164,26 @@ const Picker = <ItemT extends PickerItem<any>>({
     touching: touching.value,
   });
 
+  const onTouchStartProp = useStableCallback(() => {
+    touching.setTrue();
+    onTouchStart?.();
+  });
+
+  const onTouchEndProp = useStableCallback(() => {
+    touching.setFalse();
+    onTouchEnd?.();
+  });
+
+  const onTouchCancelProp = useStableCallback(() => {
+    touching.setFalse();
+    onTouchCancel?.();
+  });
+
+  const onScrollEndProp = useStableCallback(() => {
+    onScrollEnd();
+    onListScrollEnd?.();
+  });
+
   return (
     <ScrollContentOffsetContext.Provider value={offsetY}>
       <PickerItemHeightContext.Provider value={itemHeight}>
@@ -173,10 +203,10 @@ const Picker = <ItemT extends PickerItem<any>>({
             keyExtractor,
             renderItem: renderPickerItem,
             scrollOffset: offsetY,
-            onTouchStart: touching.setTrue,
-            onTouchEnd: touching.setFalse,
-            onTouchCancel: touching.setFalse,
-            onScrollEnd,
+            onTouchStart: onTouchStartProp,
+            onTouchEnd: onTouchEndProp,
+            onTouchCancel: onTouchCancelProp,
+            onScrollEnd: onScrollEndProp,
             contentContainerStyle,
           })}
           {renderOverlay &&
