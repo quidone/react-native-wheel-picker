@@ -22,7 +22,7 @@ import Overlay from '../overlay/Overlay';
 import {calcPickerHeight, createFaces} from '../item/faces';
 import PickerItemContainer from '../item/PickerItemContainer';
 import {useBoolean} from '@utils/react';
-import {useInit} from '@rozhkov/react-useful-hooks';
+import {useInit, useStableCallback} from '@rozhkov/react-useful-hooks';
 import List from '../list/List';
 
 export type PickerProps<ItemT extends PickerItem<any>> = {
@@ -138,20 +138,27 @@ const Picker = <ItemT extends PickerItem<any>>({
     ],
   );
 
-  const {activeIndexRef, onScrollEnd} = useValueEventsEffect(
-    {
-      data,
-      valueIndex,
-      itemHeight,
-      offsetYAv: offsetY,
-    },
-    {onValueChanging, onValueChanged},
-  );
-  useSyncScrollEffect({
+  const {activeIndexRef, onScrollEnd: onScrollEndForValueEvents} =
+    useValueEventsEffect(
+      {
+        data,
+        valueIndex,
+        itemHeight,
+        offsetYAv: offsetY,
+      },
+      {onValueChanging, onValueChanged},
+    );
+  const {onScrollEnd: onScrollEndForSyncScroll} = useSyncScrollEffect({
     listRef,
+    value,
     valueIndex,
     activeIndexRef,
     touching: touching.value,
+  });
+
+  const onScrollEnd = useStableCallback(() => {
+    onScrollEndForValueEvents();
+    onScrollEndForSyncScroll();
   });
 
   return (
