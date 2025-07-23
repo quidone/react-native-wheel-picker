@@ -112,6 +112,7 @@ const List = <ItemT extends PickerItem<any>>(
       ref={listRef}
       contentOffset={initialOffset}
       onScroll={onScroll}
+      scrollOffset={scrollOffset}
       snapToOffsets={snapToOffsets}
       style={styles.list}
       contentContainerStyle={contentContainerStyle}

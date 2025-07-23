@@ -119,6 +119,7 @@ const VirtualizedList = <ItemT extends PickerItem<any>>(
       getItemLayout={getItemLayout}
       initialScrollIndex={initialIndex}
       onScroll={onScroll}
+      scrollOffset={scrollOffset}
       snapToOffsets={snapToOffsets}
       style={styles.list}
       contentContainerStyle={contentContainerStyle}
