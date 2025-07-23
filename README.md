@@ -138,6 +138,7 @@ const App = () => {
 - ```width?``` [number | string] - width of picker.
 - ```readOnly?``` [boolean] - read only mode.
 - ```enableScrollByTapOnItem?``` [boolean] - allow scrolling by tap on an item (default = false)
+- ```extraValues?``` [unknown[]] - external values on which the Picker depends. Can be used as a forced trigger for scroll synchronization, even if it is active
 - ```testID?``` [string] - Used to locate this component in end-to-end tests.
 - ```onValueChanging?``` [function] - An event that is triggered when the value is changing.
 - ```onValueChanged?``` [function] - An event that is triggered when the value is changed (wheel is stopped and no touch).

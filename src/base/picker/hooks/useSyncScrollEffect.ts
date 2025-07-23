@@ -1,17 +1,20 @@
 import {type RefObject, useEffect, useRef} from 'react';
 import {useStableCallback} from '@rozhkov/react-useful-hooks';
+import {useEffectWithDynamicDepsLength} from '@utils/react';
 import type {ListMethods} from '../../types';
 
 const useSyncScrollEffect = ({
   listRef,
   value,
   valueIndex,
+  extraValues = [],
   activeIndexRef,
   touching,
 }: {
   listRef: RefObject<ListMethods>;
   value: unknown;
   valueIndex: number;
+  extraValues: unknown[] | undefined;
   activeIndexRef: RefObject<number>;
   touching: boolean;
 }) => {
@@ -30,6 +33,10 @@ const useSyncScrollEffect = ({
   useEffect(() => {
     syncScroll();
   }, [valueIndex]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffectWithDynamicDepsLength(() => {
+    syncScroll();
+  }, extraValues);
 
   const timeoutId = useRef<any>(undefined);
   const onScrollEnd = useStableCallback(() => {
