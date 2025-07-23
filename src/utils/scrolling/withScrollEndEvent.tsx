@@ -5,12 +5,14 @@ import React, {
   forwardRef,
   memo,
   useCallback,
+  useEffect,
   useMemo,
 } from 'react';
 import type {
-  ScrollViewProps,
-  NativeSyntheticEvent,
+  Animated,
   NativeScrollEvent,
+  NativeSyntheticEvent,
+  ScrollViewProps,
 } from 'react-native';
 import debounce from '@utils/debounce';
 
@@ -23,6 +25,7 @@ type ComponentProps = Pick<
 >;
 
 type ExtendProps<PropsT> = PropsT & {
+  scrollOffset: Animated.Value;
   onScrollEnd?: () => void;
 };
 
@@ -35,12 +38,13 @@ const withScrollEndEvent = <PropsT extends ComponentProps>(
       onScrollEndDrag: onScrollEndDragProp,
       onMomentumScrollBegin: onMomentumScrollBeginProp,
       onMomentumScrollEnd: onMomentumScrollEndProp,
+      scrollOffset,
       ...rest
     }: ExtendProps<PropsT>,
     forwardedRef: ForwardedRef<ComponentRef<ComponentType<PropsT>>>,
   ) => {
     const onScrollEnd = useMemo(
-      () => debounce(onScrollEndProp, 0), // This works well with onScrollEndDrag -> onMomentumScrollBegin transitions
+      () => debounce(onScrollEndProp, 0), // A small delay is needed so that onScrollEnd doesn't trigger prematurely.
       [onScrollEndProp],
     );
 
@@ -67,6 +71,15 @@ const withScrollEndEvent = <PropsT extends ComponentProps>(
       },
       [onScrollEnd, onMomentumScrollEndProp],
     );
+
+    useEffect(() => {
+      const sub = scrollOffset.addListener(() => {
+        onScrollEnd.clear();
+      });
+      return () => {
+        scrollOffset.removeListener(sub);
+      };
+    }, [onScrollEnd, scrollOffset]);
 
     return (
       <Component
