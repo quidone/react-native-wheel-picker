@@ -28,6 +28,7 @@ import List from '../list/List';
 export type PickerProps<ItemT extends PickerItem<any>> = {
   data: ReadonlyArray<ItemT>;
   value?: ItemT['value'];
+  extraValues?: unknown[];
   itemHeight?: number;
   visibleItemCount?: number;
   width?: number | 'auto' | `${number}%`;
@@ -82,6 +83,7 @@ const useValueIndex = (data: ReadonlyArray<PickerItem<any>>, value: any) => {
 const Picker = <ItemT extends PickerItem<any>>({
   data,
   value,
+  extraValues = [],
   width = 'auto',
   itemHeight = 48,
   visibleItemCount = 5,
@@ -152,6 +154,7 @@ const Picker = <ItemT extends PickerItem<any>>({
     listRef,
     value,
     valueIndex,
+    extraValues,
     activeIndexRef,
     touching: touching.value,
   });
