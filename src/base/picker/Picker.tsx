@@ -51,6 +51,9 @@ export type PickerProps<ItemT extends PickerItem<any>> = {
   contentContainerStyle?: StyleProp<ViewStyle>;
 
   scrollEventThrottle?: number;
+
+  _onScrollStart?: () => void;
+  _onScrollEnd?: () => void;
 };
 
 const defaultKeyExtractor: KeyExtractor<any> = (_, index) => index.toString();
@@ -104,6 +107,9 @@ const Picker = <ItemT extends PickerItem<any>>({
   itemTextStyle,
   overlayItemStyle,
   contentContainerStyle,
+
+  _onScrollStart,
+  _onScrollEnd,
   ...restProps
 }: PickerProps<ItemT>) => {
   const valueIndex = useValueIndex(data, value);
@@ -160,6 +166,8 @@ const Picker = <ItemT extends PickerItem<any>>({
   });
 
   const onScrollEnd = useStableCallback(() => {
+    // consistency matters
+    _onScrollEnd?.();
     onScrollEndForValueEvents();
     onScrollEndForSyncScroll();
   });
@@ -186,6 +194,7 @@ const Picker = <ItemT extends PickerItem<any>>({
             onTouchStart: touching.setTrue,
             onTouchEnd: touching.setFalse,
             onTouchCancel: touching.setFalse,
+            onScrollStart: _onScrollStart,
             onScrollEnd,
             contentContainerStyle,
           })}
