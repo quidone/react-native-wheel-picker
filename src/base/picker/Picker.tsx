@@ -27,7 +27,7 @@ import List from '../list/List';
 
 export type PickerProps<ItemT extends PickerItem<any>> = {
   data: ReadonlyArray<ItemT>;
-  value?: ItemT['value'];
+  value: ItemT['value'];
   extraValues?: unknown[];
   itemHeight?: number;
   visibleItemCount?: number;
