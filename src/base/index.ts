@@ -17,6 +17,6 @@ export type {
 export {useScrollContentOffset} from './contexts/ScrollContentOffsetContext';
 export {usePickerItemHeight} from './contexts/PickerItemHeightContext';
 
-export {PickerProps} from './picker/Picker';
+export {type PickerProps, useValueIndex} from './picker/Picker';
 import WheelPicker from './picker/Picker';
 export default WheelPicker;

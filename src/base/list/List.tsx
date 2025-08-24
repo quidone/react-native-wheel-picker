@@ -1,5 +1,5 @@
 import React, {
-  ForwardedRef,
+  type ForwardedRef,
   forwardRef,
   memo,
   useImperativeHandle,
@@ -13,11 +13,11 @@ import type {
   RenderPickerItem,
 } from '../types';
 import {
+  type ViewStyle,
+  type StyleProp,
   Animated,
   ScrollView,
-  StyleProp,
   StyleSheet,
-  ViewStyle,
 } from 'react-native';
 import {useInit} from '@rozhkov/react-useful-hooks';
 import {withScrollStartEndEvent} from '@utils/scrolling';

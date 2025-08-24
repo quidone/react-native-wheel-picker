@@ -77,7 +77,17 @@ export type RenderOverlay = (
 ) => React.ReactElement | null;
 
 // events
-export type ValueChangingEvent<ItemT> = {item: ItemT; index: number};
-export type ValueChangedEvent<ItemT> = {item: ItemT; index: number};
-export type OnValueChanging<ItemT> = (event: ValueChangingEvent<ItemT>) => void;
-export type OnValueChanged<ItemT> = (event: ValueChangedEvent<ItemT>) => void;
+export type ValueChangingEvent<ItemT extends PickerItem<any>> = {
+  item: ItemT;
+  index: number;
+};
+export type ValueChangedEvent<ItemT extends PickerItem<any>> = {
+  item: ItemT;
+  index: number;
+};
+export type OnValueChanging<ItemT extends PickerItem<any>> = (
+  event: ValueChangingEvent<ItemT>,
+) => void;
+export type OnValueChanged<ItemT extends PickerItem<any>> = (
+  event: ValueChangedEvent<ItemT>,
+) => void;

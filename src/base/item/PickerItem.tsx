@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {StyleProp, StyleSheet, Text, TextStyle} from 'react-native';
+import {type StyleProp, type TextStyle, StyleSheet, Text} from 'react-native';
 import {usePickerItemHeight} from '../contexts/PickerItemHeightContext';
 
 type PickerItemProps = {

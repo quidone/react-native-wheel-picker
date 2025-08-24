@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
+import {type StyleProp, type ViewStyle, StyleSheet, View} from 'react-native';
 
 type OverlayProps = {
   itemHeight: number;
