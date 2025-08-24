@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@expo/ngrok": "^4.1.1",
-    "@faker-js/faker": "^8.0.2",
+    "@faker-js/faker": "^9.9.0",
     "@gorhom/bottom-sheet": "^5",
     "@quidone/react-native-wheel-picker-feedback": "^2.0.0",
     "@react-native-picker/picker": "2.11.1",

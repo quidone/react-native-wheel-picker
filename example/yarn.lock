@@ -2496,10 +2496,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@faker-js/faker@npm:^8.0.2":
-  version: 8.4.1
-  resolution: "@faker-js/faker@npm:8.4.1"
-  checksum: 10/5983c2ea64f26055ad6648de748878e11ebe2fb751e3c7435ae141cdffabc2dccfe4c4f49da69a3d2add71e21b415c683ac5fba196fab0d5ed6779fbec436c80
+"@faker-js/faker@npm:^9.9.0":
+  version: 9.9.0
+  resolution: "@faker-js/faker@npm:9.9.0"
+  checksum: 10/b24b1be0fb3090d54abaaa3a814f37d1a7551f1207dcd330a1af2c70f6312a8b95ebb82653577757dd62f4cbbb56caa3c83513053253654dc3e286a05040ecbe
   languageName: node
   linkType: hard
 
@@ -5939,7 +5939,7 @@ __metadata:
     "@babel/core": "npm:^7.24.0"
     "@expo/ngrok": "npm:^4.1.1"
     "@expo/webpack-config": "npm:~19.0.1"
-    "@faker-js/faker": "npm:^8.0.2"
+    "@faker-js/faker": "npm:^9.9.0"
     "@gorhom/bottom-sheet": "npm:^5"
     "@quidone/react-native-wheel-picker-feedback": "npm:^2.0.0"
     "@react-native-picker/picker": "npm:2.11.1"
