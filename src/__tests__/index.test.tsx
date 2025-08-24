@@ -8,6 +8,7 @@ describe('WheelPicker', () => {
       .create(
         <WheelPicker
           data={[{value: 1, label: 'Item 1'}]}
+          value={1}
           testID="wheel-picker"
         />,
       )
