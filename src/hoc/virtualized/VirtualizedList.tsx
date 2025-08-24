@@ -1,18 +1,18 @@
 import React, {
-  ForwardedRef,
+  type ForwardedRef,
+  type RefObject,
   forwardRef,
   memo,
-  RefObject,
   useCallback,
   useMemo,
 } from 'react';
 import {
+  type FlatListProps,
+  type StyleProp,
+  type ViewStyle,
   Animated,
   FlatList,
-  FlatListProps,
-  StyleProp,
   StyleSheet,
-  type ViewStyle,
 } from 'react-native';
 import {withScrollStartEndEvent} from '@utils/scrolling';
 import type {
