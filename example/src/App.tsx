@@ -1,38 +1,19 @@
 import * as React from 'react';
-import {ScrollView, StyleSheet} from 'react-native';
-import {PickerConfigProvider} from './picker-config';
-import {Box} from './components/base';
-import {
-  AvatarCustomizedPickerBlockExample,
-  CompareWithNativeIOSBlockExample,
-  SimplePickerBlockExample,
-} from './components/example-blocks';
+import WheelPickerFeedback from '@quidone/react-native-wheel-picker-feedback';
+import {NativeFeedbackProvider, RootNavigation} from './snack';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 
 const App = () => {
   return (
-    <ScrollView contentContainerStyle={styles.contentContainer}>
-      <SimplePickerBlockExample />
-      <AvatarCustomizedPickerBlockExample />
-      <CompareWithNativeIOSBlockExample />
-      <Box height={100} />
-    </ScrollView>
+    <NativeFeedbackProvider module={WheelPickerFeedback}>
+      <GestureHandlerRootView style={{flex: 1}}>
+        <BottomSheetModalProvider>
+          <RootNavigation />
+        </BottomSheetModalProvider>
+      </GestureHandlerRootView>
+    </NativeFeedbackProvider>
   );
 };
 
-const styles = StyleSheet.create({
-  contentContainer: {
-    paddingVertical: 60,
-    paddingHorizontal: 20,
-    alignItems: 'center',
-  },
-});
-
-const Providers = () => {
-  return (
-    <PickerConfigProvider>
-      <App />
-    </PickerConfigProvider>
-  );
-};
-
-export default Providers;
+export default App;

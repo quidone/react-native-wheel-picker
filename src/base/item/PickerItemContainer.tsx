@@ -1,8 +1,8 @@
 import React, {memo, type RefObject, useMemo} from 'react';
 import {
+  type TextStyle,
+  type StyleProp,
   Animated,
-  StyleProp,
-  TextStyle,
   TouchableWithoutFeedback,
 } from 'react-native';
 import {useScrollContentOffset} from '../contexts/ScrollContentOffsetContext';

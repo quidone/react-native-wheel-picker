@@ -1,6 +1,12 @@
 import React, {useCallback, useMemo, useRef} from 'react';
 import type {TextStyle} from 'react-native';
-import {Animated, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
+import {
+  type StyleProp,
+  type ViewStyle,
+  Animated,
+  StyleSheet,
+  View,
+} from 'react-native';
 import PickerItemComponent from '../item/PickerItem';
 import {ScrollContentOffsetContext} from '../contexts/ScrollContentOffsetContext';
 import {PickerItemHeightContext} from '../contexts/PickerItemHeightContext';
@@ -27,7 +33,7 @@ import List from '../list/List';
 
 export type PickerProps<ItemT extends PickerItem<any>> = {
   data: ReadonlyArray<ItemT>;
-  value?: ItemT['value'];
+  value: ItemT['value'];
   extraValues?: unknown[];
   itemHeight?: number;
   visibleItemCount?: number;
@@ -52,6 +58,7 @@ export type PickerProps<ItemT extends PickerItem<any>> = {
 
   scrollEventThrottle?: number;
 
+  _enableSyncScrollAfterScrollEnd?: boolean;
   _onScrollStart?: () => void;
   _onScrollEnd?: () => void;
 };
@@ -76,7 +83,10 @@ const defaultRenderList: RenderList<any> = (props) => {
   return <List {...props} />;
 };
 
-const useValueIndex = (data: ReadonlyArray<PickerItem<any>>, value: any) => {
+export const useValueIndex = (
+  data: ReadonlyArray<PickerItem<any>>,
+  value: any,
+) => {
   return useMemo(() => {
     const index = data.findIndex((x) => x.value === value);
     return index >= 0 ? index : 0;
@@ -108,13 +118,19 @@ const Picker = <ItemT extends PickerItem<any>>({
   overlayItemStyle,
   contentContainerStyle,
 
+  _enableSyncScrollAfterScrollEnd = true,
   _onScrollStart,
   _onScrollEnd,
   ...restProps
 }: PickerProps<ItemT>) => {
   const valueIndex = useValueIndex(data, value);
+
   const initialIndex = useInit(() => valueIndex);
-  const offsetY = useRef(new Animated.Value(valueIndex * itemHeight)).current;
+  const offsetY = useMemo(
+    () => new Animated.Value(valueIndex * itemHeight),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [readOnly], // when scrollEnabled changes, the events stop coming. Re-creating
+  );
   const listRef = useRef<ListMethods>(null);
   const touching = useBoolean(false);
 
@@ -163,6 +179,7 @@ const Picker = <ItemT extends PickerItem<any>>({
     extraValues,
     activeIndexRef,
     touching: touching.value,
+    enableSyncScrollAfterScrollEnd: _enableSyncScrollAfterScrollEnd,
   });
 
   const onScrollEnd = useStableCallback(() => {

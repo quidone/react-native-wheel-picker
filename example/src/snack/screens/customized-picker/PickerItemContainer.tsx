@@ -1,8 +1,8 @@
 import React, {memo, useMemo} from 'react';
 import {Animated} from 'react-native';
 import {
-  PickerItem,
-  RenderItemContainerProps,
+  type PickerItem,
+  type RenderItemContainerProps,
   usePickerItemHeight,
   useScrollContentOffset,
 } from '@quidone/react-native-wheel-picker';

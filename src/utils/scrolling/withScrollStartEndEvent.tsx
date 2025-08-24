@@ -102,8 +102,14 @@ const withScrollStartEndEvent = <PropsT extends ComponentProps>(
 
     useEffect(() => {
       const sub = scrollOffset.addListener(() => {
-        maybeCallOnScrollStart();
-        onScrollEnd.clear();
+        if (!isOnScrollStartCalledRef.current) {
+          // If this condition is met, then we assume that no events were triggered,
+          // and there was a change in the content that offset shifted to a smaller side
+          maybeCallOnScrollStart();
+          onScrollEnd();
+        } else {
+          onScrollEnd.clear();
+        }
       });
       return () => {
         scrollOffset.removeListener(sub);

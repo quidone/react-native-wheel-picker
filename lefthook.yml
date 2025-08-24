@@ -2,13 +2,16 @@ pre-commit:
   parallel: true
   commands:
     lint:
-      files: git diff --name-only @{push}
-      glob: "*.{js,ts,jsx,tsx}"
-      run: npx eslint {files}
+      run: yarn lint:check
     types:
-      files: git diff --name-only @{push}
-      glob: "*.{js,ts, jsx, tsx}"
-      run: npx tsc --noEmit
+      run: yarn tsc:check
+pre-push:
+  parallel: true
+  commands:
+    lint:
+      run: yarn lint:check
+    types:
+      run: yarn tsc:check
 commit-msg:
   parallel: true
   commands:

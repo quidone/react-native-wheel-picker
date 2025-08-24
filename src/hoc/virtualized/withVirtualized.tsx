@@ -1,6 +1,6 @@
 import React from 'react';
 import type {PickerProps, RenderList} from '@implementation/base';
-import Picker, {PickerItem} from '@implementation/base';
+import Picker, {type PickerItem} from '@implementation/base';
 import type {AdditionalProps} from './VirtualizedList';
 import VirtualizedList from './VirtualizedList';
 

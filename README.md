@@ -42,14 +42,14 @@ A flexible React Native Wheel Picker for iOS and Android without using the nativ
 
 
 ## Features
- - Without native side.
- - Unified API.
- - Only native animations.
- - [Support native feedback](#Native-Feedback).
- - [Support virtualization](#withVirtualized).
- - Compatible with Expo ([Snack][EXPO_SNACK]).
- - Deep customization
- - Written ```TypeScript```.
+- Without native side.
+- Unified API.
+- Only native animations.
+- [Support native feedback](#Native-Feedback).
+- [Support virtualization](#withVirtualized).
+- Compatible with Expo ([Snack][EXPO_SNACK]).
+- Deep customization
+- Written ```TypeScript```.
 
 ## Installation
 ```shell
@@ -62,9 +62,15 @@ yarn add @quidone/react-native-wheel-picker
 - [Native Feedback](#Native-Feedback)
 - [API](#API)
   - [WheelPicker](#WheelPicker)
-  - [usePickerItemHeight](#usePickerItemHeight)
-  - [useScrollContentOffset](#useScrollContentOffset)
-  - [withVirtualized](#withVirtualized)
+    - [usePickerItemHeight](#usePickerItemHeight)
+    - [useScrollContentOffset](#useScrollContentOffset)
+    - [withVirtualized](#withVirtualized)
+  - [DatePicker (Beta)](#DatePicker)
+  - [Picker Control (Beta)](#Picker-Control)
+    - [usePickerControl](#usePickerControl)
+    - [withPickerControl](#withPickerControl)
+    - [useOnPickerValueChangedEffect](#useOnPickerValueChangedEffect)
+    - [useOnPickerValueChangingEffect](#useOnPickerValueChangingEffect)
 - [Footer](#-Author)
 
 ## Usage
@@ -80,7 +86,7 @@ yarn install
 cd example && yarn install && yarn ios
 ```
 
-### Simple case
+### WheelPicker usage
 
 ```jsx
 import React, {useState} from 'react';
@@ -105,6 +111,123 @@ const App = () => {
 
 export default App;
 ```
+
+### DatePicker usage (Beta)
+
+#### Simple case
+```tsx
+import React, {useState} from 'react';
+import {DatePicker} from '@quidone/react-native-wheel-picker';
+
+const App = () => {
+  const [date, setDate] = useState('2025-02-02');
+
+  return (
+    <DatePicker
+      date={date} // required format YYYY-MM-DD
+      onDateChanged={({date}) => setDate(date)}
+    />
+  );
+};
+```
+
+#### Customized case
+You also have a lot of control over each WheelPicker and the rendering process;
+you can add your own components between individual WheelPickers
+
+> ⚠️ **Warning:** It is recommended to test the component in a release build of your application.
+> There is an issue where synchronization of scrolling may occasionally slip during scrolling
+> attempts when performance is low.
+
+```tsx
+import React, {useState} from 'react';
+import {useStableCallback} from '@rozhkov/react-useful-hooks';
+import {DatePicker} from '@quidone/react-native-wheel-picker';
+
+const CustomizedDatePicker = () => {
+  const [date, setDate] = useState('2025-02-02');
+
+  const onDateChanged = useStableCallback(({date}: {date: string}) => {
+    setDate(date);
+  });
+
+  return (
+    <DatePicker
+      date={date}
+      onDateChanged={onDateChanged}
+      renderDate={() => <DatePicker.Date />}
+      renderMonth={() => <DatePicker.Month />}
+      renderYear={() => <DatePicker.Year />}
+    >
+      {({dateNodes}) => {
+        return dateNodes.map((x) => x.node);
+      }}
+    </DatePicker>
+  );
+};
+```
+
+### PickerControl usage (Beta)
+
+```tsx
+import React, {useState} from 'react';
+import WheelPicker, {
+  type PickerItem,
+  useOnPickerValueChangedEffect,
+  useOnPickerValueChangingEffect,
+  usePickerControl,
+  withPickerControl,
+} from '@quidone/react-native-wheel-picker';
+import {View} from 'react-native';
+
+const ControlPicker = withPickerControl(WheelPicker);
+
+type ControlPickersMap = {
+  value1: {item: PickerItem<number>};
+  value2: {item: PickerItem<number>};
+};
+
+const data = Array.from({length: 100}, (_, index) => ({value: index}));
+
+const App = () => {
+  const [value, setValue] = useState({value1: 0, value2: 0});
+
+  const pickerControl = usePickerControl<ControlPickersMap>();
+
+  useOnPickerValueChangedEffect(pickerControl, (event) => {
+    setValue({
+      value1: event.pickers.value1.item.value,
+      value2: event.pickers.value2.item.value,
+    });
+  });
+
+  useOnPickerValueChangingEffect(pickerControl, (event) => {
+    // some logic
+  });
+
+  return (
+    <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+      <ControlPicker
+        control={pickerControl}
+        pickerName={'value1'}
+        data={data}
+        value={value.value1}
+        width={100}
+        enableScrollByTapOnItem={true}
+      />
+      <ControlPicker
+        control={pickerControl}
+        pickerName={'value2'}
+        data={data}
+        value={value.value2}
+        width={100}
+        enableScrollByTapOnItem={true}
+      />
+    </View>
+  );
+};
+```
+
 
 ## Native Feedback
 
@@ -154,13 +277,13 @@ const App = () => {
 - ```scrollEventThrottle?``` [object | array] - [original](https://reactnative.dev/docs/scrollview#scrolleventthrottle-ios)
 
 
-### usePickerItemHeight
+#### usePickerItemHeight
 This hook returns the item height which was passed via props.
 
-### useScrollContentOffset
+#### useScrollContentOffset
 This hook returns the animated value of the ScrollView offset.
 
-### withVirtualized
+#### withVirtualized
 This HOC returns virtualized picker
 
 ```jsx
@@ -174,6 +297,58 @@ const VirtualizedWheelPicker = withVirtualized(WheelPicker);
 - ```maxToRenderPerBatch?``` (default = ```Math.ceil(visibleItemCount / 2)```) - [original](https://reactnative.dev/docs/flatlist#maxtorenderperbatch).
 - ```windowSize?``` - [original](https://reactnative.dev/docs/flatlist#windowsize).
 - ```updateCellsBatchingPeriod?``` (default = 10) - [original](https://reactnative.dev/docs/flatlist#updatecellsbatchingperiod).
+
+### DatePicker
+
+A specialized picker component for selecting dates. It supports localization and deep customization.
+
+#### Props
+- ```date``` [string] - Current date in 'YYYY-MM-DD' format
+- ```onDateChanged``` [function] - Callback fired when date selection is confirmed
+- ```minDate?``` [string] - Minimum selectable date in 'YYYY-MM-DD' format
+- ```maxDate?``` [string] - Maximum selectable date in 'YYYY-MM-DD' format
+- ```locale?``` [string] - Locale for date formatting (default = 'en')
+- ```renderDate?``` [function] - Custom renderer for date component
+- ```renderMonth?``` [function] - Custom renderer for month component
+- ```renderYear?``` [function] - Custom renderer for year component
+- ```children?``` [function] - Render prop for customizing component layout
+
+DatePicker also accepts all the common wheel picker props like `itemHeight`, `visibleItemCount`, `readOnly`, etc.
+
+#### Subcomponents
+DatePicker exposes subcomponents that can be used for custom layouts:
+- ```DatePicker.Date``` - Day WheelPicker
+- ```DatePicker.Month``` - Month WheelPicker
+- ```DatePicker.Year``` - Year WheelPicker
+
+### Picker Control
+
+Picker Control provides a way to synchronize multiple WheelPicker components. It is used inside DatePicker.
+
+Main goals:
+1. Synchronize onValueChanged and onValueChanging events.
+2. Synchronize the value selection process. If a value changes, all WheelPickers should accept this value, even if they are still spinning.
+
+#### usePickerControl
+
+A hook that creates a control object for connecting multiple pickers. See [example](#PickerControl-Usage)
+
+#### withPickerControl
+
+A HOC that connects a WheelPicker to a control object. See [example](#PickerControl-Usage)
+
+##### Adding props
+- ```control``` [object] - Control object created with `usePickerControl`
+- ```pickerName``` [string] - Unique name for the picker within the control group
+
+#### useOnPickerValueChangedEffect
+
+Called when the value has been changed. This occurs during the inactive state of all WheelPickers. See [example](#PickerControl-Usage)
+
+#### useOnPickerValueChangingEffect
+
+Called when any of the connected WheelPickers changes. See [example](#PickerControl-Usage)
+
 
 ## 👨‍💻 Author
 [Sergey Rozhkov][AUTHOR]

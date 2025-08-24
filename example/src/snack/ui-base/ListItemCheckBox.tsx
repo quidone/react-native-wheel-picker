@@ -17,7 +17,7 @@ const ListItemCheckBox = ({title, value, onToggle}: ListItemCheckBoxProps) => {
 };
 
 const styles = StyleSheet.create({
-  root: {flexDirection: 'row', alignItems: 'center', paddingVertical: 8},
+  root: {flexDirection: 'row', alignItems: 'center', paddingVertical: 4},
   title: {flex: 1, fontSize: 16},
 });
 
