@@ -37,9 +37,5 @@
     "babel-loader": "^8.1.0",
     "babel-plugin-module-resolver": "^4.1.0"
   },
-  "private": true,
-  "resolutions": {
-    "@types/react": "^18.2.0",
-    "@types/react-native": "0.71.6"
-  }
+  "private": true
 }

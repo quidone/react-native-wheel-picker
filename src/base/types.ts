@@ -27,7 +27,7 @@ export type RenderItem<ItemT extends PickerItem<any>> = (
   props: RenderItemProps<ItemT>,
 ) => React.ReactElement | null;
 export type RenderItemContainerProps<ItemT extends PickerItem<any>> = {
-  listRef: RefObject<ListMethods>;
+  listRef: RefObject<ListMethods | null>;
   key?: string;
   item: ItemT;
   index: number;
@@ -46,7 +46,7 @@ export type RenderPickerItem<ItemT extends PickerItem<any>> = (info: {
   index: number;
 }) => React.ReactElement;
 export type RenderListProps<ItemT extends PickerItem<any>> = {
-  ref: React.RefObject<ListMethods>;
+  ref: React.RefObject<ListMethods | null>;
   data: ReadonlyArray<ItemT>;
   keyExtractor: KeyExtractor<ItemT>;
   renderItem: RenderPickerItem<ItemT>;

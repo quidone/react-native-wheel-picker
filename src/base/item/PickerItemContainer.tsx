@@ -11,7 +11,7 @@ import type {ListMethods, RenderItem} from '../types';
 import type {Faces} from './faces';
 
 type PickerItemContainerProps = {
-  listRef: RefObject<ListMethods>;
+  listRef: RefObject<ListMethods | null>;
   item: any;
   index: number;
   faces: ReadonlyArray<Faces>;

@@ -3516,13 +3516,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prop-types@npm:*":
-  version: 15.7.14
-  resolution: "@types/prop-types@npm:15.7.14"
-  checksum: 10/d0c5407b9ccc3dd5fae0ccf9b1007e7622ba5e6f1c18399b4f24dff33619d469da4b9fa918a374f19dc0d9fe6a013362aab0b844b606cfc10676efba3f5f736d
-  languageName: node
-  linkType: hard
-
 "@types/qs@npm:*":
   version: 6.9.18
   resolution: "@types/qs@npm:6.9.18"
@@ -3547,22 +3540,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-native@npm:0.71.6":
-  version: 0.71.6
-  resolution: "@types/react-native@npm:0.71.6"
+"@types/react-native@npm:^0.70":
+  version: 0.70.19
+  resolution: "@types/react-native@npm:0.70.19"
   dependencies:
     "@types/react": "npm:*"
-  checksum: 10/790b92ec12755486a919b6ee279982854cd7fe960a6d2b8ff284ac0ce413b6a0068901e72c33cbd2259d0571728f16db83774e4d2ccae7f7d89175e998881050
+  checksum: 10/43b280990f7a3c45cd707098d686ddbf353270cc463c9bb4306a5f675e3fe84010a32e344274b00b8a11629d73a8df1a1075af267d182a0f7094599616ae622c
   languageName: node
   linkType: hard
 
-"@types/react@npm:^18.2.0":
-  version: 18.3.20
-  resolution: "@types/react@npm:18.3.20"
+"@types/react@npm:*":
+  version: 19.1.11
+  resolution: "@types/react@npm:19.1.11"
   dependencies:
-    "@types/prop-types": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: 10/020c51e63b60862e6d772f0cdea0b9441182eedab6289dabd8add0708ded62003834c4e7c6f23a1ccd3ca9486b46296057c3f881c34261a0483765351f8d0bc3
+  checksum: 10/a9b8356783a5dd7f37803b9e4021610fe479186d1b8ee9c0c67a0f2f91b853e142349c913d39fd05af77065eb67f098b9b216214d82cdacf99c1589e04ed0d64
   languageName: node
   linkType: hard
 

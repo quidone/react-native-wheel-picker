@@ -1,6 +1,5 @@
 import React, {
   type ForwardedRef,
-  type RefObject,
   forwardRef,
   memo,
   useCallback,
@@ -11,7 +10,6 @@ import {
   type StyleProp,
   type ViewStyle,
   Animated,
-  FlatList,
   StyleSheet,
 } from 'react-native';
 import {withScrollStartEndEvent} from '@utils/scrolling';
@@ -116,7 +114,7 @@ const VirtualizedList = <ItemT extends PickerItem<any>>(
       scrollEventThrottle={16}
       scrollEnabled={!readOnly}
       {...restProps}
-      ref={forwardedRef as RefObject<FlatList>}
+      ref={forwardedRef as any}
       data={data as Animated.WithAnimatedObject<typeof data>}
       renderItem={renderItem}
       keyExtractor={keyExtractor}

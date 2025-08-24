@@ -12,7 +12,7 @@ const useSyncScrollEffect = ({
   touching,
   enableSyncScrollAfterScrollEnd,
 }: {
-  listRef: RefObject<ListMethods>;
+  listRef: RefObject<ListMethods | null>;
   value: unknown;
   valueIndex: number;
   extraValues: unknown[] | undefined;
