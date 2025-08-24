@@ -19,11 +19,25 @@ export {
   useScrollContentOffset,
 } from '@implementation/base';
 
-export {PickerProps as WheelPickerProps} from '@implementation/base';
+export {type PickerProps as WheelPickerProps} from '@implementation/base';
 import {default as WheelPicker} from '@implementation/base';
 export default WheelPicker;
 
 export {
   withVirtualized,
-  WithVirtualizedProps,
+  type WithVirtualizedProps,
 } from '@implementation/virtualized';
+
+export {
+  usePickerControl,
+  withPickerControl,
+  useOnPickerValueChangedEffect,
+  useOnPickerValueChangingEffect,
+} from '@implementation/picker-control';
+
+export {
+  type DatePickerYearProps,
+  type DatePickerMonthProps,
+  type DatePickerDateProps,
+  DatePicker,
+} from './date';
