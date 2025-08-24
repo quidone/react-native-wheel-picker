@@ -37,11 +37,11 @@ const getNewSubId = (): SubId => `${++nextSubId}`;
 export type ControlSubscriber = {
   getExtraValues: () => unknown[];
   getEveryIsStopped: () => boolean;
-  omitOnValueChanged: (event: ValueChangedEvent<PickerItem<unknown>>) => void;
-  omitOnValueChanging: (event: ValueChangingEvent<PickerItem<unknown>>) => void;
-  omitOnNewPropValue: (event: {item: PickerItem<unknown>}) => void;
-  omitOnScrollStart: () => void;
-  omitOnScrollEnd: () => void;
+  emitOnValueChanged: (event: ValueChangedEvent<PickerItem<unknown>>) => void;
+  emitOnValueChanging: (event: ValueChangingEvent<PickerItem<unknown>>) => void;
+  emitOnNewPropValue: (event: {item: PickerItem<unknown>}) => void;
+  emitOnScrollStart: () => void;
+  emitOnScrollEnd: () => void;
   onNewExtraValues: (cb: () => void) => Unsubscribe;
   onAllScrollEnd: (cb: () => void) => Unsubscribe;
 
@@ -182,7 +182,6 @@ export const createControl = <
         subscribers[subId]!.isStopped = true;
       });
 
-      // TODO change omit -> emit
       return {
         getExtraValues: () => {
           return Object.keys(subscribers)
@@ -191,19 +190,19 @@ export const createControl = <
         },
         getEveryIsStopped,
 
-        omitOnNewPropValue: (...args) => {
+        emitOnNewPropValue: (...args) => {
           subEmitter.emit('onNewPropValue', ...args);
         },
-        omitOnValueChanged: (...args) => {
+        emitOnValueChanged: (...args) => {
           subEmitter.emit('onValueChanged', ...args);
         },
-        omitOnValueChanging: (...args) => {
+        emitOnValueChanging: (...args) => {
           subEmitter.emit('onValueChanging', ...args);
         },
-        omitOnScrollStart: () => {
+        emitOnScrollStart: () => {
           subEmitter.emit('onScrollStart');
         },
-        omitOnScrollEnd: () => {
+        emitOnScrollEnd: () => {
           subEmitter.emit('onScrollEnd');
         },
 

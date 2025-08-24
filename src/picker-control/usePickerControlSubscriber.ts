@@ -47,12 +47,12 @@ export const usePickerControlSubscriber = ({
 
   const onScrollStart = useStableCallback(() => {
     setEnableSyncScrollAfterScrollEnd(false);
-    subscriber?.omitOnScrollStart();
+    subscriber?.emitOnScrollStart();
   });
-  const onScrollEnd = useStableCallback(subscriber?.omitOnScrollEnd);
-  const omitOnValueChanged = useStableCallback(subscriber?.omitOnValueChanged);
-  const omitOnValueChanging = useStableCallback(
-    subscriber?.omitOnValueChanging,
+  const onScrollEnd = useStableCallback(subscriber?.emitOnScrollEnd);
+  const emitOnValueChanged = useStableCallback(subscriber?.emitOnValueChanged);
+  const emitOnValueChanging = useStableCallback(
+    subscriber?.emitOnValueChanging,
   );
 
   useEffect(() => {
@@ -77,7 +77,7 @@ export const usePickerControlSubscriber = ({
   }, [subscriber]);
 
   useEffect(() => {
-    subscriber?.omitOnNewPropValue({item: currentItem});
+    subscriber?.emitOnNewPropValue({item: currentItem});
   }, [currentItem, subscriber]);
 
   return {
@@ -85,7 +85,7 @@ export const usePickerControlSubscriber = ({
     enableSyncScrollAfterScrollEnd,
     onScrollStart,
     onScrollEnd,
-    omitOnValueChanged,
-    omitOnValueChanging,
+    emitOnValueChanged,
+    emitOnValueChanging,
   };
 };

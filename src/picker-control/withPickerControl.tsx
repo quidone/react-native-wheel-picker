@@ -61,13 +61,13 @@ export const withPickerControl = <PropsT extends RequiredPickerProps>(
     const onValueChangingStable = useStableCallback<
       OnValueChanging<PickerItem<unknown>>
     >((event) => {
-      subscriber.omitOnValueChanging(event);
+      subscriber.emitOnValueChanging(event);
       onValueChangingProp?.(event);
     });
     const onValueChangedStable = useStableCallback<
       OnValueChanged<PickerItem<unknown>>
     >((event) => {
-      subscriber.omitOnValueChanged(event);
+      subscriber.emitOnValueChanged(event);
       onValueChangedProp?.(event);
     });
     const onScrollStartStable = useStableCallback(() => {
