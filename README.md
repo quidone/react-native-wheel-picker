@@ -113,6 +113,9 @@ export default App;
 ```
 
 ### DatePicker usage (Beta)
+> ⚠️ **Warning:** It is recommended to test the component in a release build of your application.
+> There is an issue where synchronization of scrolling may occasionally slip during scrolling
+> attempts when performance is low.
 
 #### Simple case
 ```tsx
@@ -134,10 +137,6 @@ const App = () => {
 #### Customized case
 You also have a lot of control over each WheelPicker and the rendering process;
 you can add your own components between individual WheelPickers
-
-> ⚠️ **Warning:** It is recommended to test the component in a release build of your application.
-> There is an issue where synchronization of scrolling may occasionally slip during scrolling
-> attempts when performance is low.
 
 ```tsx
 import React, {useState} from 'react';
@@ -331,11 +330,11 @@ Main goals:
 
 #### usePickerControl
 
-A hook that creates a control object for connecting multiple pickers. See [example](#PickerControl-Usage)
+A hook that creates a control object for connecting multiple pickers. See [example](#PickerControl-Usage-Beta)
 
 #### withPickerControl
 
-A HOC that connects a WheelPicker to a control object. See [example](#PickerControl-Usage)
+A HOC that connects a WheelPicker to a control object. See [example](#PickerControl-Usage-Beta)
 
 ##### Adding props
 - ```control``` [object] - Control object created with `usePickerControl`
@@ -343,11 +342,11 @@ A HOC that connects a WheelPicker to a control object. See [example](#PickerCont
 
 #### useOnPickerValueChangedEffect
 
-Called when the value has been changed. This occurs during the inactive state of all WheelPickers. See [example](#PickerControl-Usage)
+Called when the value has been changed. This occurs during the inactive state of all WheelPickers. See [example](#PickerControl-Usage-Beta)
 
 #### useOnPickerValueChangingEffect
 
-Called when any of the connected WheelPickers changes. See [example](#PickerControl-Usage)
+Called when any of the connected WheelPickers changes. See [example](#PickerControl-Usage-Beta)
 
 
 ## 👨‍💻 Author
