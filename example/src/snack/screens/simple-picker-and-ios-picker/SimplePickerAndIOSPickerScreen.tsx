@@ -1,18 +1,22 @@
-import React, {FC, memo, useCallback, useState} from 'react';
+import React, {type FC, memo, useCallback, useState} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
-import Picker, {
-  OnValueChanged,
-  PickerItem,
-} from '@quidone/react-native-wheel-picker';
-import {Picker as IOSPicker} from '@react-native-picker/picker';
 import {useInit} from '@rozhkov/react-useful-hooks';
-import {withExamplePickerConfig} from '../../picker-config';
-import {Header} from '../base';
+import {Picker as IOSPicker} from '@react-native-picker/picker';
+import Picker, {
+  type OnValueChanged,
+  type PickerItem,
+} from '@quidone/react-native-wheel-picker';
+import {Divider, PickerScreenViewContainer} from '../../ui-base';
+import {
+  PickerPropsChangerPanel,
+  PickerPropsChangerProvider,
+  withPropsChanger,
+} from '../../props-changer';
 
 let WheelPickers: FC;
 
 if (Platform.OS === 'ios') {
-  const ExamplePicker = withExamplePickerConfig(Picker);
+  const ExamplePicker = withPropsChanger(Picker);
   const createPickerItem = (index: number): PickerItem<number> => ({
     value: index,
     label: index.toString(),
@@ -96,13 +100,18 @@ if (Platform.OS === 'ios') {
   const styles = StyleSheet.create({root: {textAlign: 'center', padding: 20}});
 }
 
-const CompareWithNativeIOSBlockExample = () => {
+const SimplePickerAndIOSPickerScreen = () => {
   return (
-    <>
-      <Header title={'Comparing with Native iOS'} />
-      <WheelPickers />
-    </>
+    <PickerPropsChangerProvider>
+      <PickerScreenViewContainer>
+        <Divider />
+        <View style={{alignItems: 'center'}}>
+          <WheelPickers />
+        </View>
+        <PickerPropsChangerPanel />
+      </PickerScreenViewContainer>
+    </PickerPropsChangerProvider>
   );
 };
 
-export default CompareWithNativeIOSBlockExample;
+export default SimplePickerAndIOSPickerScreen;
