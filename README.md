@@ -40,6 +40,20 @@ A flexible React Native Wheel Picker for iOS and Android without using the nativ
   </tr>
 </table>
 
+<table>
+  <tr>
+    <td align="center">
+      <img src="docs/images/date-picker-ios.gif" height="220"/>
+      <br />
+      DatePicker (Beta)
+    </td>
+    <td align="center">
+      <img src="docs/images/picker-control-ios.gif" height="220"/>
+      <br />
+      PickerControl (Beta)
+    </td>
+  </tr>
+</table>
 
 ## Features
 - Without native side.
