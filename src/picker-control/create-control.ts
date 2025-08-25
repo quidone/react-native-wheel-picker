@@ -3,7 +3,7 @@ import type {
   ValueChangedEvent,
   ValueChangingEvent,
 } from '@implementation/base';
-import {createNanoEvents, type Unsubscribe} from 'nanoevents';
+import {createNanoEvents, type Unsubscribe} from '@utils/nanoevents';
 
 type PickerName = string;
 export type BaseControlConfig = Record<PickerName, {item: PickerItem<unknown>}>;

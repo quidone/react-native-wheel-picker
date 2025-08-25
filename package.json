@@ -68,8 +68,7 @@
   },
   "dependencies": {
     "@rozhkov/react-useful-hooks": "^1.0.10",
-    "date-fns": "^4.1.0",
-    "nanoevents": "^9.1.0"
+    "date-fns": "^4.1.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.21.5",

@@ -3422,7 +3422,6 @@ __metadata:
     eslint-plugin-prettier: "npm:^4.0.0"
     jest: "npm:^28.1.1"
     metro-react-native-babel-preset: "npm:^0.77.0"
-    nanoevents: "npm:^9.1.0"
     pod-install: "npm:^0.1.0"
     prettier: "npm:^2.0.5"
     react: "npm:19.0.0"
@@ -10354,13 +10353,6 @@ __metadata:
   version: 1.0.0
   resolution: "mute-stream@npm:1.0.0"
   checksum: 10/36fc968b0e9c9c63029d4f9dc63911950a3bdf55c9a87f58d3a266289b67180201cade911e7699f8b2fa596b34c9db43dad37649e3f7fdd13c3bb9edb0017ee7
-  languageName: node
-  linkType: hard
-
-"nanoevents@npm:^9.1.0":
-  version: 9.1.0
-  resolution: "nanoevents@npm:9.1.0"
-  checksum: 10/77abbc15c4efc15518a0075b604e5db045e5d6184f4d08892c771928a84f53b1dd46138902213f66e8a9989e6c930168ca6441b80ff9098aec83c01a782bd42b
   languageName: node
   linkType: hard
 

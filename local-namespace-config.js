@@ -6,4 +6,5 @@ module.exports = {
   '@utils/math': './src/utils/math/index',
   '@utils/debounce': './src/utils/debounce/index',
   '@utils/scrolling': './src/utils/scrolling/index',
+  '@utils/nanoevents': './src/utils/nanoevents/index',
 };
