@@ -10,6 +10,7 @@ import {
 import PickerItemComponent from '../item/PickerItem';
 import {ScrollContentOffsetContext} from '../contexts/ScrollContentOffsetContext';
 import {PickerItemHeightContext} from '../contexts/PickerItemHeightContext';
+import {PickerFontFamilyContext} from '../contexts/PickerFontFamilyContext';
 import useValueEventsEffect from './hooks/useValueEventsEffect';
 import useSyncScrollEffect from './hooks/useSyncScrollEffect';
 import type {
@@ -53,6 +54,7 @@ export type PickerProps<ItemT extends PickerItem<any>> = {
 
   style?: StyleProp<ViewStyle>;
   itemTextStyle?: StyleProp<TextStyle>;
+  fontFamily?: string;
   overlayItemStyle?: StyleProp<ViewStyle>;
   contentContainerStyle?: StyleProp<ViewStyle>;
 
@@ -115,6 +117,7 @@ const Picker = <ItemT extends PickerItem<any>>({
 
   style,
   itemTextStyle,
+  fontFamily,
   overlayItemStyle,
   contentContainerStyle,
 
@@ -139,6 +142,14 @@ const Picker = <ItemT extends PickerItem<any>>({
     const height = calcPickerHeight(items, itemHeight);
     return [items, height];
   }, [itemHeight, visibleItemCount]);
+
+  const mergedItemTextStyle = useMemo(() => {
+    if (fontFamily) {
+      return [itemTextStyle, {fontFamily}];
+    }
+    return itemTextStyle;
+  }, [itemTextStyle, fontFamily]);
+
   const renderPickerItem = useCallback<RenderPickerItem<ItemT>>(
     ({item, index, key}) =>
       renderItemContainer({
@@ -148,14 +159,14 @@ const Picker = <ItemT extends PickerItem<any>>({
         index,
         faces,
         renderItem,
-        itemTextStyle,
+        itemTextStyle: mergedItemTextStyle,
         enableScrollByTapOnItem,
         readOnly,
       }),
     [
       enableScrollByTapOnItem,
       faces,
-      itemTextStyle,
+      mergedItemTextStyle,
       readOnly,
       renderItem,
       renderItemContainer,
@@ -192,37 +203,40 @@ const Picker = <ItemT extends PickerItem<any>>({
   return (
     <ScrollContentOffsetContext.Provider value={offsetY}>
       <PickerItemHeightContext.Provider value={itemHeight}>
-        <View
-          testID={testID}
-          style={[styles.root, style, {height: pickerHeight, width}]}
-        >
-          {renderList({
-            ...restProps,
-            ref: listRef,
-            data,
-            initialIndex,
-            itemHeight,
-            pickerHeight,
-            visibleItemCount,
-            readOnly,
-            keyExtractor,
-            renderItem: renderPickerItem,
-            scrollOffset: offsetY,
-            onTouchStart: touching.setTrue,
-            onTouchEnd: touching.setFalse,
-            onTouchCancel: touching.setFalse,
-            onScrollStart: _onScrollStart,
-            onScrollEnd,
-            contentContainerStyle,
-          })}
-          {renderOverlay &&
-            renderOverlay({
+        <PickerFontFamilyContext.Provider value={fontFamily}>
+          <View
+            testID={testID}
+            style={[styles.root, style, {height: pickerHeight, width}]}
+          >
+            {renderList({
+              ...restProps,
+              ref: listRef,
+              data,
+              initialIndex,
               itemHeight,
-              pickerWidth: width,
               pickerHeight,
-              overlayItemStyle,
+              visibleItemCount,
+              readOnly,
+              keyExtractor,
+              renderItem: renderPickerItem,
+              itemTextStyle: mergedItemTextStyle,
+              scrollOffset: offsetY,
+              onTouchStart: touching.setTrue,
+              onTouchEnd: touching.setFalse,
+              onTouchCancel: touching.setFalse,
+              onScrollStart: _onScrollStart,
+              onScrollEnd,
+              contentContainerStyle,
             })}
-        </View>
+            {renderOverlay &&
+              renderOverlay({
+                itemHeight,
+                pickerWidth: width,
+                pickerHeight,
+                overlayItemStyle,
+              })}
+          </View>
+        </PickerFontFamilyContext.Provider>
       </PickerItemHeightContext.Provider>
     </ScrollContentOffsetContext.Provider>
   );

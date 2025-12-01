@@ -1,11 +1,11 @@
 import React, {memo, useMemo} from 'react';
-import {getDaysInMonth} from 'date-fns';
 import Picker, {type PickerProps} from '@implementation/base';
 import {withPickerControl} from '@implementation/picker-control';
 import {useDateContext} from './DatePickerValueProvider';
 import {useOverlayItemStyle} from './useOverlayItemStyle';
 import {useDatePickerLocale} from './DatePickerLocaleProvider';
 import {withCommonProps} from './DatePickerCommonPropsProvider';
+import {getCalendarAdapter} from './date';
 
 const HocPicker = withCommonProps(withPickerControl(Picker));
 
@@ -22,12 +22,13 @@ const DatePickerDate = ({
   const localeData = useDatePickerLocale();
   const dateContext = useDateContext();
   const value = dateContext.value;
-  const daysInMount = getDaysInMonth(new Date(value.year, value.month));
+  const adapter = getCalendarAdapter(localeData.calendar);
+  const daysInMonth = adapter.getDaysInMonth(value.year, value.month);
   const data = useMemo(() => {
-    return [...Array(daysInMount).keys()].map((index) => ({
+    return [...Array(daysInMonth).keys()].map((index) => ({
       value: index + 1,
     }));
-  }, [daysInMount]);
+  }, [daysInMonth]);
 
   const overlayItemStyle = useOverlayItemStyle({
     curUnit: 'date',

@@ -4,10 +4,11 @@ import React, {
   useContext,
   useMemo,
 } from 'react';
-import {type DateUnitType, DateUtils} from './date';
+import {type CalendarType, type DateUnitType, getCalendarAdapter} from './date';
 
 type ContextValue = {
   locale: string;
+  calendar: CalendarType;
   sortedDateUnitTypes: DateUnitType[];
   monthLongNames: string[];
 };
@@ -16,20 +17,25 @@ const DatePickerLocaleContext = createContext<ContextValue | undefined>(
   undefined,
 );
 
-type DatePickerLocaleProviderProps = PropsWithChildren<{locale?: string}>;
+type DatePickerLocaleProviderProps = PropsWithChildren<{
+  locale?: string;
+  calendar?: CalendarType;
+}>;
 
 const DatePickerLocaleProvider = ({
   locale = 'en',
+  calendar = 'gregorian',
   children,
 }: DatePickerLocaleProviderProps) => {
-  const value = useMemo<ContextValue>(
-    () => ({
+  const value = useMemo<ContextValue>(() => {
+    const adapter = getCalendarAdapter(calendar);
+    return {
       locale,
-      monthLongNames: DateUtils.getLocalizedMonthNames(locale),
-      sortedDateUnitTypes: DateUtils.getSortedDateUnitPositions(locale),
-    }),
-    [locale],
-  );
+      calendar,
+      monthLongNames: adapter.getLocalizedMonthNames(locale),
+      sortedDateUnitTypes: adapter.getSortedDateUnitPositions(locale),
+    };
+  }, [locale, calendar]);
 
   return (
     <DatePickerLocaleContext.Provider value={value}>

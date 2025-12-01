@@ -68,7 +68,8 @@
   },
   "dependencies": {
     "@rozhkov/react-useful-hooks": "^1.0.10",
-    "date-fns": "^4.1.0"
+    "date-fns": "^4.1.0",
+    "jalaali-js": "^1.2.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.21.5",
@@ -90,12 +91,13 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-ft-flow": "^3.0.11",
     "eslint-plugin-prettier": "^4.0.0",
+    "jalaali-js": "^1.2.8",
     "jest": "^28.1.1",
     "metro-react-native-babel-preset": "^0.77.0",
     "pod-install": "^0.1.0",
     "prettier": "^2.0.5",
-    "react": "19.0.0",
-    "react-native": "0.79.5",
+    "react": "^19.0.0",
+    "react-native": "^0.79.5",
     "react-native-builder-bob": "^0.20.0",
     "react-test-renderer": "19.0.0",
     "release-it": "^15.0.0",

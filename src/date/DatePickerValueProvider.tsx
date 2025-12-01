@@ -4,7 +4,7 @@ import React, {
   useContext,
   useMemo,
 } from 'react';
-import {getDaysInMonth, isSameDay} from 'date-fns';
+import {isSameDay} from 'date-fns';
 import type {PickerItem} from '@implementation/base';
 import {
   type PickerControl,
@@ -12,8 +12,8 @@ import {
   usePickerControl,
 } from '@implementation/picker-control';
 import {
-  type DateLocale,
-  DateUtils,
+  type CalendarType,
+  getCalendarAdapter,
   type OnlyDateFormat,
   type OnlyDateUnits,
 } from './date';
@@ -23,6 +23,7 @@ type ContextValue = {
   value: OnlyDateUnits;
   max: Date;
   min: Date;
+  calendar: CalendarType;
 };
 
 type ControlPickersMap = {
@@ -35,9 +36,9 @@ const DatePickerContext = createContext<ContextValue | undefined>(undefined);
 
 type DatePickerValueProviderProps = PropsWithChildren<{
   date: OnlyDateFormat;
-  locale?: DateLocale;
   minDate?: OnlyDateFormat;
   maxDate?: OnlyDateFormat;
+  calendar?: CalendarType;
   onDateChanged: (event: {date: OnlyDateFormat}) => void;
 }>;
 
@@ -45,68 +46,87 @@ const DatePickerValueProvider = ({
   date,
   maxDate,
   minDate,
+  calendar = 'gregorian',
   onDateChanged,
   children,
 }: DatePickerValueProviderProps) => {
+  const adapter = getCalendarAdapter(calendar);
+
   const {min, max} = useMemo(() => {
     const now = new Date();
 
     const getMaxDefault = () => {
       const year = now.getFullYear() + 100;
       const month = 11;
-      return new Date(year, month, DateUtils.getDaysInMonth(year, month));
+      return new Date(year, month, 31);
     };
     const getMinDefault = () => new Date(now.getFullYear() - 100, 0, 1);
 
-    return {
-      max: maxDate ? new Date(maxDate) : getMaxDefault(),
-      min: minDate ? new Date(minDate) : getMinDefault(),
-    };
-  }, [maxDate, minDate]);
+    const maxBoundary = maxDate
+      ? adapter.toDate(adapter.toUnits(maxDate))
+      : getMaxDefault();
+    const minBoundary = minDate
+      ? adapter.toDate(adapter.toUnits(minDate))
+      : getMinDefault();
+
+    return {max: maxBoundary, min: minBoundary};
+  }, [adapter, maxDate, minDate]);
 
   const pickerControl = usePickerControl<ControlPickersMap>();
 
   useOnPickerValueChangedEffect(pickerControl, (event) => {
-    const nextUnits = {
+    const nextUnits: OnlyDateUnits = {
       year: event.pickers.year.item.value,
       month: event.pickers.month.item.value,
       date: event.pickers.date.item.value,
     };
 
-    const daysInCurMonth = getDaysInMonth(
-      new Date(nextUnits.year, nextUnits.month),
+    const daysInCurMonth = adapter.getDaysInMonth(
+      nextUnits.year,
+      nextUnits.month,
     );
     if (daysInCurMonth < nextUnits.date) {
       nextUnits.date = daysInCurMonth;
     }
 
-    const curDateObj = new Date(date);
-    const dateObj = new Date(nextUnits.year, nextUnits.month, nextUnits.date);
-    const normalizedDateObj = DateUtils.withBoundaries(dateObj, min, max);
+    const curDateObj = adapter.toDate(adapter.toUnits(date));
+    const nextDateObj = adapter.toDate(nextUnits);
 
-    if (isSameDay(curDateObj, normalizedDateObj)) {
+    const clampedTime = (() => {
+      if (nextDateObj.getTime() < min.getTime()) return min;
+      if (nextDateObj.getTime() > max.getTime()) return max;
+      return nextDateObj;
+    })();
+
+    if (isSameDay(curDateObj, clampedTime)) {
       return;
     }
 
+    let resultUnits: OnlyDateUnits;
+    if (calendar === 'gregorian') {
+      resultUnits = {
+        year: clampedTime.getFullYear(),
+        month: clampedTime.getMonth(),
+        date: clampedTime.getDate(),
+      };
+    } else {
+      resultUnits = nextUnits;
+    }
+
     onDateChanged?.({
-      date: DateUtils.toOnlyDateFormat({
-        year: normalizedDateObj.getFullYear(),
-        month: normalizedDateObj.getMonth(),
-        date: normalizedDateObj.getDate(),
-      }),
+      date: adapter.toOnlyDateFormat(resultUnits),
     });
   });
 
   const value = useMemo<ContextValue>(
     () => ({
       pickerControl,
-      value: DateUtils.toUnits(
-        DateUtils.withBoundaries(new Date(date), min, max),
-      ),
+      value: adapter.toUnits(date),
       max,
       min,
+      calendar,
     }),
-    [pickerControl, date, max, min],
+    [adapter, calendar, date, max, min, pickerControl],
   );
 
   return (

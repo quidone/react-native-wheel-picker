@@ -5,43 +5,36 @@
  */
 
 import * as React from 'react';
-import {useState} from 'react';
 import {
-  SafeAreaView,
   StatusBar,
   StyleSheet,
   Text,
   useColorScheme,
   View,
 } from 'react-native';
-import WheelPicker from '@quidone/react-native-wheel-picker';
+import {
+  SafeAreaProvider,
+  SafeAreaView,
+} from 'react-native-safe-area-context';
+import CustomizedDatePicker from './CustomizedDatePicker';
 
-const data = Array.from({length: 100}, (_, index) => ({
-  value: index,
-  label: `Item ${index}`,
-}));
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
-  const [value, setValue] = useState(0);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <View style={styles.content}>
-        <Text style={styles.title}>Wheel Picker Example</Text>
-        <Text style={styles.subtitle}>Selected: {value}</Text>
-        <View style={styles.pickerContainer}>
-          <WheelPicker
-            data={data}
-            value={value}
-            onValueChanged={({item: {value: newValue}}) => setValue(newValue)}
-            enableScrollByTapOnItem={true}
-            testID="wheel-picker"
-          />
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        <View style={styles.content}>
+          <Text style={styles.title}> {`Date Picker Example`}</Text>
+          {/* <Text style={styles.subtitle}>Selected: {date}</Text> */}
+          <View style={styles.pickerContainer}>
+            <CustomizedDatePicker />
+          </View>
         </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 

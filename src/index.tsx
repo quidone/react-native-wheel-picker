@@ -39,5 +39,6 @@ export {
   type DatePickerYearProps,
   type DatePickerMonthProps,
   type DatePickerDateProps,
+  type DatePickerProps,
   DatePicker,
 } from './date';

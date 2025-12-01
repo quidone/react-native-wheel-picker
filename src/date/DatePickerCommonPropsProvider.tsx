@@ -19,6 +19,7 @@ type ContextValue = {
   scrollEventThrottle: number | undefined;
   pickerStyle: StyleProp<ViewStyle> | undefined;
   itemTextStyle: StyleProp<TextStyle> | undefined;
+  fontFamily: string | undefined;
   overlayItemStyle: StyleProp<ViewStyle> | undefined;
   contentContainerStyle: StyleProp<ViewStyle> | undefined;
 };
@@ -67,6 +68,7 @@ export const withCommonProps = <ComponentPropsT extends PickedWheelPickerProps>(
       style: pickerStyleProp,
       contentContainerStyle: contentContainerStyleProp,
       itemTextStyle: itemTextStyleProp,
+      fontFamily: fontFamilyProp,
       overlayItemStyle: overlayItemStyleProp,
       ...restProps
     }: PickedWheelPickerProps,
@@ -76,6 +78,7 @@ export const withCommonProps = <ComponentPropsT extends PickedWheelPickerProps>(
       pickerStyle: pickerStyleCommon,
       contentContainerStyle: contentContainerStyleCommon,
       itemTextStyle: itemTextStyleCommon,
+      fontFamily: fontFamilyCommon,
       overlayItemStyle: overlayItemStyleCommon,
       ...restCommonProps
     } = useDatePickerCommonProps();
@@ -89,6 +92,7 @@ export const withCommonProps = <ComponentPropsT extends PickedWheelPickerProps>(
       itemTextStyleCommon,
       itemTextStyleProp,
     ]);
+    const fontFamily = fontFamilyProp ?? fontFamilyCommon;
     const overlayItemStyle = useMemoObject([
       overlayItemStyleCommon,
       overlayItemStyleProp,
@@ -101,6 +105,7 @@ export const withCommonProps = <ComponentPropsT extends PickedWheelPickerProps>(
         style={style}
         contentContainerStyle={contentContainerStyle}
         itemTextStyle={itemTextStyle}
+        fontFamily={fontFamily}
         overlayItemStyle={overlayItemStyle}
         ref={forwardedRef}
       />

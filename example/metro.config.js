@@ -9,6 +9,8 @@ const path = require('path');
  */
 const rootPath = path.resolve(__dirname, '..');
 const srcPath = path.resolve(__dirname, '../src');
+const exampleNodeModules = path.resolve(__dirname, 'node_modules');
+const rootNodeModules = path.resolve(rootPath, 'node_modules');
 
 const defaultConfig = getDefaultConfig(__dirname);
 
@@ -16,9 +18,11 @@ const config = {
   watchFolders: [rootPath],
   resolver: {
     ...defaultConfig.resolver,
-    nodeModulesPaths: [
-      path.resolve(__dirname, 'node_modules'),
-      path.resolve(rootPath, 'node_modules'),
+    nodeModulesPaths: [exampleNodeModules],
+    blockList: [
+      // Block React and React Native from root node_modules
+      new RegExp(`${rootNodeModules}/react/.*`),
+      new RegExp(`${rootNodeModules}/react-native/.*`),
     ],
     extraNodeModules: {
       ...defaultConfig.resolver.extraNodeModules,
@@ -31,6 +35,9 @@ const config = {
       '@utils/debounce': path.resolve(srcPath, 'utils/debounce/index'),
       '@utils/scrolling': path.resolve(srcPath, 'utils/scrolling/index'),
       '@utils/nanoevents': path.resolve(srcPath, 'utils/nanoevents/index'),
+      // Force React and React Native to resolve from example's node_modules only
+      'react': path.resolve(exampleNodeModules, 'react'),
+      'react-native': path.resolve(exampleNodeModules, 'react-native'),
     },
   },
 };

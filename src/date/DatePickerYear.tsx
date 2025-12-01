@@ -21,13 +21,38 @@ const DatePickerYear = ({
   const localeData = useDatePickerLocale();
   const dateContext = useDateContext();
   const value = dateContext.value;
+
   const data = useMemo(() => {
-    const startYear = dateContext.min.getFullYear();
-    const endYear = dateContext.max.getFullYear();
+    let startYear: number;
+    let endYear: number;
+
+    if (localeData.calendar === 'persian') {
+      // برای Persian: از محدوده منطقی استفاده می‌کنیم
+      // تبدیل تقریبی: سال شمسی ≈ سال میلادی - 621
+      const minGregorianYear = dateContext.min.getFullYear();
+      const maxGregorianYear = dateContext.max.getFullYear();
+
+      // تبدیل تقریبی به شمسی (با احتیاط)
+      startYear = Math.max(1300, minGregorianYear - 621);
+      endYear = Math.min(1500, maxGregorianYear - 621);
+
+      // اطمینان از محدوده منطقی
+      if (startYear < 1300) startYear = 1300;
+      if (endYear > 1500) endYear = 1500;
+      if (endYear < startYear) {
+        startYear = 1300;
+        endYear = 1500;
+      }
+    } else {
+      // Gregorian: مستقیماً از Date استفاده می‌کنیم
+      startYear = dateContext.min.getFullYear();
+      endYear = dateContext.max.getFullYear();
+    }
+
     return Array.from({length: endYear - startYear + 1}, (_, index) => ({
       value: startYear + index,
     }));
-  }, [dateContext.max, dateContext.min]);
+  }, [dateContext.max, dateContext.min, localeData.calendar]);
 
   const overlayItemStyle = useOverlayItemStyle({
     curUnit: 'year',

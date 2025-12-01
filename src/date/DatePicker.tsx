@@ -9,12 +9,13 @@ import type {OnlyDateFormat} from './date';
 import DatePickerLocaleProvider from './DatePickerLocaleProvider';
 import DatePickerCommonPropsProvider from './DatePickerCommonPropsProvider';
 
-type DatePickerProps = {
+export type DatePickerProps = {
   date: OnlyDateFormat;
   onDateChanged: (event: {date: OnlyDateFormat}) => void;
   minDate?: OnlyDateFormat;
   maxDate?: OnlyDateFormat;
   locale?: string;
+  calendar?: 'gregorian' | 'persian';
 
   renderDate?: () => ReactNode;
   renderMonth?: () => ReactNode;
@@ -31,6 +32,7 @@ type DatePickerProps = {
   scrollEventThrottle?: number;
   pickerStyle?: StyleProp<ViewStyle>;
   itemTextStyle?: StyleProp<TextStyle>;
+  fontFamily?: string;
   overlayItemStyle?: StyleProp<ViewStyle>;
   contentContainerStyle?: StyleProp<ViewStyle>;
   // endregion
@@ -42,6 +44,7 @@ const DatePickerComponent = ({
   minDate,
   maxDate,
   locale,
+  calendar = 'gregorian',
   renderDate,
   renderMonth,
   renderYear,
@@ -55,17 +58,19 @@ const DatePickerComponent = ({
   scrollEventThrottle,
   pickerStyle,
   itemTextStyle,
+  fontFamily,
   overlayItemStyle,
   contentContainerStyle,
 }: // endregion
 DatePickerProps) => {
   return (
-    <DatePickerLocaleProvider locale={locale}>
+    <DatePickerLocaleProvider locale={locale} calendar={calendar}>
       <DatePickerValueProvider
         date={date}
         onDateChanged={onDateChanged}
         minDate={minDate}
         maxDate={maxDate}
+        calendar={calendar}
       >
         <DatePickerCommonPropsProvider
           itemHeight={itemHeight}
@@ -75,6 +80,7 @@ DatePickerProps) => {
           scrollEventThrottle={scrollEventThrottle}
           pickerStyle={pickerStyle}
           itemTextStyle={itemTextStyle}
+          fontFamily={fontFamily}
           overlayItemStyle={overlayItemStyle}
           contentContainerStyle={contentContainerStyle}
         >
