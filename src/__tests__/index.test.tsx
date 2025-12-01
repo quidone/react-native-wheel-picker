@@ -1,6 +1,7 @@
 import React from 'react';
+import {Text} from 'react-native';
 import renderer from 'react-test-renderer';
-import WheelPicker from '@implementation/base';
+import WheelPicker from '../base';
 
 describe('WheelPicker', () => {
   const basicData = [
@@ -101,8 +102,6 @@ describe('WheelPicker', () => {
   });
 
   it('should render with custom renderItem', () => {
-    const React = require('react');
-    const {Text} = require('react-native');
     const customRenderItem = ({
       item,
     }: {
@@ -183,9 +182,14 @@ describe('WheelPicker', () => {
   });
 
   it('should render with empty data array', () => {
+    const emptyData: Array<{value: number; label?: string}> = [];
     const tree = renderer
       .create(
-        <WheelPicker data={[]} value={1} testID="wheel-picker-empty-data" />,
+        <WheelPicker
+          data={emptyData}
+          value={1}
+          testID="wheel-picker-empty-data"
+        />,
       )
       .toJSON();
     expect(tree).toMatchSnapshot();
