@@ -15,7 +15,8 @@ import type {
   ScrollViewProps,
 } from 'react-native';
 import {useStableCallback} from '@rozhkov/react-useful-hooks';
-import debounce from '../debounce';
+import debounce from '@utils/debounce';
+
 type ComponentProps = Pick<
   ScrollViewProps,
   | 'onScrollBeginDrag'
@@ -23,11 +24,13 @@ type ComponentProps = Pick<
   | 'onMomentumScrollBegin'
   | 'onMomentumScrollEnd'
 >;
+
 type ExtendProps<PropsT> = PropsT & {
   scrollOffset: Animated.Value;
   onScrollStart?: () => void;
   onScrollEnd?: () => void;
 };
+
 const withScrollStartEndEvent = <PropsT extends ComponentProps>(
   Component: ComponentType<PropsT>,
 ) => {
@@ -45,6 +48,7 @@ const withScrollStartEndEvent = <PropsT extends ComponentProps>(
     forwardedRef: ForwardedRef<ComponentRef<ComponentType<PropsT>>>,
   ) => {
     const onScrollStartStable = useStableCallback(onScrollStartProp);
+
     const isOnScrollStartCalledRef = useRef(false);
     const deactivateOnScrollStart = useStableCallback(() => {
       isOnScrollStartCalledRef.current = false;
@@ -55,28 +59,32 @@ const withScrollStartEndEvent = <PropsT extends ComponentProps>(
         isOnScrollStartCalledRef.current = true;
       }
     });
+
     const onScrollEndStable = useStableCallback(() => {
       maybeCallOnScrollStart();
       onScrollEndProp?.();
       deactivateOnScrollStart();
     });
+
     const onScrollEnd = useMemo(
-      () => debounce(onScrollEndStable, 100),
-      // A small delay is needed so that onScrollEnd doesn't trigger prematurely.
+      () => debounce(onScrollEndStable, 100), // A small delay is needed so that onScrollEnd doesn't trigger prematurely.
       [onScrollEndStable],
     );
+
     const onScrollBeginDrag = useStableCallback(
       (args: NativeSyntheticEvent<NativeScrollEvent>) => {
         maybeCallOnScrollStart();
         onScrollBeginDragProp?.(args);
       },
     );
+
     const onScrollEndDrag = useStableCallback(
       (args: NativeSyntheticEvent<NativeScrollEvent>) => {
         onScrollEndDragProp?.(args);
         onScrollEnd();
       },
     );
+
     const onMomentumScrollBegin = useStableCallback(
       (args: NativeSyntheticEvent<NativeScrollEvent>) => {
         maybeCallOnScrollStart();
@@ -84,12 +92,14 @@ const withScrollStartEndEvent = <PropsT extends ComponentProps>(
         onMomentumScrollBeginProp?.(args);
       },
     );
+
     const onMomentumScrollEnd = useStableCallback(
       (args: NativeSyntheticEvent<NativeScrollEvent>) => {
         onMomentumScrollEndProp?.(args);
         onScrollEnd();
       },
     );
+
     useEffect(() => {
       const sub = scrollOffset.addListener(() => {
         if (!isOnScrollStartCalledRef.current) {
@@ -105,6 +115,7 @@ const withScrollStartEndEvent = <PropsT extends ComponentProps>(
         scrollOffset.removeListener(sub);
       };
     }, [maybeCallOnScrollStart, onScrollEnd, scrollOffset]);
+
     return (
       <Component
         {...(rest as any)}
@@ -116,13 +127,16 @@ const withScrollStartEndEvent = <PropsT extends ComponentProps>(
       />
     );
   };
+
   Wrapper.displayName = `withScrollStartEndEvent(${
     Component.displayName || 'Component'
   })`;
+
   return memo(
     forwardRef<ComponentRef<ComponentType<PropsT>>, ExtendProps<PropsT>>(
       Wrapper as any,
     ),
   );
 };
+
 export default withScrollStartEndEvent;

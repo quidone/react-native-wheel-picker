@@ -9,6 +9,7 @@ import {useScrollContentOffset} from '../contexts/ScrollContentOffsetContext';
 import {usePickerItemHeight} from '../contexts/PickerItemHeightContext';
 import type {ListMethods, RenderItem} from '../types';
 import type {Faces} from './faces';
+
 type PickerItemContainerProps = {
   listRef: RefObject<ListMethods | null>;
   item: any;
@@ -19,6 +20,7 @@ type PickerItemContainerProps = {
   enableScrollByTapOnItem: boolean | undefined;
   readOnly: boolean | undefined;
 };
+
 const PickerItemContainer = ({
   listRef,
   index,
@@ -31,6 +33,7 @@ const PickerItemContainer = ({
 }: PickerItemContainerProps) => {
   const offset = useScrollContentOffset();
   const height = usePickerItemHeight();
+
   const {opacity, rotateX, translateY} = useMemo(() => {
     const inputRange = faces.map((f) => height * (index + f.index));
     return {
@@ -51,6 +54,7 @@ const PickerItemContainer = ({
       }),
     };
   }, [faces, height, index, offset]);
+
   const renderAnimatedView = () => {
     return (
       <Animated.View
@@ -59,40 +63,30 @@ const PickerItemContainer = ({
             height,
             opacity,
             transform: [
-              {
-                translateY,
-              },
-              // first translateY, then rotateX for correct transformation.
-              {
-                rotateX,
-              },
-              {
-                perspective: 1000,
-              }, // without this line this Animation will not render on Android https://reactnative.dev/docs/animations#bear-in-mind
+              {translateY}, // first translateY, then rotateX for correct transformation.
+              {rotateX},
+              {perspective: 1000}, // without this line this Animation will not render on Android https://reactnative.dev/docs/animations#bear-in-mind
             ],
           },
         ]}
       >
-        {renderItem({
-          item,
-          index,
-          itemTextStyle,
-        })}
+        {renderItem({item, index, itemTextStyle})}
       </Animated.View>
     );
   };
+
   if (!enableScrollByTapOnItem || readOnly) {
     return renderAnimatedView();
   }
+
   const scrollToItem = () =>
-    listRef.current?.scrollToIndex({
-      index,
-      animated: true,
-    });
+    listRef.current?.scrollToIndex({index, animated: true});
+
   return (
     <TouchableWithoutFeedback onPress={scrollToItem}>
       {renderAnimatedView()}
     </TouchableWithoutFeedback>
   );
 };
+
 export default memo(PickerItemContainer);
