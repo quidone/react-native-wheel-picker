@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {useStableCallback} from '@rozhkov/react-useful-hooks';
 import {DatePicker} from '@quidone/react-native-wheel-picker';
 
-const CustomizedDatePicker = () => {
-  const [date, setDate] = useState('1403-07-15');
+const CustomizedDatePicker = ({date, setDate}: {date: string, setDate: (date: string) => void}) => {
+
   const onDateChanged = useStableCallback(({date: newDate}: {date: string}) => {
     setDate(newDate);
   });
@@ -15,6 +15,7 @@ const CustomizedDatePicker = () => {
       renderDate={() => <DatePicker.Date />}
       renderMonth={() => <DatePicker.Month />}
       renderYear={() => <DatePicker.Year />}
+      minDate='2024-05-22'
       locale="fa-IR"
       calendar="persian"
       // use your own font family

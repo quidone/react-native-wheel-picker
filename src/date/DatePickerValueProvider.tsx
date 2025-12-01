@@ -51,6 +51,7 @@ const DatePickerValueProvider = ({
   children,
 }: DatePickerValueProviderProps) => {
   const adapter = getCalendarAdapter(calendar);
+  const gregorianAdapter = getCalendarAdapter('gregorian');
 
   const {min, max} = useMemo(() => {
     const now = new Date();
@@ -62,15 +63,16 @@ const DatePickerValueProvider = ({
     };
     const getMinDefault = () => new Date(now.getFullYear() - 100, 0, 1);
 
+    // date prop is always Gregorian, so parse it directly
     const maxBoundary = maxDate
-      ? adapter.toDate(adapter.toUnits(maxDate))
+      ? gregorianAdapter.toDate(gregorianAdapter.toUnits(maxDate))
       : getMaxDefault();
     const minBoundary = minDate
-      ? adapter.toDate(adapter.toUnits(minDate))
+      ? gregorianAdapter.toDate(gregorianAdapter.toUnits(minDate))
       : getMinDefault();
 
     return {max: maxBoundary, min: minBoundary};
-  }, [adapter, maxDate, minDate]);
+  }, [gregorianAdapter, maxDate, minDate]);
 
   const pickerControl = usePickerControl<ControlPickersMap>();
 
@@ -89,7 +91,11 @@ const DatePickerValueProvider = ({
       nextUnits.date = daysInCurMonth;
     }
 
-    const curDateObj = adapter.toDate(adapter.toUnits(date));
+    // date prop is always Gregorian, parse it directly
+    const curDateObj = gregorianAdapter.toDate(gregorianAdapter.toUnits(date));
+
+    // nextUnits are in the display calendar (Jalali if calendar="persian")
+    // Convert to Gregorian Date for comparison
     const nextDateObj = adapter.toDate(nextUnits);
 
     const clampedTime = (() => {
@@ -102,32 +108,29 @@ const DatePickerValueProvider = ({
       return;
     }
 
-    let resultUnits: OnlyDateUnits;
-    if (calendar === 'gregorian') {
-      resultUnits = {
-        year: clampedTime.getFullYear(),
-        month: clampedTime.getMonth(),
-        date: clampedTime.getDate(),
-      };
-    } else {
-      resultUnits = nextUnits;
-    }
+    // Always return Gregorian date in YYYY-MM-DD format
+    const resultUnits: OnlyDateUnits = {
+      year: clampedTime.getFullYear(),
+      month: clampedTime.getMonth(),
+      date: clampedTime.getDate(),
+    };
 
     onDateChanged?.({
-      date: adapter.toOnlyDateFormat(resultUnits),
+      date: gregorianAdapter.toOnlyDateFormat(resultUnits),
     });
   });
 
-  const value = useMemo<ContextValue>(
-    () => ({
+  const value = useMemo<ContextValue>(() => {
+    // date prop is always Gregorian, convert to display calendar for UI
+    const displayUnits = adapter.toUnits(date);
+    return {
       pickerControl,
-      value: adapter.toUnits(date),
+      value: displayUnits,
       max,
       min,
       calendar,
-    }),
-    [adapter, calendar, date, max, min, pickerControl],
-  );
+    };
+  }, [adapter, calendar, date, max, min, pickerControl]);
 
   return (
     <DatePickerContext.Provider value={value}>

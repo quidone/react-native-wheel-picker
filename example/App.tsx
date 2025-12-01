@@ -17,20 +17,21 @@ import {
   SafeAreaView,
 } from 'react-native-safe-area-context';
 import CustomizedDatePicker from './CustomizedDatePicker';
+import { useState } from 'react';
 
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
-
+  const [date, setDate] = useState('2025-02-02');
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
         <View style={styles.content}>
           <Text style={styles.title}> {`Date Picker Example`}</Text>
-          {/* <Text style={styles.subtitle}>Selected: {date}</Text> */}
+          <Text style={styles.subtitle}>Selected: {date}</Text>
           <View style={styles.pickerContainer}>
-            <CustomizedDatePicker />
+            <CustomizedDatePicker date={date} setDate={setDate} />
           </View>
         </View>
       </SafeAreaView>
