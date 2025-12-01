@@ -1,10 +1,8 @@
 import {useEffect, useRef} from 'react';
 import type {Animated} from 'react-native';
 import {useStableCallback} from '@rozhkov/react-useful-hooks';
-import {getPageIndex} from '@utils/scrolling';
-
+import {getPageIndex} from '../../../utils/scrolling';
 const useValueEventsEffect = <ItemT>(
-  // in
   {
     valueIndex,
     data,
@@ -16,7 +14,6 @@ const useValueEventsEffect = <ItemT>(
     itemHeight: number;
     offsetYAv: Animated.Value;
   },
-  // events
   {
     onValueChanging,
     onValueChanged,
@@ -34,29 +31,34 @@ const useValueEventsEffect = <ItemT>(
       pageLength: itemHeight,
     }),
   );
-
   useEffect(() => {
     const id = offsetYAv.addListener(({value: offset}) => {
       const index = getIndex(offset);
       const activeIndex = activeIndexRef.current;
       if (index !== activeIndex) {
         activeIndexRef.current = index;
-        onValueChanging?.({item: data[index]!, index});
+        onValueChanging?.({
+          item: data[index]!,
+          index,
+        });
       }
     });
     return () => {
       offsetYAv.removeListener(id);
     };
   }, [data, getIndex, itemHeight, offsetYAv, onValueChanging]);
-
   const onStableValueChanged = useStableCallback(() => {
     const activeIndex = activeIndexRef.current;
     if (activeIndex !== valueIndex) {
-      onValueChanged?.({index: activeIndex, item: data[activeIndex]!});
+      onValueChanged?.({
+        index: activeIndex,
+        item: data[activeIndex]!,
+      });
     }
   });
-
-  return {onScrollEnd: onStableValueChanged, activeIndexRef};
+  return {
+    onScrollEnd: onStableValueChanged,
+    activeIndexRef,
+  };
 };
-
 export default useValueEventsEffect;

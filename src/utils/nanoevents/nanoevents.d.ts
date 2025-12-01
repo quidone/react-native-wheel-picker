@@ -1,15 +1,12 @@
 interface EventsMap {
   [event: string]: any;
 }
-
 interface DefaultEvents extends EventsMap {
   [event: string]: (...args: any) => void;
 }
-
 export interface Unsubscribe {
   (): void;
 }
-
 export interface Emitter<Events extends EventsMap = DefaultEvents> {
   /**
    * Calls each of the listeners registered for a given event.

@@ -1,7 +1,6 @@
 import {useMemo} from 'react';
 import {type StyleProp, StyleSheet, type ViewStyle} from 'react-native';
 import {type DateUnitType, DateUtils} from './date';
-
 export const useOverlayItemStyle = ({
   curUnit,
   unitPositions,
@@ -21,7 +20,6 @@ export const useOverlayItemStyle = ({
     }
   }, [curUnit, propStyle, unitPositions]);
 };
-
 export const dateStyles = StyleSheet.create({
   leftItemOverlay: {
     borderRadius: 0,
@@ -33,5 +31,7 @@ export const dateStyles = StyleSheet.create({
     borderTopRightRadius: 8,
     borderBottomRightRadius: 8,
   },
-  zeroBorderRadius: {borderRadius: 0},
+  zeroBorderRadius: {
+    borderRadius: 0,
+  },
 });

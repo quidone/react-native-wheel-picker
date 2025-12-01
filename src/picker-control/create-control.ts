@@ -1,13 +1,12 @@
-import type {
-  PickerItem,
-  ValueChangedEvent,
-  ValueChangingEvent,
-} from '@implementation/base';
-import {createNanoEvents, type Unsubscribe} from '@utils/nanoevents';
-
+import type {PickerItem, ValueChangedEvent, ValueChangingEvent} from '../base';
+import {createNanoEvents, type Unsubscribe} from '../utils/nanoevents';
 type PickerName = string;
-export type BaseControlConfig = Record<PickerName, {item: PickerItem<unknown>}>;
-
+export type BaseControlConfig = Record<
+  PickerName,
+  {
+    item: PickerItem<unknown>;
+  }
+>;
 export type ControlEvents<ControlT extends Control = Control> = {
   onValueChanged: (event: {
     pickers: NonNullable<ControlT['__SAVED_TYPE_CONFIG__']>;
@@ -16,7 +15,6 @@ export type ControlEvents<ControlT extends Control = Control> = {
     pickers: NonNullable<ControlT['__SAVED_TYPE_CONFIG__']>;
   }) => void;
 };
-
 type SubscriberEvents = {
   // emit from subscriber
   onValueChanged: (event: ValueChangedEvent<PickerItem<unknown>>) => void;
@@ -29,11 +27,9 @@ type SubscriberEvents = {
   onNewExtraValues: () => void;
   onAllScrollEnd: () => void;
 };
-
 type SubId = string;
 let nextSubId = 1;
 const getNewSubId = (): SubId => `${++nextSubId}`;
-
 export type ControlSubscriber = {
   getExtraValues: () => unknown[];
   getEveryIsStopped: () => boolean;
@@ -44,16 +40,13 @@ export type ControlSubscriber = {
   emitOnScrollEnd: () => void;
   onNewExtraValues: (cb: () => void) => Unsubscribe;
   onAllScrollEnd: (cb: () => void) => Unsubscribe;
-
   disconnect: () => void;
 };
-
 export type Control<ConfigT extends BaseControlConfig = BaseControlConfig> = {
   _connect: (info: {
     pickerName: PickerName;
     item: PickerItem<unknown>;
   }) => ControlSubscriber;
-
   _on: <NameT extends keyof ControlEvents>(
     event: NameT,
     callback: ControlEvents[NameT],
@@ -62,12 +55,10 @@ export type Control<ConfigT extends BaseControlConfig = BaseControlConfig> = {
   // It's used to simplify typing from outside, in the future it makes sense to make better typing inside
   __SAVED_TYPE_CONFIG__?: ConfigT;
 };
-
 export const createControl = <
   ConfigT extends BaseControlConfig,
 >(): Control<ConfigT> => {
   const controlEmitter = createNanoEvents<ControlEvents>();
-
   const subscribers: Record<
     SubId,
     {
@@ -77,11 +68,9 @@ export const createControl = <
       emitter: ReturnType<typeof createNanoEvents<SubscriberEvents>>;
     }
   > = {};
-
   const getEveryIsStopped = () => {
     return Object.values(subscribers).every((s) => s.isStopped);
   };
-
   const notifyChangedExtraValues = (notifierPickerId: string) => {
     Object.keys(subscribers).forEach((pickerId) => {
       if (pickerId === notifierPickerId) {
@@ -91,7 +80,6 @@ export const createControl = <
       sub.emitter.emit('onNewExtraValues');
     });
   };
-
   return {
     _on: (event, callback) => {
       return controlEmitter.on(event, callback);
@@ -107,7 +95,6 @@ export const createControl = <
           );
         }
       }
-
       const subEmitter = createNanoEvents<SubscriberEvents>();
       const subId = getNewSubId();
       subscribers[subId] = {
@@ -116,28 +103,26 @@ export const createControl = <
         isStopped: true,
         emitter: subEmitter,
       };
-
       const getEventPickers = () => {
         const result: Record<
           string,
           BaseControlConfig[keyof BaseControlConfig]
         > = {};
         Object.entries(subscribers).forEach(([_, data]) => {
-          result[data.pickerName as string] = {item: data.item};
+          result[data.pickerName as string] = {
+            item: data.item,
+          };
         });
         return result as ConfigT;
       };
-
       const disconnect = () => {
         delete subscribers[subId];
         notifyChangedExtraValues(subId);
       };
-
       subEmitter.on('onNewPropValue', (event) => {
         if (!subscribers[subId]) {
           return;
         }
-
         subscribers[subId]!.item = event.item;
         notifyChangedExtraValues(subId);
       });
@@ -145,43 +130,39 @@ export const createControl = <
         if (!subscribers[subId]) {
           return;
         }
-
         subscribers[subId]!.item = event.item;
-
         const isAllStopped = getEveryIsStopped();
         if (isAllStopped) {
           Object.keys(subscribers).forEach((pickerId) => {
             const sub = subscribers[pickerId]!;
             sub.emitter.emit('onAllScrollEnd');
           });
-
-          controlEmitter.emit('onValueChanged', {pickers: getEventPickers()});
+          controlEmitter.emit('onValueChanged', {
+            pickers: getEventPickers(),
+          });
         }
       });
       subEmitter.on('onValueChanging', (event) => {
         if (!subscribers[subId]) {
           return;
         }
-
         subscribers[subId]!.item = event.item;
-
-        controlEmitter.emit('onValueChanging', {pickers: getEventPickers()});
+        controlEmitter.emit('onValueChanging', {
+          pickers: getEventPickers(),
+        });
       });
       subEmitter.on('onScrollStart', () => {
         if (!subscribers[subId]) {
           return;
         }
-
         subscribers[subId]!.isStopped = false;
       });
       subEmitter.on('onScrollEnd', () => {
         if (!subscribers[subId]) {
           return;
         }
-
         subscribers[subId]!.isStopped = true;
       });
-
       return {
         getExtraValues: () => {
           return Object.keys(subscribers)
@@ -189,7 +170,6 @@ export const createControl = <
             .map((id) => subscribers[id]!.item.value);
         },
         getEveryIsStopped,
-
         emitOnNewPropValue: (...args) => {
           subEmitter.emit('onNewPropValue', ...args);
         },
@@ -205,14 +185,12 @@ export const createControl = <
         emitOnScrollEnd: () => {
           subEmitter.emit('onScrollEnd');
         },
-
         onNewExtraValues: (callback) => {
           return subEmitter.on('onNewExtraValues', callback);
         },
         onAllScrollEnd: (callback) => {
           return subEmitter.on('onAllScrollEnd', callback);
         },
-
         disconnect,
       } satisfies ControlSubscriber;
     },
