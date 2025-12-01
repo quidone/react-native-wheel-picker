@@ -1,7 +1,8 @@
 import {useEffect, useState} from 'react';
 import {useStableCallback} from '@rozhkov/react-useful-hooks';
-import type {PickerItem} from '../base';
+import type {PickerItem} from '@implementation/base';
 import type {Control, ControlSubscriber} from './create-control';
+
 const useConnectSub = ({
   control,
   pickerName,
@@ -12,12 +13,11 @@ const useConnectSub = ({
   currentItem: PickerItem<unknown>;
 }) => {
   const [subscriber, setSubscriber] = useState<ControlSubscriber | null>(null);
+
   useEffect(() => {
-    const sub = control._connect({
-      pickerName,
-      item: currentItem,
-    });
+    const sub = control._connect({pickerName, item: currentItem});
     setSubscriber(sub);
+
     return () => {
       sub.disconnect();
     };
@@ -25,6 +25,7 @@ const useConnectSub = ({
 
   return subscriber;
 };
+
 export const usePickerControlSubscriber = ({
   control,
   pickerName,
@@ -39,9 +40,11 @@ export const usePickerControlSubscriber = ({
     pickerName,
     currentItem,
   });
+
   const [extraValues, setExtraValues] = useState<unknown[]>([]);
   const [enableSyncScrollAfterScrollEnd, setEnableSyncScrollAfterScrollEnd] =
     useState(true);
+
   const onScrollStart = useStableCallback(() => {
     setEnableSyncScrollAfterScrollEnd(false);
     subscriber?.emitOnScrollStart();
@@ -51,28 +54,32 @@ export const usePickerControlSubscriber = ({
   const emitOnValueChanging = useStableCallback(
     subscriber?.emitOnValueChanging,
   );
+
   useEffect(() => {
     if (!subscriber) {
       return;
     }
+
     setExtraValues(subscriber.getExtraValues());
     const unsubscribeNewExtraValues = subscriber.onNewExtraValues(() => {
       setExtraValues(subscriber.getExtraValues());
     });
+
     setEnableSyncScrollAfterScrollEnd(subscriber.getEveryIsStopped());
     const unsubscribeAllScrollEnd = subscriber.onAllScrollEnd(() => {
       setEnableSyncScrollAfterScrollEnd(subscriber.getEveryIsStopped());
     });
+
     return () => {
       unsubscribeNewExtraValues();
       unsubscribeAllScrollEnd();
     };
   }, [subscriber]);
+
   useEffect(() => {
-    subscriber?.emitOnNewPropValue({
-      item: currentItem,
-    });
+    subscriber?.emitOnNewPropValue({item: currentItem});
   }, [currentItem, subscriber]);
+
   return {
     extraValues,
     enableSyncScrollAfterScrollEnd,

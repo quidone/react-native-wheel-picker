@@ -1,21 +1,22 @@
 import React, {Fragment, type ReactNode} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
 import DatePickerDate from './DatePickerDate';
 import DatePickerMonth from './DatePickerMonth';
 import DatePickerYear from './DatePickerYear';
 import {useDatePickerLocale} from './DatePickerLocaleProvider';
+
 export type DateNodeType = 'date' | 'month' | 'year';
+
 type DatePickerContainerProps = {
   renderDate?: () => ReactNode;
   renderMonth?: () => ReactNode;
   renderYear?: () => ReactNode;
+
   children: (props: {
-    dateNodes: {
-      node: ReactNode;
-      type: DateNodeType;
-    }[];
+    dateNodes: {node: ReactNode; type: DateNodeType}[];
   }) => ReactNode;
 };
+
 const DatePickerContainer = ({
   renderDate = () => <DatePickerDate />,
   renderMonth = () => <DatePickerMonth />,
@@ -28,8 +29,9 @@ const DatePickerContainer = ({
     month: renderMonth,
     year: renderYear,
   };
+
   return (
-    <View style={styles.container}>
+    <View style={{flexDirection: 'row'}}>
       {children({
         dateNodes: localeData.sortedDateUnitTypes.map((type) => ({
           type,
@@ -39,9 +41,5 @@ const DatePickerContainer = ({
     </View>
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-  },
-});
+
 export default DatePickerContainer;
