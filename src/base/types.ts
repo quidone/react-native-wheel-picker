@@ -2,16 +2,13 @@ import type React from 'react';
 import type {RefObject} from 'react';
 import type {Faces} from './item/faces';
 import type {Animated, StyleProp, TextStyle, ViewStyle} from 'react-native';
-
 export type ListMethods = {
   scrollToIndex: (params: {index: number; animated: boolean}) => void;
 };
-
 export type PickerItem<T> = {
   value: T;
   label?: string;
 } & Record<string, any>;
-
 export type KeyExtractor<ItemT extends PickerItem<any>> = (
   item: ItemT,
   index: number,

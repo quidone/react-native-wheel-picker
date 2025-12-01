@@ -6,19 +6,16 @@ import {
   type ControlEvents,
   createControl,
 } from './create-control';
-
 export const usePickerControl = <
   Config extends BaseControlConfig = BaseControlConfig,
 >() => {
   return useInit(() => createControl<Config>());
 };
-
 export const useOnPickerValueChangedEffect = <ControlT extends Control>(
   control: ControlT,
   effect: ControlEvents<ControlT>['onValueChanged'],
 ) => {
   const effectStable = useStableCallback(effect);
-
   useEffect(() => {
     const unsubscribe = control._on(
       'onValueChanged',
@@ -29,13 +26,11 @@ export const useOnPickerValueChangedEffect = <ControlT extends Control>(
     };
   }, [control]); // eslint-disable-line react-hooks/exhaustive-deps
 };
-
 export const useOnPickerValueChangingEffect = <ControlT extends Control>(
   control: ControlT,
   effect: ControlEvents<ControlT>['onValueChanging'],
 ) => {
   const effectStable = useStableCallback(effect);
-
   useEffect(() => {
     const unsubscribe = control._on(
       'onValueChanging',

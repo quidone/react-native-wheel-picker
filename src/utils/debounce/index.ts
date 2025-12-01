@@ -1,9 +1,10 @@
 type AnyFunc = (...args: ReadonlyArray<any>) => any;
-
 const debounce = <T extends AnyFunc>(
   func: T,
   delay: number,
-): ((...args: Parameters<T>) => void) & {clear: () => void} => {
+): ((...args: Parameters<T>) => void) & {
+  clear: () => void;
+} => {
   let timer: any;
   const wrapper = (...args: ReadonlyArray<any>) => {
     clearTimeout(timer);
@@ -16,5 +17,4 @@ const debounce = <T extends AnyFunc>(
   };
   return wrapper;
 };
-
 export default debounce;

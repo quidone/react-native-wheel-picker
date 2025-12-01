@@ -12,8 +12,7 @@ import {
   type OnValueChanging,
   type PickerItem,
   useValueIndex,
-} from '@implementation/base';
-
+} from '../base';
 type RequiredPickerProps = {
   data: ReadonlyArray<PickerItem<unknown>>;
   value?: unknown;
@@ -24,13 +23,11 @@ type RequiredPickerProps = {
   _onScrollStart?: () => void;
   _onScrollEnd?: () => void;
 };
-
 export type WithPickerControlProps<PickerPropsT extends RequiredPickerProps> =
   PickerPropsT & {
     pickerName: string;
     control: Control;
   };
-
 export const withPickerControl = <PropsT extends RequiredPickerProps>(
   PickerComponent: ComponentType<PropsT>,
 ) => {
@@ -51,13 +48,11 @@ export const withPickerControl = <PropsT extends RequiredPickerProps>(
   ) => {
     const valueIndex = useValueIndex(data, value);
     const currentItem = data[valueIndex]!;
-
     const subscriber = usePickerControlSubscriber({
       control,
       pickerName,
       currentItem,
     });
-
     const onValueChangingStable = useStableCallback<
       OnValueChanging<PickerItem<unknown>>
     >((event) => {
@@ -78,7 +73,6 @@ export const withPickerControl = <PropsT extends RequiredPickerProps>(
       subscriber.onScrollEnd();
       onScrollEndProp?.();
     });
-
     return (
       <PickerComponent
         {...(restProps as any)}
@@ -96,9 +90,7 @@ export const withPickerControl = <PropsT extends RequiredPickerProps>(
       />
     );
   };
-
   WrappedPicker.displayName = `withPickerControl(${PickerComponent.displayName})`;
-
   return memo(
     forwardRef<
       ComponentRef<ComponentType<PropsT>>,

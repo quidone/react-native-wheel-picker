@@ -1,5 +1,4 @@
-import {degToRad} from '@utils/math';
-
+import {degToRad} from '../../utils/math';
 export type Faces = {
   index: number;
   deg: number;
@@ -15,7 +14,6 @@ export type Faces = {
  */
 const calcHeight = (degree: number, itemHeight: number) =>
   itemHeight * Math.cos(degToRad(degree));
-
 export const calcPickerHeight = (faces: Faces[], itemHeight: number) => {
   // TODO left for backward compatibility, it must be removed after updating the major version.
   if (faces.length === 7) {
@@ -23,7 +21,6 @@ export const calcPickerHeight = (faces: Faces[], itemHeight: number) => {
   }
   return faces.reduce((r, v) => r + calcHeight(Math.abs(v.deg), itemHeight), 0);
 };
-
 export const createFaces = (
   itemHeight: number,
   visibleCount: number,
@@ -41,14 +38,12 @@ export const createFaces = (
   const getDegreesRelativeCenter = () => {
     const maxStep = Math.trunc((visibleCount + 2) / 2); // + 2 because there are 2 more faces at 90 degrees
     const stepDegree = 90 / maxStep;
-
     const result = [];
     for (let i = 1; i <= maxStep; i++) {
       result.push(i * stepDegree);
     }
     return result;
   };
-
   const getScreenHeightsAndOffsets = <T extends readonly number[]>(
     degrees: T,
   ): [T, T] => {
@@ -67,7 +62,6 @@ export const createFaces = (
     }) as unknown as T;
     return [screenHeights, offsets];
   };
-
   const getOpacity = (index: number) => {
     const map: Record<number, number> = {
       0: 0,
@@ -78,10 +72,8 @@ export const createFaces = (
     };
     return map[index] ?? Math.min(1, map[4]! + index * 0.5);
   };
-
   const degrees = getDegreesRelativeCenter();
   const [screenHeight, offsets] = getScreenHeightsAndOffsets(degrees);
-
   return [
     // top items
     ...degrees
@@ -95,10 +87,14 @@ export const createFaces = (
         };
       })
       .reverse(),
-
     // center item
-    {index: 0, deg: 0, opacity: 1, offsetY: 0, screenHeight: itemHeight},
-
+    {
+      index: 0,
+      deg: 0,
+      opacity: 1,
+      offsetY: 0,
+      screenHeight: itemHeight,
+    },
     // bottom items
     ...degrees.map<Faces>((degree, index) => {
       return {

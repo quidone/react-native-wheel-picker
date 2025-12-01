@@ -1,8 +1,7 @@
 import {type RefObject, useRef} from 'react';
 import {useStableCallback} from '@rozhkov/react-useful-hooks';
-import {useEffectWithDynamicDepsLength} from '@utils/react';
+import {useEffectWithDynamicDepsLength} from '../../../utils/react';
 import type {ListMethods} from '../../types';
-
 const useSyncScrollEffect = ({
   listRef,
   value,
@@ -28,27 +27,25 @@ const useSyncScrollEffect = ({
     ) {
       return;
     }
-
-    listRef.current.scrollToIndex({index: valueIndex, animated: true});
+    listRef.current.scrollToIndex({
+      index: valueIndex,
+      animated: true,
+    });
   });
-
   const timeoutId = useRef<any>(undefined);
   useEffectWithDynamicDepsLength(() => {
     clearTimeout(timeoutId.current);
     // fix: loops between two values. We are making a small delay so that the value in other places can be updated for verification.
     timeoutId.current = setTimeout(syncScroll, 0);
   }, [valueIndex, enableSyncScrollAfterScrollEnd, ...extraValues]);
-
   const onScrollEnd = useStableCallback(() => {
     if (enableSyncScrollAfterScrollEnd && value !== undefined) {
       clearTimeout(timeoutId.current);
       timeoutId.current = setTimeout(syncScroll, 0);
     }
   });
-
   return {
     onScrollEnd,
   };
 };
-
 export default useSyncScrollEffect;
