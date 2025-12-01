@@ -1,1 +1,0 @@
-export {RootNavigation} from './RootNavigator';
