@@ -173,6 +173,33 @@ const CustomizedDatePicker = () => {
 };
 ```
 
+#### Persian Calendar (تقویم شمسی)
+DatePicker supports Persian (Jalali) calendar for Persian/Farsi users:
+
+```tsx
+import React, {useState} from 'react';
+import {DatePicker} from 'react-native-wheel-picker-plus';
+
+const PersianDatePicker = () => {
+  const [date, setDate] = useState('1403-05-15'); // Persian date format: YYYY-MM-DD
+
+  return (
+    <DatePicker
+      date={date}
+      onDateChanged={({date}) => setDate(date)}
+      locale="fa-IR"
+      calendar="persian"
+      fontFamily="Vazir" // Optional: use Persian font
+    />
+  );
+};
+```
+
+**Note:** When using Persian calendar:
+- Date format is still 'YYYY-MM-DD' but represents Persian calendar dates
+- Use `locale="fa-IR"` for Persian month names
+- Consider using a Persian font family for better text rendering
+
 ### PickerControl usage (Beta)
 
 ```tsx
@@ -314,10 +341,12 @@ A specialized picker component for selecting dates. It supports localization and
 - ```minDate?``` [string] - Minimum selectable date in 'YYYY-MM-DD' format
 - ```maxDate?``` [string] - Maximum selectable date in 'YYYY-MM-DD' format
 - ```locale?``` [string] - Locale for date formatting (default = 'en')
+- ```calendar?``` [string] - Calendar type: 'gregorian' or 'persian' (default = 'gregorian')
 - ```renderDate?``` [function] - Custom renderer for date component
 - ```renderMonth?``` [function] - Custom renderer for month component
 - ```renderYear?``` [function] - Custom renderer for year component
 - ```children?``` [function] - Render prop for customizing component layout
+- ```fontFamily?``` [string] - Custom font family for text (useful for Persian/Arabic fonts)
 
 DatePicker also accepts all the common wheel picker props like `itemHeight`, `visibleItemCount`, `readOnly`, etc.
 
