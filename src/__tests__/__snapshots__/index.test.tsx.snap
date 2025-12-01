@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WheelPicker should handle data without labels 1`] = `null`;
+
+exports[`WheelPicker should handle value not found in data (should default to index 0) 1`] = `null`;
+
+exports[`WheelPicker should match snapshot with basic props 1`] = `null`;
+
+exports[`WheelPicker should render in readOnly mode 1`] = `null`;
+
+exports[`WheelPicker should render with auto width 1`] = `null`;
+
+exports[`WheelPicker should render with custom itemHeight 1`] = `null`;
+
+exports[`WheelPicker should render with custom keyExtractor 1`] = `null`;
+
+exports[`WheelPicker should render with custom renderItem 1`] = `null`;
+
+exports[`WheelPicker should render with custom visibleItemCount 1`] = `null`;
+
+exports[`WheelPicker should render with custom width 1`] = `null`;
+
+exports[`WheelPicker should render with empty data array 1`] = `null`;
+
+exports[`WheelPicker should render with enableScrollByTapOnItem 1`] = `null`;
+
+exports[`WheelPicker should render with extraValues prop 1`] = `null`;
+
+exports[`WheelPicker should render with large dataset 1`] = `null`;
+
+exports[`WheelPicker should render with percentage width 1`] = `null`;
+
+exports[`WheelPicker should render with single item in data 1`] = `null`;
+
+exports[`WheelPicker should render with string values 1`] = `null`;

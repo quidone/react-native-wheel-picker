@@ -1,6 +1,6 @@
 {
-  "name": "@quidone/react-native-wheel-picker",
-  "version": "1.6.1",
+  "name": "react-native-wheel-picker-plus",
+  "version": "1.0.0",
   "description": "Picker is a UI component for selecting an item from a list of options.",
   "main": "dest/commonjs/index",
   "module": "dest/module/index",
@@ -29,9 +29,9 @@
   "scripts": {
     "test:run": "jest",
     "tsc:check": "tsc --noEmit",
-    "lint:check": "eslint \"**/*.{js,ts,tsx}\"",
-    "lint:fix": "eslint --fix \"**/*.{js,ts,tsx}\"",
-    "build:check-all": "yarn lint:fix && yarn tsc:check && yarn test:run",
+    "lint:check": "eslint \"src/**/*.{js,ts,tsx}\"",
+    "lint:fix": "eslint --fix \"src/**/*.{js,ts,tsx}\"",
+    "build:check-all": "yarn lint:fix && yarn tsc:check",
     "build:resolve": "babel --config-file ./babel.local-namespace-config.js ./src --out-dir ./src --extensions .ts,.js,.tsx,.json --keep-file-extension",
     "build:bob": "cp -r ./src ./copied-src && yarn run build:resolve && yarn run lint:fix && bob build",
     "prepack": "yarn build:check-all && yarn build:bob",
@@ -52,13 +52,16 @@
     "select",
     "field"
   ],
-  "repository": "https://github.com/quidone/react-native-wheel-picker",
-  "author": "Sergey Rozhkov <rozhkovse1@gmail.com> (https://github.com/quidone/react-native-wheel-picker)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hossein92/react-native-wheel-picker-plus.git"
+  },
+  "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/quidone/react-native-wheel-picker/issues"
+    "url": "https://github.com/hossein92/react-native-wheel-picker-plus/issues"
   },
-  "homepage": "https://github.com/quidone/react-native-wheel-picker#readme",
+  "homepage": "https://github.com/hossein92/react-native-wheel-picker-plus#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },

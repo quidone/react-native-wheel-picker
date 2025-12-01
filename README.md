@@ -1,20 +1,7 @@
-[AUTHOR]: https://github.com/rozhkovs
-[FEEDBACK_GITHUB]: https://github.com/quidone/react-native-wheel-picker-feedback
-[EXPO_SNACK]: https://snack.expo.dev/@sergeyrozhkov/quidone-react-native-wheel-picker
-
-# React Native Wheel Picker
+# React Native Wheel Picker Plus
 <p>
-  <a href="https://github.com/quidone/react-native-wheel-picker/blob/HEAD/LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="React Native Wheel Picker is released under the MIT license." />
-  </a>
-  <a href="https://github.com/quidone/react-native-wheel-picker/actions/workflows/tests.yml">
-    <img src="https://github.com/quidone/react-native-wheel-picker/actions/workflows/tests.yml/badge.svg" alt="CI Tests" />
-  </a>
-  <a href="https://www.npmjs.com/package/@quidone/react-native-wheel-picker">
-    <img src="https://img.shields.io/npm/v/@quidone/react-native-wheel-picker?color=brightgreen&label=npm%20package" alt="Current npm package version." />
-  </a>
-  <a href="https://www.npmjs.com/package/@quidone/react-native-wheel-picker">
-    <img src="https://img.shields.io/npm/dw/@quidone/react-native-wheel-picker" alt="Number of downloads per week." />
+  <a href="https://github.com/hossein92/react-native-wheel-picker-plus/blob/HEAD/LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="React Native Wheel Picker Plus is released under the MIT license." />
   </a>
 </p>
 
@@ -67,7 +54,13 @@ A flexible React Native Wheel Picker for iOS and Android without using the nativ
 
 ## Installation
 ```shell
-yarn add @quidone/react-native-wheel-picker
+yarn add react-native-wheel-picker-plus
+```
+
+or
+
+```shell
+npm install react-native-wheel-picker-plus
 ```
 
 ## Navigation
@@ -94,8 +87,8 @@ yarn add @quidone/react-native-wheel-picker
 If you want to see more examples and experiment, run the examples locally.
 
 ```shell
-git clone git@github.com:quidone/react-native-wheel-picker.git
-cd react-native-wheel-picker
+git clone git@github.com:hossein92/react-native-wheel-picker-plus.git
+cd react-native-wheel-picker-plus
 yarn install
 cd example && yarn install && yarn ios
 ```
@@ -104,7 +97,7 @@ cd example && yarn install && yarn ios
 
 ```jsx
 import React, {useState} from 'react';
-import WheelPicker from '@quidone/react-native-wheel-picker';
+import WheelPicker from 'react-native-wheel-picker-plus';
 
 const data = [...Array(100).keys()].map((index) => ({
   value: index,
@@ -134,7 +127,7 @@ export default App;
 #### Simple case
 ```tsx
 import React, {useState} from 'react';
-import {DatePicker} from '@quidone/react-native-wheel-picker';
+import {DatePicker} from 'react-native-wheel-picker-plus';
 
 const App = () => {
   const [date, setDate] = useState('2025-02-02');
@@ -155,7 +148,7 @@ you can add your own components between individual WheelPickers
 ```tsx
 import React, {useState} from 'react';
 import {useStableCallback} from '@rozhkov/react-useful-hooks';
-import {DatePicker} from '@quidone/react-native-wheel-picker';
+import {DatePicker} from 'react-native-wheel-picker-plus';
 
 const CustomizedDatePicker = () => {
   const [date, setDate] = useState('2025-02-02');
@@ -190,7 +183,7 @@ import WheelPicker, {
   useOnPickerValueChangingEffect,
   usePickerControl,
   withPickerControl,
-} from '@quidone/react-native-wheel-picker';
+} from 'react-native-wheel-picker-plus';
 import {View} from 'react-native';
 
 const ControlPicker = withPickerControl(WheelPicker);
@@ -300,7 +293,7 @@ This hook returns the animated value of the ScrollView offset.
 This HOC returns virtualized picker
 
 ```jsx
-import WheelPicker, {withVirtualized} from '@quidone/react-native-wheel-picker';
+import WheelPicker, {withVirtualized} from 'react-native-wheel-picker-plus';
 
 const VirtualizedWheelPicker = withVirtualized(WheelPicker);
 ```
@@ -363,21 +356,29 @@ Called when the value has been changed. This occurs during the inactive state of
 Called when any of the connected WheelPickers changes. See [example](#PickerControl-Usage-Beta)
 
 
-## 👨‍💻 Author
-[Sergey Rozhkov][AUTHOR]
-
-## 🎯 Was it helpful?
-Do you like it and find it helpful? You can help this project in the following way:
-- ⭐ Put the star.
-- 💡 Suggest your ideas.
-- 😉 Open a founded issue.
-
 ## 🤝 Contributing
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
 
 ## 📄 License
-Quidone React Native Wheel Picker is MIT licensed, as found in the [LICENSE](LICENSE) file.
+React Native Wheel Picker Plus is MIT licensed, as found in the [LICENSE](LICENSE) file.
 
 ---
+
+## 📦 Installation from npm
+
+```bash
+npm install react-native-wheel-picker-plus
+# or
+yarn add react-native-wheel-picker-plus
+```
+
+## 🔗 Links
+
+- [GitHub Repository](https://github.com/hossein92/react-native-wheel-picker-plus)
+- [npm Package](https://www.npmjs.com/package/react-native-wheel-picker-plus)
+
+---
+
+This project is a fork of [@quidone/react-native-wheel-picker](https://github.com/quidone/react-native-wheel-picker)
 
 Made with [create-react-native-library](https://github.com/callstack/react-native-builder-bob)

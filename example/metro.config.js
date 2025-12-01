@@ -26,7 +26,7 @@ const config = {
     ],
     extraNodeModules: {
       ...defaultConfig.resolver.extraNodeModules,
-      '@quidone/react-native-wheel-picker': srcPath,
+      'react-native-wheel-picker-plus': srcPath,
       '@implementation/base': path.resolve(srcPath, 'base/index'),
       '@implementation/picker-control': path.resolve(srcPath, 'picker-control/index'),
       '@implementation/virtualized': path.resolve(srcPath, 'hoc/virtualized/index'),

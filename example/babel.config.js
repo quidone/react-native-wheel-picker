@@ -9,7 +9,7 @@ module.exports = {
         root: ['./'],
         extensions: ['.tsx', '.ts', '.js', '.jsx', '.json'],
         alias: {
-          '@quidone/react-native-wheel-picker': path.resolve(__dirname, '../src/index'),
+          'react-native-wheel-picker-plus': path.resolve(__dirname, '../src/index'),
           '@implementation/base': path.resolve(__dirname, '../src/base/index'),
           '@implementation/picker-control': path.resolve(__dirname, '../src/picker-control/index'),
           '@implementation/virtualized': path.resolve(__dirname, '../src/hoc/virtualized/index'),

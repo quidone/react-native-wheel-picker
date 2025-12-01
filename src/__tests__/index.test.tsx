@@ -11,13 +11,7 @@ describe('WheelPicker', () => {
 
   it('should match snapshot with basic props', () => {
     const tree = renderer
-      .create(
-        <WheelPicker
-          data={basicData}
-          value={1}
-          testID="wheel-picker"
-        />,
-      )
+      .create(<WheelPicker data={basicData} value={1} testID="wheel-picker" />)
       .toJSON();
     expect(tree).toMatchSnapshot();
   });
@@ -109,8 +103,11 @@ describe('WheelPicker', () => {
   it('should render with custom renderItem', () => {
     const React = require('react');
     const {Text} = require('react-native');
-    const customRenderItem = ({item}: {item: {value: number; label?: string}}) =>
-      React.createElement(Text, null, item.label || item.value);
+    const customRenderItem = ({
+      item,
+    }: {
+      item: {value: number; label?: string};
+    }) => React.createElement(Text, null, item.label || item.value);
 
     const tree = renderer
       .create(
@@ -144,11 +141,7 @@ describe('WheelPicker', () => {
   });
 
   it('should handle data without labels', () => {
-    const dataWithoutLabels = [
-      {value: 1},
-      {value: 2},
-      {value: 3},
-    ];
+    const dataWithoutLabels = [{value: 1}, {value: 2}, {value: 3}];
 
     const tree = renderer
       .create(
@@ -192,11 +185,7 @@ describe('WheelPicker', () => {
   it('should render with empty data array', () => {
     const tree = renderer
       .create(
-        <WheelPicker
-          data={[]}
-          value={1}
-          testID="wheel-picker-empty-data"
-        />,
+        <WheelPicker data={[]} value={1} testID="wheel-picker-empty-data" />,
       )
       .toJSON();
     expect(tree).toMatchSnapshot();
@@ -245,8 +234,10 @@ describe('WheelPicker', () => {
   });
 
   it('should render with custom keyExtractor', () => {
-    const customKeyExtractor = (item: {value: number; label?: string}, index: number) =>
-      `custom-${item.value}-${index}`;
+    const customKeyExtractor = (
+      item: {value: number; label?: string},
+      index: number,
+    ) => `custom-${item.value}-${index}`;
 
     const tree = renderer
       .create(

@@ -124,7 +124,7 @@ export const GregorianCalendarAdapter: CalendarAdapter = {
 
 // region Persian (Jalali) calendar adapter
 // Using jalaali-js library (MIT license) for accurate date conversions
-// eslint-disable-next-line @typescript-eslint/no-require-imports, eslint-comments/no-unused-disable
+
 const jalaali = require('jalaali-js');
 
 const PERSIAN_MONTH_NAMES_FA = [

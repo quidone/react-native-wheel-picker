@@ -1,6 +1,6 @@
 import React from 'react';
 import {useStableCallback} from '@rozhkov/react-useful-hooks';
-import {DatePicker} from '@quidone/react-native-wheel-picker';
+import {DatePicker} from 'react-native-wheel-picker-plus';
 
 const CustomizedDatePicker = ({date, setDate}: {date: string, setDate: (date: string) => void}) => {
 

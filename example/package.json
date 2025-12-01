@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.25.0",
-    "@quidone/react-native-wheel-picker": "*",
+    "react-native-wheel-picker-plus": "*",
     "react": "19.1.1",
     "react-native": "0.82.1",
     "react-native-safe-area-context": "^5.5.2"

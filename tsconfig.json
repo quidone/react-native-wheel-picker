@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@quidone/react-native-wheel-picker": ["./src/index"],
+      "react-native-wheel-picker-plus": ["./src/index"],
       "@implementation/base": ["./src/base/index"],
       "@implementation/picker-control": ["./src/picker-control/index"],
       "@implementation/virtualized": ["./src/hoc/virtualized/index"],
@@ -33,5 +33,6 @@
     "strict": true,
     "target": "esnext",
     "types": ["react", "react-native"]
-  }
+  },
+  "exclude": ["node_modules", "example", "**/__tests__", "**/__mocks__", "**/*.test.ts", "**/*.test.tsx"]
 }

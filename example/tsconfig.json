@@ -15,7 +15,7 @@
     "isolatedModules": true,
     "baseUrl": "./",
     "paths": {
-      "@quidone/react-native-wheel-picker": ["../src/index"],
+      "react-native-wheel-picker-plus": ["../src/index"],
       "@implementation/base": ["../src/base/index"],
       "@implementation/picker-control": ["../src/picker-control/index"],
       "@implementation/virtualized": ["../src/hoc/virtualized/index"],
