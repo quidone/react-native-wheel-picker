@@ -127,9 +127,6 @@ export default App;
 ```
 
 ### DatePicker usage (Beta)
-> ⚠️ **Warning:** It is recommended to test the component in a release build of your application.
-> There is an issue where synchronization of scrolling may occasionally slip during scrolling
-> attempts when performance is low.
 
 #### Simple case
 ```tsx
