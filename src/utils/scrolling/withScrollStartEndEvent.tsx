@@ -50,18 +50,77 @@ const withScrollStartEndEvent = <PropsT extends ComponentProps>(
     const onScrollStartStable = useStableCallback(onScrollStartProp);
 
     const isOnScrollStartCalledRef = useRef(false);
+    /*
+     * `isImplicitScrollRef` marks a scroll session that was detected from
+     * `contentOffset` updates only, without a native start callback.
+     *
+     * Why this exists:
+     * Android may perform a programmatic animated scroll
+     * (`scrollTo` / `scrollToIndex`) and emit several offset updates while
+     * skipping the normal callback pair that we usually rely on:
+     * `onScrollBeginDrag` / `onScrollEndDrag` and
+     * `onMomentumScrollBegin` / `onMomentumScrollEnd`.
+     *
+     * Relevant React Native issues:
+     * https://github.com/facebook/react-native/issues/11693
+     * https://github.com/facebook/react-native/issues/19246
+     * https://github.com/facebook/react-native/issues/25672
+     * https://github.com/facebook/react-native/issues/26661
+     *
+     * In this library it shows up when one wheel triggers a synchronized
+     * animated scroll in another wheel. Example sequence on Android:
+     * - offset changes: 48 -> 47.6 -> 46.0 -> 43.4 -> ... -> 0
+     * - but no native "begin/end" events are dispatched for that movement
+     *
+     * Old failure mode:
+     * - the first offset update inferred scroll start and scheduled a debounced
+     *   scroll end
+     * - the next offset updates only cleared that debounced end
+     * - because Android never sent a native end event, the session stayed
+     *   "started" forever
+     * - `PickerControl` then kept one picker in `isStopped = false`, so the
+     *   aggregated DatePicker `onDateChanged` stopped firing
+     *
+     * We still emit `onScrollStart` for such a session, but we must finish it
+     * differently: if the session is implicit, every offset update should
+     * re-arm the debounced end so that the last offset update wins and the
+     * scroll eventually ends even when Android never gives us a native end
+     * callback.
+     *
+     * Related library issues:
+     * https://github.com/quidone/react-native-wheel-picker/issues/56
+     * https://github.com/quidone/react-native-wheel-picker/issues/71
+     */
+    const isImplicitScrollRef = useRef(false);
     const deactivateOnScrollStart = useStableCallback(() => {
       isOnScrollStartCalledRef.current = false;
+      isImplicitScrollRef.current = false;
     });
-    const maybeCallOnScrollStart = useStableCallback(() => {
-      if (!isOnScrollStartCalledRef.current) {
-        onScrollStartStable();
-        isOnScrollStartCalledRef.current = true;
-      }
+    const maybeCallOnScrollStart = useStableCallback(
+      ({implicit}: {implicit: boolean}) => {
+        const shouldActivate = !isOnScrollStartCalledRef.current;
+        if (shouldActivate) {
+          onScrollStartStable();
+          isOnScrollStartCalledRef.current = true;
+          isImplicitScrollRef.current = implicit;
+          return;
+        }
+
+        if (!implicit) {
+          isImplicitScrollRef.current = false;
+        }
+      },
+    );
+
+    const maybeCallOnNativeScrollStart = useStableCallback(() => {
+      maybeCallOnScrollStart({implicit: false});
+    });
+    const maybeCallOnImplicitScrollStart = useStableCallback(() => {
+      maybeCallOnScrollStart({implicit: true});
     });
 
     const onScrollEndStable = useStableCallback(() => {
-      maybeCallOnScrollStart();
+      maybeCallOnNativeScrollStart();
       onScrollEndProp?.();
       deactivateOnScrollStart();
     });
@@ -73,7 +132,7 @@ const withScrollStartEndEvent = <PropsT extends ComponentProps>(
 
     const onScrollBeginDrag = useStableCallback(
       (args: NativeSyntheticEvent<NativeScrollEvent>) => {
-        maybeCallOnScrollStart();
+        maybeCallOnNativeScrollStart();
         onScrollBeginDragProp?.(args);
       },
     );
@@ -87,7 +146,7 @@ const withScrollStartEndEvent = <PropsT extends ComponentProps>(
 
     const onMomentumScrollBegin = useStableCallback(
       (args: NativeSyntheticEvent<NativeScrollEvent>) => {
-        maybeCallOnScrollStart();
+        maybeCallOnNativeScrollStart();
         onScrollEnd.clear();
         onMomentumScrollBeginProp?.(args);
       },
@@ -103,9 +162,12 @@ const withScrollStartEndEvent = <PropsT extends ComponentProps>(
     useEffect(() => {
       const sub = scrollOffset.addListener(() => {
         if (!isOnScrollStartCalledRef.current) {
-          // If this condition is met, then we assume that no events were triggered,
-          // and there was a change in the content that offset shifted to a smaller side
-          maybeCallOnScrollStart();
+          maybeCallOnImplicitScrollStart();
+          onScrollEnd();
+          return;
+        }
+
+        if (isImplicitScrollRef.current) {
           onScrollEnd();
         } else {
           onScrollEnd.clear();
@@ -114,7 +176,7 @@ const withScrollStartEndEvent = <PropsT extends ComponentProps>(
       return () => {
         scrollOffset.removeListener(sub);
       };
-    }, [maybeCallOnScrollStart, onScrollEnd, scrollOffset]);
+    }, [maybeCallOnImplicitScrollStart, onScrollEnd, scrollOffset]);
 
     return (
       <Component
