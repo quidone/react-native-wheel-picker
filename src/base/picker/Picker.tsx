@@ -173,7 +173,10 @@ const Picker = <ItemT extends PickerItem<any>>({
       },
       {onValueChanging, onValueChanged},
     );
-  const {onScrollEnd: onScrollEndForSyncScroll} = useSyncScrollEffect({
+  const {
+    onScrollStart: onScrollStartForSyncScroll,
+    onScrollEnd: onScrollEndForSyncScroll,
+  } = useSyncScrollEffect({
     listRef,
     value,
     valueIndex,
@@ -181,6 +184,11 @@ const Picker = <ItemT extends PickerItem<any>>({
     activeIndexRef,
     touching: touching.value,
     enableSyncScrollAfterScrollEnd: _enableSyncScrollAfterScrollEnd,
+  });
+
+  const onScrollStart = useStableCallback(() => {
+    onScrollStartForSyncScroll();
+    _onScrollStart?.();
   });
 
   const onScrollEnd = useStableCallback(() => {
@@ -220,7 +228,7 @@ const Picker = <ItemT extends PickerItem<any>>({
             onTouchStart: touching.setTrue,
             onTouchEnd: touching.setFalse,
             onTouchCancel: touching.setFalse,
-            onScrollStart: _onScrollStart,
+            onScrollStart,
             onScrollEnd,
             contentContainerStyle,
           })}

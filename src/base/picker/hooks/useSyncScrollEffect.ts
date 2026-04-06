@@ -1,7 +1,9 @@
-import {type RefObject, useRef} from 'react';
+import {type RefObject, useEffect, useRef} from 'react';
 import {useStableCallback} from '@rozhkov/react-useful-hooks';
 import {useEffectWithDynamicDepsLength} from '@utils/react';
 import type {ListMethods} from '../../types';
+
+const SYNC_SCROLL_DELAY_MS = 100;
 
 const useSyncScrollEffect = ({
   listRef,
@@ -20,6 +22,19 @@ const useSyncScrollEffect = ({
   touching: boolean;
   enableSyncScrollAfterScrollEnd: boolean;
 }) => {
+  const timeoutId = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
+  const isScrollingRef = useRef(false);
+  const prevEnableSyncScrollAfterScrollEnd = useRef(
+    enableSyncScrollAfterScrollEnd,
+  );
+
+  const cancelSyncScroll = useStableCallback(() => {
+    clearTimeout(timeoutId.current);
+    timeoutId.current = undefined;
+  });
+
   const syncScroll = useStableCallback(() => {
     if (
       listRef.current == null ||
@@ -32,21 +47,57 @@ const useSyncScrollEffect = ({
     listRef.current.scrollToIndex({index: valueIndex, animated: true});
   });
 
-  const timeoutId = useRef<any>(undefined);
+  const scheduleSyncScroll = useStableCallback((delay: number) => {
+    cancelSyncScroll();
+    timeoutId.current = setTimeout(() => {
+      timeoutId.current = undefined;
+      syncScroll();
+    }, delay);
+  });
+
+  useEffect(() => cancelSyncScroll, [cancelSyncScroll]);
+
+  useEffect(() => {
+    const prevEnabled = prevEnableSyncScrollAfterScrollEnd.current;
+    prevEnableSyncScrollAfterScrollEnd.current = enableSyncScrollAfterScrollEnd;
+
+    if (!enableSyncScrollAfterScrollEnd) {
+      cancelSyncScroll();
+      return;
+    }
+
+    if (!prevEnabled && value !== undefined && !isScrollingRef.current) {
+      scheduleSyncScroll(SYNC_SCROLL_DELAY_MS);
+    }
+  }, [
+    cancelSyncScroll,
+    enableSyncScrollAfterScrollEnd,
+    scheduleSyncScroll,
+    value,
+  ]);
+
   useEffectWithDynamicDepsLength(() => {
-    clearTimeout(timeoutId.current);
-    // fix: loops between two values. We are making a small delay so that the value in other places can be updated for verification.
-    timeoutId.current = setTimeout(syncScroll, 0);
-  }, [valueIndex, enableSyncScrollAfterScrollEnd, ...extraValues]);
+    if (value === undefined) {
+      return;
+    }
+    scheduleSyncScroll(0);
+  }, [valueIndex, ...extraValues]);
+
+  const onScrollStart = useStableCallback(() => {
+    isScrollingRef.current = true;
+    cancelSyncScroll();
+  });
 
   const onScrollEnd = useStableCallback(() => {
+    isScrollingRef.current = false;
+
     if (enableSyncScrollAfterScrollEnd && value !== undefined) {
-      clearTimeout(timeoutId.current);
-      timeoutId.current = setTimeout(syncScroll, 0);
+      scheduleSyncScroll(SYNC_SCROLL_DELAY_MS);
     }
   });
 
   return {
+    onScrollStart,
     onScrollEnd,
   };
 };
