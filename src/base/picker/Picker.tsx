@@ -1,9 +1,10 @@
-import React, {useCallback, useMemo, useRef} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import type {TextStyle} from 'react-native';
 import {
   type StyleProp,
   type ViewStyle,
   Animated,
+  Platform,
   StyleSheet,
   View,
 } from 'react-native';
@@ -188,6 +189,14 @@ const Picker = <ItemT extends PickerItem<any>>({
     onScrollEndForValueEvents();
     onScrollEndForSyncScroll();
   });
+
+  // iOS can mount the picker list with a wrong initial contentOffset, so re-apply it after mount.
+  // See https://github.com/quidone/react-native-wheel-picker/issues/67.
+  useEffect(() => {
+    if (Platform.OS === 'ios') {
+      listRef.current?.scrollToIndex({index: initialIndex, animated: false});
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <ScrollContentOffsetContext.Provider value={offsetY}>
