@@ -285,6 +285,7 @@ const App = () => {
 - ```overlayItemStyle?``` [object | array] - style for the overlay element in the center
 - ```contentContainerStyle?``` [object | array] - style which wraps all of the child views [original](https://reactnative.dev/docs/scrollview#contentcontainerstyle)
 - ```scrollEventThrottle?``` [object | array] - [original](https://reactnative.dev/docs/scrollview#scrolleventthrottle-ios)
+- ```disableIntervalMomentum?``` [boolean] - When set to `true`, the scroll view stops on the next snap point relative to the release position instead of carrying through with momentum. Useful as an opt-in workaround for a [react-native bug](https://github.com/facebook/react-native/issues/29922) where some older Android OEM devices (e.g. vivo / Oppo) produce erratic snap behavior. Defaults to React Native's default (off).
 
 
 #### usePickerItemHeight
