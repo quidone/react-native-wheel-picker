@@ -58,6 +58,7 @@ export type PickerProps<ItemT extends PickerItem<any>> = {
   contentContainerStyle?: StyleProp<ViewStyle>;
 
   scrollEventThrottle?: number;
+  disableIntervalMomentum?: boolean;
 
   _enableSyncScrollAfterScrollEnd?: boolean;
   _onScrollStart?: () => void;

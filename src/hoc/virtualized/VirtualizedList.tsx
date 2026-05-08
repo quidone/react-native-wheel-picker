@@ -49,6 +49,7 @@ type VirtualizedListProps<ItemT extends PickerItem<any>> = {
   onScrollStart: (() => void) | undefined;
   onScrollEnd: () => void;
   contentContainerStyle: StyleProp<ViewStyle> | undefined;
+  disableIntervalMomentum?: boolean;
 } & AdditionalProps;
 
 const VirtualizedList = <ItemT extends PickerItem<any>>(
@@ -73,6 +74,8 @@ const VirtualizedList = <ItemT extends PickerItem<any>>(
     maxToRenderPerBatch,
     updateCellsBatchingPeriod = 10,
     windowSize,
+
+    disableIntervalMomentum,
 
     ...restProps
   }: VirtualizedListProps<ItemT>,
@@ -123,6 +126,7 @@ const VirtualizedList = <ItemT extends PickerItem<any>>(
       onScroll={onScroll}
       scrollOffset={scrollOffset}
       snapToOffsets={snapToOffsets}
+      disableIntervalMomentum={disableIntervalMomentum}
       style={styles.list}
       contentContainerStyle={contentContainerStyle}
       onTouchStart={onTouchStart}

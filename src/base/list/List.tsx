@@ -42,6 +42,7 @@ export type ListProps<ItemT extends PickerItem<any>> = {
   onScrollStart: (() => void) | undefined;
   onScrollEnd: () => void;
   contentContainerStyle: StyleProp<ViewStyle> | undefined;
+  disableIntervalMomentum?: boolean;
 };
 
 const List = <ItemT extends PickerItem<any>>(
@@ -60,6 +61,7 @@ const List = <ItemT extends PickerItem<any>>(
     onScrollStart,
     onScrollEnd,
     contentContainerStyle: contentContainerStyleProp,
+    disableIntervalMomentum,
     ...restProps
   }: ListProps<ItemT>,
   forwardedRef: ForwardedRef<ListMethods>,
@@ -116,6 +118,7 @@ const List = <ItemT extends PickerItem<any>>(
       onScroll={onScroll}
       scrollOffset={scrollOffset}
       snapToOffsets={snapToOffsets}
+      disableIntervalMomentum={disableIntervalMomentum}
       style={styles.list}
       contentContainerStyle={contentContainerStyle}
       onTouchStart={onTouchStart}
