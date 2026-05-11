@@ -45,12 +45,12 @@ A flexible React Native Wheel Picker for iOS and Android without using the nativ
     <td align="center">
       <img src="docs/images/date-picker-ios.gif" height="220"/>
       <br />
-      DatePicker (Beta)
+      DatePicker
     </td>
     <td align="center">
       <img src="docs/images/picker-control-ios.gif" height="220"/>
       <br />
-      PickerControl (Beta)
+      PickerControl
     </td>
   </tr>
 </table>
@@ -79,8 +79,8 @@ yarn add @quidone/react-native-wheel-picker
     - [usePickerItemHeight](#usePickerItemHeight)
     - [useScrollContentOffset](#useScrollContentOffset)
     - [withVirtualized](#withVirtualized)
-  - [DatePicker (Beta)](#DatePicker)
-  - [Picker Control (Beta)](#Picker-Control)
+  - [DatePicker](#DatePicker)
+  - [Picker Control](#Picker-Control)
     - [usePickerControl](#usePickerControl)
     - [withPickerControl](#withPickerControl)
     - [useOnPickerValueChangedEffect](#useOnPickerValueChangedEffect)
@@ -126,7 +126,7 @@ const App = () => {
 export default App;
 ```
 
-### DatePicker usage (Beta)
+### DatePicker usage
 
 #### Simple case
 ```tsx
@@ -177,7 +177,7 @@ const CustomizedDatePicker = () => {
 };
 ```
 
-### PickerControl usage (Beta)
+### PickerControl usage
 
 ```tsx
 import React, {useState} from 'react';
@@ -342,11 +342,11 @@ Main goals:
 
 #### usePickerControl
 
-A hook that creates a control object for connecting multiple pickers. See [example](#PickerControl-Usage-Beta)
+A hook that creates a control object for connecting multiple pickers. See [example](#PickerControl-Usage)
 
 #### withPickerControl
 
-A HOC that connects a WheelPicker to a control object. See [example](#PickerControl-Usage-Beta)
+A HOC that connects a WheelPicker to a control object. See [example](#PickerControl-Usage)
 
 ##### Adding props
 - ```control``` [object] - Control object created with `usePickerControl`
@@ -354,11 +354,11 @@ A HOC that connects a WheelPicker to a control object. See [example](#PickerCont
 
 #### useOnPickerValueChangedEffect
 
-Called when the value has been changed. This occurs during the inactive state of all WheelPickers. See [example](#PickerControl-Usage-Beta)
+Called when the value has been changed. This occurs during the inactive state of all WheelPickers. See [example](#PickerControl-Usage)
 
 #### useOnPickerValueChangingEffect
 
-Called when any of the connected WheelPickers changes. See [example](#PickerControl-Usage-Beta)
+Called when any of the connected WheelPickers changes. See [example](#PickerControl-Usage)
 
 
 ## 👨‍💻 Author
