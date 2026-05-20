@@ -144,8 +144,10 @@ const withScrollStartEndEvent = <PropsT extends ComponentProps>(
       },
     );
 
+    const hasMomentumScrollEndedRef = useRef(false);
     const onMomentumScrollBegin = useStableCallback(
       (args: NativeSyntheticEvent<NativeScrollEvent>) => {
+        hasMomentumScrollEndedRef.current = false;
         maybeCallOnNativeScrollStart();
         onScrollEnd.clear();
         onMomentumScrollBeginProp?.(args);
@@ -154,6 +156,7 @@ const withScrollStartEndEvent = <PropsT extends ComponentProps>(
 
     const onMomentumScrollEnd = useStableCallback(
       (args: NativeSyntheticEvent<NativeScrollEvent>) => {
+        hasMomentumScrollEndedRef.current = true;
         onMomentumScrollEndProp?.(args);
         onScrollEnd();
       },
@@ -169,7 +172,7 @@ const withScrollStartEndEvent = <PropsT extends ComponentProps>(
 
         if (isImplicitScrollRef.current) {
           onScrollEnd();
-        } else {
+        } else if(!hasMomentumScrollEndedRef.current) {
           onScrollEnd.clear();
         }
       });
