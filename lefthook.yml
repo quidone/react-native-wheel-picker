@@ -1,6 +1,8 @@
 pre-commit:
   parallel: true
   commands:
+    deps:
+      run: yarn deps:check-shared
     lint:
       run: yarn lint:check
     types:
@@ -8,6 +10,8 @@ pre-commit:
 pre-push:
   parallel: true
   commands:
+    deps:
+      run: yarn deps:check-shared
     lint:
       run: yarn lint:check
     types:

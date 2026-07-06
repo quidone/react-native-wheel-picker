@@ -2,7 +2,7 @@ const path = require('path');
 const localPkgs = require('./local-namespace-config');
 
 module.exports = {
-  preset: 'react-native',
+  preset: '@react-native/jest-preset',
   modulePathIgnorePatterns: [
     '<rootDir>/example/node_modules',
     '<rootDir>/dest/',
