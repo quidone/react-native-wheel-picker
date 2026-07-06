@@ -9,7 +9,10 @@ type OverlayProps = {
 
 const Overlay = ({itemHeight, overlayItemStyle}: OverlayProps) => {
   return (
-    <View style={[styles.overlayContainer]} pointerEvents={'none'}>
+    <View
+      style={[StyleSheet.absoluteFill, styles.overlayContainer]}
+      pointerEvents={'none'}
+    >
       <View
         style={[styles.selection, {height: itemHeight}, overlayItemStyle]}
       />
@@ -19,7 +22,6 @@ const Overlay = ({itemHeight, overlayItemStyle}: OverlayProps) => {
 
 const styles = StyleSheet.create({
   overlayContainer: {
-    ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
   },

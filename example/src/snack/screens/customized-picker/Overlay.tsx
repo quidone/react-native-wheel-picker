@@ -4,7 +4,10 @@ import type {RenderOverlayProps} from '@quidone/react-native-wheel-picker';
 
 const Overlay = ({itemHeight, overlayItemStyle}: RenderOverlayProps) => {
   return (
-    <View style={[styles.overlayContainer]} pointerEvents={'none'}>
+    <View
+      style={[StyleSheet.absoluteFill, styles.overlayContainer]}
+      pointerEvents={'none'}
+    >
       <View
         style={[styles.selection, {height: itemHeight}, overlayItemStyle]}
       />
@@ -14,7 +17,6 @@ const Overlay = ({itemHeight, overlayItemStyle}: RenderOverlayProps) => {
 
 const styles = StyleSheet.create({
   overlayContainer: {
-    ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
   },
