@@ -4,7 +4,8 @@ import React, {
   useContext,
   useMemo,
 } from 'react';
-import {getDaysInMonth, isSameDay} from 'date-fns';
+import {getDaysInMonth} from 'date-fns/getDaysInMonth';
+import {isSameDay} from 'date-fns/isSameDay';
 import type {PickerItem} from '@implementation/base';
 import {
   type PickerControl,
