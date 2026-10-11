@@ -1,5 +1,5 @@
 import React, {memo, useMemo} from 'react';
-import {getDaysInMonth} from 'date-fns';
+import {getDaysInMonth} from 'date-fns/getDaysInMonth';
 import Picker, {type PickerProps} from '@implementation/base';
 import {withPickerControl} from '@implementation/picker-control';
 import {useDateContext} from './DatePickerValueProvider';

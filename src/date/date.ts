@@ -1,4 +1,7 @@
-import {isAfter, isBefore, isWithinInterval, startOfDay} from 'date-fns';
+import {isAfter} from 'date-fns/isAfter';
+import {isBefore} from 'date-fns/isBefore';
+import {isWithinInterval} from 'date-fns/isWithinInterval';
+import {startOfDay} from 'date-fns/startOfDay';
 
 export type OnlyDateFormat = string; // YYYY-MM-DD
 export type OnlyDateUnits = {date: number; month: number; year: number};
