@@ -199,10 +199,11 @@ const Picker = <ItemT extends PickerItem<any>>({
     onScrollEndForSyncScroll();
   });
 
-  // iOS can mount the picker list with a wrong initial contentOffset, so re-apply it after mount.
+  // iOS can mount the picker list with a wrong initial contentOffset, and react-native-web
+  // ignores the contentOffset prop, so re-apply the initial index after mount.
   // See https://github.com/quidone/react-native-wheel-picker/issues/67.
   useEffect(() => {
-    if (Platform.OS === 'ios') {
+    if (Platform.OS === 'ios' || Platform.OS === 'web') {
       listRef.current?.scrollToIndex({index: initialIndex, animated: false});
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
